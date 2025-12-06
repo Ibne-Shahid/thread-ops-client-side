@@ -17,9 +17,16 @@ const Navbar = () => {
                         <NavLink className={({ isActive }) => isActive ? "bg-secondary text-white" : ""} to="all-products"><li>All Products</li></NavLink>
                         <NavLink className={({ isActive }) => isActive ? "bg-secondary text-white" : ""} to="about-us"><li>About Us</li></NavLink>
                         <NavLink className={({ isActive }) => isActive ? "bg-secondary text-white" : ""} to="contact"><li>Contact</li></NavLink>
+                        <li className="mt-2">
+                            <button className='btn btn-outline btn-secondary w-full'>Login</button>
+                        </li>
+                        <li className="mt-1">
+                            <button className='btn btn-primary w-full'>Register</button>
+                        </li>
                     </ul>
+
                 </div>
-                <NavLink to="/" className="btn btn-ghost text-2xl bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">ThreadOps</NavLink>
+                <NavLink to="/" className="btn btn-ghost font-bold text-2xl bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent text-center lg:text-start">ThreadOps</NavLink>
             </div>
 
             <div className="navbar-end">
@@ -33,7 +40,7 @@ const Navbar = () => {
                     </ul>
                 </div>
 
-                <div className='flex gap-2'>
+                <div className='hidden lg:flex gap-2'>
                     <button className='btn btn-outline btn-secondary'>Login</button>
                     <button className='btn btn-primary'>Register</button>
                 </div>
