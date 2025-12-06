@@ -1,5 +1,5 @@
 import React from 'react'
-import { NavLink } from 'react-router'
+import { Link, NavLink } from 'react-router'
 
 
 const Navbar = () => {
@@ -18,10 +18,10 @@ const Navbar = () => {
                         <NavLink className={({ isActive }) => isActive ? "bg-secondary text-white" : ""} to="about-us"><li>About Us</li></NavLink>
                         <NavLink className={({ isActive }) => isActive ? "bg-secondary text-white" : ""} to="contact"><li>Contact</li></NavLink>
                         <li className="mt-2">
-                            <button className='btn btn-outline btn-secondary w-full'>Login</button>
+                            <Link to="login"><button className='btn btn-outline btn-secondary w-full'>Login</button></Link>
                         </li>
                         <li className="mt-1">
-                            <button className='btn btn-primary w-full'>Register</button>
+                            <Link to="register"><button className='btn btn-primary w-full'>Register</button></Link>
                         </li>
                     </ul>
 
@@ -41,8 +41,8 @@ const Navbar = () => {
                 </div>
 
                 <div className='hidden lg:flex gap-2'>
-                    <button className='btn btn-outline btn-secondary'>Login</button>
-                    <button className='btn btn-primary'>Register</button>
+                    <Link to="login"><button className='btn btn-outline btn-secondary'>Login</button></Link>
+                    <Link to="register"><button className='btn btn-primary'>Register</button></Link>
                 </div>
             </div>
         </div>
