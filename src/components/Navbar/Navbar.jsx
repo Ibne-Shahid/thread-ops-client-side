@@ -1,8 +1,25 @@
 import React from 'react'
 import { Link, NavLink } from 'react-router'
+import useAuth from '../../Hooks/useAuth'
+import { toast } from 'react-toastify'
+import { PiFinnTheHumanFill } from 'react-icons/pi'
 
 
 const Navbar = () => {
+    const { user, logOut, loading } = useAuth()
+
+    const handleLogout = () => {
+        logOut()
+            .then(() => {
+                toast.success("You have been logged out succesfully!")
+            })
+            .catch((error) => {
+                const errorMessage = error.message
+
+                toast.error(errorMessage)
+            })
+    }
+
     return (
         <div className="navbar bg-base-200 shadow-sm px-10">
             <div className="navbar-start">
@@ -12,18 +29,46 @@ const Navbar = () => {
                     </div>
                     <ul
                         tabIndex="-1"
-                        className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow font-semibold">
-                        <NavLink className={({ isActive }) => isActive ? "bg-secondary text-white" : ""} to="/"><li>Home</li></NavLink>
-                        <NavLink className={({ isActive }) => isActive ? "bg-secondary text-white" : ""} to="all-products"><li>All Products</li></NavLink>
-                        <NavLink className={({ isActive }) => isActive ? "bg-secondary text-white" : ""} to="about-us"><li>About Us</li></NavLink>
-                        <NavLink className={({ isActive }) => isActive ? "bg-secondary text-white" : ""} to="contact"><li>Contact</li></NavLink>
-                        <li className="mt-2">
-                            <Link to="login"><button className='btn btn-outline btn-secondary w-full'>Login</button></Link>
+                        className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow font-semibold"
+                    >
+                        <li>
+                            <NavLink to="/">Home</NavLink>
                         </li>
-                        <li className="mt-1">
-                            <Link to="register"><button className='btn btn-primary w-full'>Register</button></Link>
+
+                        <li>
+                            <NavLink to="/all-products">All Products</NavLink>
                         </li>
+
+                        <li>
+                            <NavLink to="/about-us">About Us</NavLink>
+                        </li>
+
+                        <li>
+                            <NavLink to="/contact">Contact</NavLink>
+                        </li>
+
+                        {user && user?.email ? (
+                            <li className="mt-1">
+                                <button className="btn btn-primary w-full" onClick={handleLogout}>
+                                    Logout
+                                </button>
+                            </li>
+                        ) : (
+                            <>
+                                <li className="mt-2">
+                                    <NavLink to="/login" className="btn btn-outline btn-secondary w-full">
+                                        Login
+                                    </NavLink>
+                                </li>
+                                <li className="mt-1">
+                                    <NavLink to="/register" className="btn btn-primary w-full">
+                                        Register
+                                    </NavLink>
+                                </li>
+                            </>
+                        )}
                     </ul>
+
 
                 </div>
                 <NavLink to="/" className="btn btn-ghost font-bold text-2xl bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent text-center lg:text-start">ThreadOps</NavLink>
@@ -40,9 +85,14 @@ const Navbar = () => {
                     </ul>
                 </div>
 
+                <div className='mr-3 bg-gray-300 p-1 rounded-full'>
+                    {loading ? <span className="loading loading-spinner loading-xl"></span> : user ? <img className='w-10 rounded-full' src={user?.photoURL} alt="" /> : <PiFinnTheHumanFill size={35} />}
+                </div>
+
                 <div className='hidden lg:flex gap-2'>
-                    <Link to="login"><button className='btn btn-outline btn-secondary'>Login</button></Link>
-                    <Link to="register"><button className='btn btn-primary'>Register</button></Link>
+
+                    {user && user?.email ? <button onClick={handleLogout} className='btn btn-primary'>Logout</button> : <><Link to="login"><button className='btn btn-outline btn-secondary'>Login</button></Link>
+                        <Link to="register"><button className='btn btn-primary'>Register</button></Link></>}
                 </div>
             </div>
         </div>

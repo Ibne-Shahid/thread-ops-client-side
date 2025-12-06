@@ -1,54 +1,84 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router';
+import { useForm } from 'react-hook-form';
+import { Link, useLocation, useNavigate } from 'react-router';
+import useAuth from '../../Hooks/useAuth';
+import { toast } from 'react-toastify';
 
 const Register = () => {
+
+  const { register, handleSubmit, formState: { errors }, reset } = useForm()
+  const { registerUser, updateUser, setUser } = useAuth()
+  const location = useLocation()
+  const navigate = useNavigate()
+
+  const handleRegistration = (data) => {
+
+    if (!data.photoURL) {
+      data.photoURL = "https://img.icons8.com/?size=100&id=7819&format=png&color=000000"
+    }
+    registerUser(data.email, data.password)
+      .then(result => {
+        const user = result.user
+        updateUser({ displayName: data.displayName, photoURL: data.photoURL })
+          .then(() => {
+            setUser({ ...user, displayName: data.displayName, photoURL: data.photoURL })
+          })
+          .catch((error) => {
+            setUser(user)
+          })
+        reset()
+        toast.success('Registration Successful!')
+        navigate(`${location.state ? location.state : "/"}`)
+      })
+      .catch(err => {
+        const errorMessage = err.message
+
+        toast.error(errorMessage)
+      })
+  }
+
   return (
     <div className="flex items-center justify-center">
       <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-md">
         <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Create an Account</h2>
 
-        <form>
+        <form onSubmit={handleSubmit(handleRegistration)}>
           <div className="mb-4">
             <label htmlFor="name" className="block text-sm font-medium text-gray-700">Name</label>
             <input
               type="text"
-              id="name"
-              name="name"
+              {...register("displayName", { required: true })}
               className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm"
               placeholder='Enter your name'
-              required
             />
+            {errors.displayName?.type === "required" && (<p role='alert' className='text-red-500'>Name is Required</p>)}
           </div>
 
           <div className="mb-4">
             <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
             <input
               type="email"
-              id="email"
-              name="email"
+              {...register('email', { required: true })}
               className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm"
               placeholder='Enter your email'
-              required
             />
+            {errors.email?.type === "required" && (<p role='alert' className='text-red-500'>Email is Required</p>)}
           </div>
 
           <div className="mb-4">
             <label htmlFor="photoURL" className="block text-sm font-medium text-gray-700">Profile Picture URL</label>
             <input
               type="url"
-              id="photoURL"
-              name="photoURL"
+              {...register("photoURL")}
               className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm"
               placeholder='Enter your Photo URL'
-              required
             />
           </div>
 
           <div className="mb-4">
             <label htmlFor="role" className="block text-sm font-medium text-gray-700">Role</label>
             <select
-              id="role"
-              name="role"
+              {...register('role')}
               className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm"
               defaultValue="buyer"
             >
@@ -60,9 +90,8 @@ const Register = () => {
           <div className="mb-4">
             <label htmlFor="status" className="block text-sm font-medium text-gray-700">Status</label>
             <input
+              {...register('status')}
               type="text"
-              id="status"
-              name="status"
               value="Pending"
               disabled
               className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 text-gray-500"
@@ -73,12 +102,22 @@ const Register = () => {
             <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
             <input
               type="password"
-              id="password"
-              name="password"
+              {...register("password", {
+                required: "Password is required",
+                minLength: {
+                  value: 6,
+                  message: "Password must be at least 6 characters long"
+                },
+                pattern: {
+                  value: /^(?=.*[a-z])(?=.*[A-Z]).*$/,
+                  message: "Password must contain both uppercase and lowercase letters"
+                }
+              })}
               className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm"
-              required
               placeholder="Create a strong password"
             />
+            {errors.password && <p role='alert' className='text-red-500'>{errors.password.message}</p>}
+
           </div>
 
           <button
