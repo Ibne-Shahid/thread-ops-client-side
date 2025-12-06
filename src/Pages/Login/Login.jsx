@@ -1,18 +1,40 @@
 import React from 'react'
-import { Link } from 'react-router'
+import { useForm } from 'react-hook-form'
+import { Link, useLocation, useNavigate } from 'react-router'
+import useAuth from '../../Hooks/useAuth'
+import { toast } from 'react-toastify'
 
 const Login = () => {
+  const { register, handleSubmit, formState: { errors } } = useForm()
+  const { signInUser } = useAuth()
+  const location = useLocation()
+  const navigate = useNavigate()
+  const handleSignIn = (data) => {
+
+    signInUser(data.email, data.password)
+      .then(result => {
+        const user = result.user
+        toast.success(`Login Successful. Welcome ${user?.displayName}`)
+        navigate(`${location.state ? location.state : "/"}`)
+      })
+      .catch(err => {
+        const errorMessage = err.message
+
+        toast.error(errorMessage)
+      })
+
+  }
   return (
     <div className="flex items-center justify-center">
       <div className="bg-white p-8 rounded-lg shadow-lg max-w-sm w-full">
         <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Login</h2>
 
-        <form>
+        <form onSubmit={handleSubmit(handleSignIn)}>
           <div className="mb-4">
             <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">Email</label>
             <input
               type="email"
-              id="email"
+              {...register("email")}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Enter your email"
             />
@@ -22,7 +44,7 @@ const Login = () => {
             <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">Password</label>
             <input
               type="password"
-              id="password"
+              {...register("password")}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Enter your password"
             />
