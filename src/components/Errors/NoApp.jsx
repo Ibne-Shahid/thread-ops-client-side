@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router'
 
 const NoApp = () => {
   return (
@@ -12,9 +13,9 @@ const NoApp = () => {
       <p className="text-gray-500 mb-4">
         We couldn't find any apps or products to show. Try refreshing or check back later.
       </p>
-      <button className="px-6 py-2 bg-primary text-white font-semibold rounded-lg shadow hover:bg-sky-700 transition-colors">
+      <Link to="/"><button className="px-6 py-2 bg-primary text-white font-semibold rounded-lg shadow hover:bg-sky-700 transition-colors">
         Go Back Home
-      </button>
+      </button></Link>
     </div>
   )
 }
