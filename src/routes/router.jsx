@@ -7,6 +7,7 @@ import Contact from "../Pages/Contact/Contact";
 import AuthLayout from "../root-layouts/AuthLayouts/AuthLayout";
 import Login from "../Pages/Login/Login";
 import Register from "../Pages/Register/Register";
+import ProductDetails from "../Pages/ProductDetails/ProductDetails";
 
 
 const router = createBrowserRouter([
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
             {
                 path: 'contact',
                 element: <Contact></Contact>
+            },
+            {
+                path: 'product-details/:id',
+                element: <ProductDetails></ProductDetails>
             }
         ]
     },

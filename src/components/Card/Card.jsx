@@ -1,5 +1,6 @@
 import React from 'react'
 import { motion } from 'motion/react'
+import { Link } from 'react-router'
 
 const Card = ({ product }) => {
 
@@ -34,9 +35,9 @@ const Card = ({ product }) => {
                 </div>
 
                 <div className="card-actions flex justify-end pt-2">
-                    <button className="btn btn-primary text-white rounded-lg w-full">
+                    <Link to={`/product-details/${product._id}`}><button className="btn btn-primary text-white rounded-lg w-full">
                         View Details
-                    </button>
+                    </button></Link>
                 </div>
             </div>
         </motion.div>
