@@ -8,7 +8,7 @@ const Card = ({ product }) => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8 }}
-      className="w-full bg-base-200 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden"
+      className="w-full h-full flex flex-col bg-base-200 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden"
     >
       <figure className="overflow-hidden rounded-t-2xl">
         <img
@@ -18,7 +18,7 @@ const Card = ({ product }) => {
         />
       </figure>
 
-      <div className="p-5 space-y-2">
+      <div className="p-5 flex-grow flex flex-col space-y-2">
         <h2 className="text-lg font-bold text-gray-800">{product.productName}</h2>
         <p className="text-sm text-gray-600">{product.category}</p>
 
@@ -27,8 +27,8 @@ const Card = ({ product }) => {
           <span className="text-sm text-gray-500">Stock: {product.availableQuantity}</span>
         </div>
 
-        <Link to={`/product-details/${product._id}`}>
-          <button className="mt-3 w-full bg-primary text-white font-bold py-2 rounded-lg shadow hover:bg-sky-800 transition-colors cursor-pointer">
+        <Link to={`/product-details/${product._id}`} className="mt-auto">
+          <button className="w-full bg-primary text-white font-bold py-2 rounded-lg shadow hover:bg-primary/90 transition-colors cursor-pointer">
             View Details
           </button>
         </Link>

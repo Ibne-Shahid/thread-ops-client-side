@@ -8,6 +8,7 @@ import AuthLayout from "../root-layouts/AuthLayouts/AuthLayout";
 import Login from "../Pages/Login/Login";
 import Register from "../Pages/Register/Register";
 import ProductDetails from "../Pages/ProductDetails/ProductDetails";
+import PrivateRoutes from "../Provider/PrivateRoutes";
 
 
 const router = createBrowserRouter([
@@ -34,7 +35,7 @@ const router = createBrowserRouter([
             },
             {
                 path: 'product-details/:id',
-                element: <ProductDetails></ProductDetails>
+                element: <PrivateRoutes><ProductDetails></ProductDetails></PrivateRoutes>
             }
         ]
     },
