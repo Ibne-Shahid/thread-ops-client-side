@@ -1,6 +1,7 @@
 import React from 'react'
 import Hero from '../../components/HomeComponents/Hero'
-import OurProducts from '../../components/TopProducts/OurProducts'
+import OurProducts from '../../components/HomeComponents/OurProducts'
+import HowItWorks from '../../components/HomeComponents/HowItWorks'
 
 
 const Home = () => {
@@ -9,6 +10,7 @@ const Home = () => {
     <div>
         <Hero></Hero>
         <OurProducts></OurProducts>
+        <HowItWorks></HowItWorks>
     </div>
   )
 }
