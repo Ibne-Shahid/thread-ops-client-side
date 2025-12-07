@@ -1,22 +1,21 @@
 import React from "react";
 import { Link, useNavigate, useParams } from "react-router";
-import useAxios from "../../Hooks/useAxios";
 import { useQuery } from "@tanstack/react-query";
 import Spinner from "../../components/Loaders/Spinner";
 import NoDetails from "../../components/Errors/NoDetails";
-import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import useRoles from "../../Hooks/useRoles";
+import useAxios from "../../Hooks/useAxios";
 
 const ProductDetails = () => {
   const { id } = useParams();
-  const axiosSecure = useAxiosSecure();
+  const fetchAxios = useAxios()
   const navigate = useNavigate()
   const user = useRoles()
 
   const { data: product, isLoading, error } = useQuery({
     queryKey: ["products", id],
     queryFn: async () => {
-      const res = await axiosSecure.get(`/products/${id}`);
+      const res = await fetchAxios.get(`/products/${id}`);
       return res.data;
     },
   });
@@ -100,9 +99,9 @@ const ProductDetails = () => {
         </p>
 
         <div className="flex gap-4 mt-4">
-          <button disabled={user?.role !== "buyer"} className="btn btn-primary text-white rounded-lg shadow hover:bg-primary/90 transition">
+          <Link to="order-form"><button disabled={user?.role !== "buyer"} className="btn btn-primary text-white rounded-lg shadow hover:bg-primary/90 transition">
             Order Now
-          </button>
+          </button></Link>
           <button onClick={()=>navigate(-1)} className="btn btn-secondary hover:bg-secondary/90 rounded-lg shadow transition">Back</button>
         </div>
       </div>

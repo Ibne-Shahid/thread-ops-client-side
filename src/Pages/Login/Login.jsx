@@ -18,7 +18,7 @@ const Login = () => {
       .then(result => {
         const user = result.user
         toast.success(`Login Successful. Welcome ${user?.displayName}`)
-        navigate(`${location.state ? location.state : "/"}`)
+        navigate(`${location.state ? location.state : "/"}`, { replace: true })
       })
       .catch(err => {
         const errorMessage = err.message
@@ -44,7 +44,7 @@ const Login = () => {
 
         setFirebaseUser(user)
         toast.success(`Login Successful. Welcome ${user?.displayName}`)
-        navigate(`${location.state ? location.state : "/"}`)
+        navigate(`${location.state ? location.state : "/"}`, { replace: true })
       })
       .catch((err) => {
         const errorMessage = err.message

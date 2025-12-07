@@ -30,7 +30,7 @@ const PrivateRoutes = ({ children }) => {
                             Go Back
                         </button>
 
-                        <button onClick={() => navigate("/login", { state: location.pathname })} className="btn btn-secondary text-white rounded-md hover:bg-secondary/90">
+                        <button onClick={() => navigate("/login", { state: location.pathname , replace: true })} className="btn btn-secondary text-white rounded-md hover:bg-secondary/90">
                          Go to Login
                         </button>
 

@@ -40,7 +40,7 @@ const Register = () => {
             setFirebaseUser({ ...firebaseUser, displayName: data.displayName, photoURL: data.photoURL });
             toast.success("Registration Successful!");
             reset();
-            navigate(location.state ? location.state : "/");
+            navigate(location.state ? location.state : "/", { replace: true });
           })
           .catch(error => {
             setFirebaseUser(firebaseUser);
@@ -69,7 +69,7 @@ const Register = () => {
 
         setFirebaseUser(user);
         toast.success(`Login Successful. Welcome ${user?.displayName}`);
-        navigate(location.state ? location.state : "/");
+        navigate(location.state ? location.state : "/", { replace: true });
       })
       .catch((err) => {
         toast.error(err.message);
