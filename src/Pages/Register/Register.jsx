@@ -31,7 +31,7 @@ const Register = () => {
               email: data.email,
               photoURL: data.photoURL,
               role: data.role,
-              status: "Pending",
+              status: "pending",
             };
 
             await axiosSecure.post("/users", saveUser)
@@ -54,18 +54,28 @@ const Register = () => {
 
   const handleGoogleSignIn = () => {
     googleSignIn()
-      .then((result) => {
-        const user = result.user
-        setFirebaseUser(user)
-        toast.success(`Login Successful. Welcome ${user?.displayName}`)
-        navigate(`${location.state ? location.state : "/"}`)
+      .then(async (result) => {
+        const user = result.user;
+
+        const saveUser = {
+          name: user.displayName,
+          email: user.email,
+          photoURL: user.photoURL,
+          role: "buyer",
+          status: "pending", 
+        };
+
+        await axiosSecure.post("/users", saveUser);
+
+        setFirebaseUser(user);
+        toast.success(`Login Successful. Welcome ${user?.displayName}`);
+        navigate(location.state ? location.state : "/");
       })
       .catch((err) => {
-        const errorMessage = err.message
+        toast.error(err.message);
+      });
+  };
 
-        toast.error(errorMessage)
-      })
-  }
 
   return (
     <div className="flex items-center justify-center">

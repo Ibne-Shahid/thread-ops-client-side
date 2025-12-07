@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form'
 import { Link, useLocation, useNavigate } from 'react-router'
 import useAuth from '../../Hooks/useAuth'
 import { toast } from 'react-toastify'
+import useAxiosSecure from '../../Hooks/useAxiosSecure'
 
 const Login = () => {
 
@@ -10,6 +11,7 @@ const Login = () => {
   const { signInUser, googleSignIn, setFirebaseUser } = useAuth()
   const location = useLocation()
   const navigate = useNavigate()
+  const axiosSecure = useAxiosSecure()
 
   const handleSignIn = (data) => {
     signInUser(data.email, data.password)
@@ -27,8 +29,19 @@ const Login = () => {
 
   const handleGoogleSignIn = () => {
     googleSignIn()
-      .then((result) => {
+      .then(async (result) => {
         const user = result.user
+
+        const saveUser = {
+          name: user.displayName,
+          email: user.email,
+          photoURL: user.photoURL,
+          role: "buyer",
+          status: "pending",
+        };
+
+        await axiosSecure.post("/users", saveUser);
+
         setFirebaseUser(user)
         toast.success(`Login Successful. Welcome ${user?.displayName}`)
         navigate(`${location.state ? location.state : "/"}`)
