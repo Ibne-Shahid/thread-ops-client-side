@@ -14,7 +14,7 @@ const AllProducts = () => {
     queryFn: async () => {
       const res = await fetchAxios.get('/products')
       return res.data
-    },
+    }
   })
 
   if (isLoading) return <Spinner></Spinner>
