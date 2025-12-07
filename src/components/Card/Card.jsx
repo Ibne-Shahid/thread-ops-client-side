@@ -3,45 +3,38 @@ import { motion } from 'motion/react'
 import { Link } from 'react-router'
 
 const Card = ({ product }) => {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8 }}
+      className="w-full bg-base-200 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden"
+    >
+      <figure className="overflow-hidden rounded-t-2xl">
+        <img
+          src={product.images[0]}
+          alt={product.productName}
+          className="w-full h-60 object-cover transition-transform duration-300 hover:scale-105"
+        />
+      </figure>
 
-    return (
-        <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.6 }}
-            className="card w-full max-w-xs bg-base-100 shadow-lg rounded-lg hover:shadow-2xl transition-all duration-300">
-            <figure className="relative overflow-hidden rounded-t-lg">
-                <img
-                    src={product.images[0]}
-                    alt={product.productName}
-                    className="w-full h-56 object-cover transition-transform duration-300 hover:scale-110"
-                />
-            </figure>
+      <div className="p-5 space-y-2">
+        <h2 className="text-lg font-bold text-gray-800">{product.productName}</h2>
+        <p className="text-sm text-gray-600">{product.category}</p>
 
-            <div className="card-body p-5 space-y-3">
-                <h2 className="card-title text-xl font-semibold text-gray-800">
-                    {product.productName}
-                </h2>
+        <div className="flex items-center justify-between mt-2">
+          <span className="text-md font-semibold text-green-700">${product.price}</span>
+          <span className="text-sm text-gray-500">Stock: {product.availableQuantity}</span>
+        </div>
 
-                <p className="text-sm text-gray-500">{product.category}</p>
-
-                <div className="flex items-center justify-between">
-                    <span className="text-lg font-semibold text-green-600">
-                        ${product.price}
-                    </span>
-                    <span className="text-sm text-gray-400">
-                        Stock: {product.availableQuantity}
-                    </span>
-                </div>
-
-                <div className="card-actions flex justify-end pt-2">
-                    <Link to={`/product-details/${product._id}`}><button className="btn btn-primary text-white rounded-lg w-full">
-                        View Details
-                    </button></Link>
-                </div>
-            </div>
-        </motion.div>
-    )
+        <Link to={`/product-details/${product._id}`}>
+          <button className="mt-3 w-full bg-primary text-white font-bold py-2 rounded-lg shadow hover:bg-sky-800 transition-colors">
+            View Details
+          </button>
+        </Link>
+      </div>
+    </motion.div>
+  )
 }
 
 export default Card

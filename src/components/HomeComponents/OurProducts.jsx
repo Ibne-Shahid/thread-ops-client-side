@@ -4,17 +4,21 @@ import useAxios from '../../Hooks/useAxios'
 import Card from '../Card/Card'
 import { Link } from 'react-router'
 import { motion } from 'motion/react'
+import Spinner from '../Loaders/Spinner'
 
 const OurProducts = () => {
   const fetchAxios = useAxios()
 
-  const { data: ourProducts = [] } = useQuery({
+  const { data: ourProducts = [], isLoading, error } = useQuery({
     queryKey: ['topProducts'],
     queryFn: async () => {
       const res = await fetchAxios.get('/topProducts')
       return res.data
-    },
+    }
   })
+
+  if (isLoading) return <Spinner></Spinner>
+  if (error) return <p className='text-2xl text-center text-red-500'>Sorry, something went wrong!</p>
 
   return (
     <div className="py-15 px-10">
@@ -22,8 +26,8 @@ const OurProducts = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1 }} className="text-4xl text-center font-bold mb-10">Our Products</motion.h1>
 
-
-      <div className=" grid gap-10 grid-cols-1 md:grid-cols-2 lg:grid-cols-4 place-items-center">
+      
+      <div className=" grid gap-10 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 place-items-center">
         {ourProducts.map((product) => <Card key={product._id} product={product}></Card>)}
       </div>
       <div className='text-center mt-15'>
