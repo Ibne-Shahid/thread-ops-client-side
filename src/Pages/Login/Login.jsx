@@ -6,8 +6,8 @@ import { toast } from 'react-toastify'
 
 const Login = () => {
 
-  const { register, handleSubmit, formState: { errors } } = useForm()
-  const { signInUser, googleSignIn, setUser } = useAuth()
+  const { register, handleSubmit } = useForm()
+  const { signInUser, googleSignIn, setFirebaseUser } = useAuth()
   const location = useLocation()
   const navigate = useNavigate()
 
@@ -29,7 +29,7 @@ const Login = () => {
     googleSignIn()
       .then((result) => {
         const user = result.user
-        setUser(user)
+        setFirebaseUser(user)
         toast.success(`Login Successful. Welcome ${user?.displayName}`)
         navigate(`${location.state ? location.state : "/"}`)
       })

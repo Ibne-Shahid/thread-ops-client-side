@@ -97,9 +97,6 @@ const ProductDetails = () => {
 
         <div className="flex gap-4 mt-4">
           <button className="btn btn-primary text-white px-6 py-2 rounded-lg shadow hover:bg-sky-700 transition">
-            Add to Cart
-          </button>
-          <button className="btn btn-secondary text-white px-6 py-2 rounded-lg shadow hover:bg-sky-200 transition">
             Order Now
           </button>
         </div>

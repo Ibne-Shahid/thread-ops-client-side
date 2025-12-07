@@ -6,7 +6,7 @@ import { PiFinnTheHumanFill } from 'react-icons/pi'
 
 
 const Navbar = () => {
-    const { user, logOut, loading } = useAuth()
+    const { firebaseUser, logOut, loading } = useAuth()
 
     const handleLogout = () => {
         logOut()
@@ -47,7 +47,7 @@ const Navbar = () => {
                             <NavLink to="/contact">Contact</NavLink>
                         </li>
 
-                        {user && user?.email ? (
+                        {firebaseUser && firebaseUser?.email ? (
                             <li className="mt-1">
                                 <button className="btn btn-primary w-full" onClick={handleLogout}>
                                     Logout
@@ -86,12 +86,12 @@ const Navbar = () => {
                 </div>
 
                 <div className='mr-3 bg-gray-300 p-1 rounded-full'>
-                    {loading ? <span className="loading loading-spinner loading-xl"></span> : user ? <img className='w-10 rounded-full' src={user?.photoURL} alt="" /> : <PiFinnTheHumanFill size={35} />}
+                    {loading ? <span className="loading loading-spinner loading-xl"></span> : firebaseUser ? <img className='w-10 rounded-full' src={firebaseUser?.photoURL} alt="" /> : <PiFinnTheHumanFill size={35} />}
                 </div>
 
                 <div className='hidden lg:flex gap-2'>
 
-                    {user && user?.email ? <button onClick={handleLogout} className='btn btn-primary'>Logout</button> : <><Link to="login"><button className='btn btn-outline btn-secondary'>Login</button></Link>
+                    {firebaseUser && firebaseUser?.email ? <button onClick={handleLogout} className='btn btn-primary'>Logout</button> : <><Link to="login"><button className='btn btn-outline btn-secondary'>Login</button></Link>
                         <Link to="register"><button className='btn btn-primary'>Register</button></Link></>}
                 </div>
             </div>

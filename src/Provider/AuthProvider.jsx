@@ -8,7 +8,7 @@ const googleProvider = new GoogleAuthProvider
 
 const AuthProvider = ({children}) => {
 
-    const [user, setUser] = useState(null)
+    const [firebaseUser, setFirebaseUser] = useState(null)
     const [loading, setLoading] = useState(true)
 
      const registerUser = (email, password)=>{
@@ -33,7 +33,7 @@ const AuthProvider = ({children}) => {
 
     useEffect(()=>{
         const unsubscribe = onAuthStateChanged(auth, (currentUser)=>{
-            setUser(currentUser)
+            setFirebaseUser(currentUser)
             setLoading(false)
         })
 
@@ -47,8 +47,8 @@ const AuthProvider = ({children}) => {
         signInUser,
         googleSignIn,
         updateUser,
-        setUser,
-        user,
+        setFirebaseUser,
+        firebaseUser,
         loading,
         logOut
     }
