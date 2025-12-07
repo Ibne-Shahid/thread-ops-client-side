@@ -13,15 +13,15 @@ const Review = ({ reviewsPromise }) => {
     const reviews = use(reviewsPromise)
 
     return (
-        <div className="py-16">
+        <div className="py-16 px-10">
             <motion.h1 initial={{ opacity: 0, y: -50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1 }} className="text-4xl text-center font-bold mb-10">What Our Clients Say</motion.h1>
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1 }} className="text-4xl text-center font-bold mb-10">What Our Clients Say</motion.h1>
 
             <Swiper
                 effect={'coverflow'}
                 grabCursor={true}
-                centeredSlides={true}
+                centeredSlides={false}
                 slidesPerView={2.5}
                 spaceBetween={40}
                 loop={true}
@@ -39,7 +39,9 @@ const Review = ({ reviewsPromise }) => {
                 {reviews.map((review) => (
                     <SwiperSlide key={review.id} className="flex justify-center">
 
-                        <div className="review-card card shadow-xl rounded-xl p-7 bg-base-200 w-72">
+                        <motion.div className="review-card card shadow-xl rounded-xl p-7 bg-base-200 w-72" initial={{ opacity: 0, y: 30 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 1, delay: 0.6 }}>
                             <div className="flex items-center gap-4">
                                 <div className="avatar">
                                     <div className="w-16 h-16 rounded-full">
@@ -68,7 +70,7 @@ const Review = ({ reviewsPromise }) => {
                             <p className="text-xs text-gray-400 mt-4">
                                 {new Date(review.date).toLocaleDateString()}
                             </p>
-                        </div>
+                        </motion.div>
 
                     </SwiperSlide>
                 ))}
