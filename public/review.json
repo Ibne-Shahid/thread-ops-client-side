@@ -1,0 +1,47 @@
+[
+  {
+    "id": 1,
+    "name": "Ayesha Rahman",
+    "role": "Factory Owner",
+    "rating": 5,
+    "review": "ThreadOps has transformed how we track garment production. Our team saves hours every week thanks to the automated workflow.",
+    "avatar": "https://i.pravatar.cc/100?img=32",
+    "date": "2024-10-12"
+  },
+  {
+    "id": 2,
+    "name": "Jason Lee",
+    "role": "Production Manager",
+    "rating": 4,
+    "review": "The platform is super easy to use. Inventory management is now faster and more accurate than ever before.",
+    "avatar": "https://i.pravatar.cc/100?img=12",
+    "date": "2024-09-28"
+  },
+  {
+    "id": 3,
+    "name": "Meera Chand",
+    "role": "Quality Controller",
+    "rating": 5,
+    "review": "ThreadOps helps us maintain high quality and reduce errors. The real-time insights are extremely helpful.",
+    "avatar": "https://i.pravatar.cc/100?img=45",
+    "date": "2024-11-05"
+  },
+  {
+    "id": 4,
+    "name": "Daniel Costa",
+    "role": "Operations Head",
+    "rating": 4,
+    "review": "Great platform for managing large-scale garment operations. The dashboard is clean and intuitive.",
+    "avatar": "https://i.pravatar.cc/100?img=22",
+    "date": "2024-08-18"
+  },
+  {
+    "id": 5,
+    "name": "Maruf Iqbal",
+    "role": "Merchandiser",
+    "rating": 5,
+    "review": "Tracking orders and communicating with production teams has never been easier. Highly recommended!",
+    "avatar": "https://i.pravatar.cc/100?img=51",
+    "date": "2024-12-01"
+  }
+]
