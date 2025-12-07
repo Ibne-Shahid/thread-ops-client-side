@@ -5,11 +5,13 @@ import { useQuery } from "@tanstack/react-query";
 import Spinner from "../../components/Loaders/Spinner";
 import NoDetails from "../../components/Errors/NoDetails";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
+import useRoles from "../../Hooks/useRoles";
 
 const ProductDetails = () => {
   const { id } = useParams();
   const axiosSecure = useAxiosSecure();
   const navigate = useNavigate()
+  const user = useRoles()
 
   const { data: product, isLoading, error } = useQuery({
     queryKey: ["products", id],
@@ -98,7 +100,7 @@ const ProductDetails = () => {
         </p>
 
         <div className="flex gap-4 mt-4">
-          <button className="btn btn-primary text-white rounded-lg shadow hover:bg-primary/90 transition">
+          <button disabled={user?.role !== "buyer"} className="btn btn-primary text-white rounded-lg shadow hover:bg-primary/90 transition">
             Order Now
           </button>
           <button onClick={()=>navigate(-1)} className="btn btn-secondary hover:bg-secondary/90 rounded-lg shadow transition">Back</button>
