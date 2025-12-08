@@ -20,11 +20,13 @@ const Payment = () => {
         }
     })
 
+
     const { productPrice, productId, buyerEmail, quantity, productTitle } = pendingOrder || {}
 
     const handlePayment = async () => {
+        const orderId = new URLSearchParams(location.search).get('orderId');
         const paymentInfo = {
-            productPrice, productId, buyerEmail, quantity, productTitle
+            productPrice, productId, buyerEmail, quantity, productTitle, orderId
         }
 
         Swal.fire({
@@ -41,7 +43,7 @@ const Payment = () => {
 
                 const res = await axiosSecure.post('/create-checkout-session', paymentInfo)
                 window.location.assign(res.data.url)
-                
+
             }
         });
 
@@ -49,6 +51,8 @@ const Payment = () => {
     }
 
     const handleCancel = () => {
+        const orderId = new URLSearchParams(location.search).get('orderId');
+
         Swal.fire({
             title: "Cancel Payment?",
             text: "Are you sure you want to cancel this payment?",
@@ -58,18 +62,25 @@ const Payment = () => {
             cancelButtonColor: '#3085d6',
             confirmButtonText: "Yes, cancel it",
             cancelButtonText: "No, go back"
-        }).then((result) => {
+        }).then(async (result) => {
             if (result.isConfirmed) {
+
+                if (orderId) {
+                    await axiosSecure.delete(`/orders/${orderId}`);
+                }
+
                 Swal.fire({
                     icon: "success",
                     title: "Payment Cancelled",
                     showConfirmButton: false,
                     timer: 1200,
                 });
+
                 navigate(-1);
             }
         });
-    }
+    };
+
 
     if (isLoading) return <Spinner />
 

@@ -43,7 +43,8 @@ const OrderForm = () => {
             productId: id,
             productTitle: product?.productName,
             orderPrice,
-            productPrice: product?.price
+            productPrice: product?.price,
+            paymentMethod: product?.paymentOption
         };
 
         Swal.fire({
@@ -54,19 +55,28 @@ const OrderForm = () => {
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
             confirmButtonText: "Yes!"
-        }).then((result) => {
+        }).then(async (result) => {
             if (result.isConfirmed) {
-                if (product.paymentOption === "Stripe") {
-                    sessionStorage.setItem("pendingOrder", JSON.stringify(finalOrder));
-                    navigate(`/product-details/${id}/order-form/payment`);
-                } else {
+
+                const res = await axiosSecure.post('/orders', finalOrder)
+                const orderId = res.data.insertedId
+
+                if (product.paymentOption === "Cash on Delivery") {
                     Swal.fire({
-                        title: "Deleted!",
-                        text: "Your file has been deleted.",
-                        icon: "success"
-                    });
-                    navigate(-1);
+                        icon: "success",
+                        title: "Your order has been places!",
+                        showConfirmButton: false,
+                        timer: 1200,
+                    })
+                    navigate("/dashboard/my-orders")
+                    return
                 }
+
+                sessionStorage.setItem("pendingOrder", JSON.stringify({
+                    ...finalOrder, orderId
+                }));
+
+                navigate(`/product-details/${id}/order-form/payment?orderId=${orderId}`)
 
 
             }
