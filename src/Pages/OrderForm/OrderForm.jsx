@@ -60,14 +60,15 @@ const OrderForm = () => {
                     sessionStorage.setItem("pendingOrder", JSON.stringify(finalOrder));
                     navigate(`/product-details/${id}/order-form/payment`);
                 } else {
+                    Swal.fire({
+                        title: "Deleted!",
+                        text: "Your file has been deleted.",
+                        icon: "success"
+                    });
                     navigate(-1);
                 }
 
-                // Swal.fire({
-                //     title: "Deleted!",
-                //     text: "Your file has been deleted.",
-                //     icon: "success"
-                // });
+
             }
         });
 

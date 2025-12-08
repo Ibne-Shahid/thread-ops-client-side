@@ -27,8 +27,25 @@ const Payment = () => {
             productPrice, productId, buyerEmail, quantity, productTitle
         }
 
-        const res = await axiosSecure.post('/create-checkout-session', paymentInfo)
-        window.location.href = res.data.url
+        Swal.fire({
+            title: "Make Payment?",
+            text: "Are you sure you want make this payment?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: "Yes!",
+            cancelButtonText: "No, go back"
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+
+                const res = await axiosSecure.post('/create-checkout-session', paymentInfo)
+                window.location.href = res.data.url
+                
+            }
+        });
+
+
     }
 
     const handleCancel = () => {
@@ -60,7 +77,7 @@ const Payment = () => {
         <div className="min-h-screen flex items-center justify-center bg-gray-100 p-6">
 
             <div className="bg-white shadow-xl rounded-2xl w-full max-w-xl p-8 border border-gray-200">
-                
+
                 <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
                     Complete Your Payment
                 </h2>
@@ -90,14 +107,14 @@ const Payment = () => {
                 </div>
 
                 <div className="flex gap-4">
-                    <button 
+                    <button
                         onClick={handleCancel}
                         className="w-1/2 btn bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-lg font-semibold transition"
                     >
                         Cancel
                     </button>
 
-                    <button 
+                    <button
                         onClick={handlePayment}
                         className="w-1/2 btn btn-primary hover:bg-primary/90 text-white rounded-lg text-lg font-semibold transition"
                     >

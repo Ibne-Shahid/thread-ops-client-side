@@ -21,7 +21,7 @@ const Navbar = () => {
     }
 
     return (
-        <div className="navbar bg-base-200 shadow-sm px-10">
+        <div className="navbar bg-base-200 shadow-sm px-10 sticky top-0 z-50">
             <div className="navbar-start">
                 <div className="dropdown">
                     <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -46,6 +46,11 @@ const Navbar = () => {
                         <li>
                             <NavLink to="/contact">Contact</NavLink>
                         </li>
+                        {
+                            <li>
+                                <NavLink to="/dashboard">Dashboard</NavLink>
+                            </li>
+                        }
 
                         {firebaseUser && firebaseUser?.email ? (
                             <li className="mt-1">
@@ -74,14 +79,17 @@ const Navbar = () => {
                 <NavLink to="/" className="btn btn-ghost font-bold text-2xl bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent text-center lg:text-start">ThreadOps</NavLink>
             </div>
 
-            <div className="navbar-end">
+            <div className="navbar-end flex-nowrap">
 
                 <div className='hidden lg:block'>
-                    <ul className="menu menu-horizontal px-10 gap-5 font-semibold">
+                    <ul className="menu menu-horizontal px-10 gap-3 font-semibold">
                         <NavLink className={({ isActive }) => `${isActive ? "bg-secondary text-white" : ""} p-1 rounded-md`} to="/"><li>Home</li></NavLink>
-                        <NavLink className={({ isActive }) => `${isActive ? "bg-secondary text-white" : ""} p-1 rounded-md`} to="all-products"><li>All Products</li></NavLink>
-                        <NavLink className={({ isActive }) => `${isActive ? "bg-secondary text-white" : ""} p-1 rounded-md`} to="about-us"><li>About Us</li></NavLink>
-                        <NavLink className={({ isActive }) => `${isActive ? "bg-secondary text-white" : ""} p-1 rounded-md`} to="contact"><li>Contact</li></NavLink>
+                        <NavLink className={({ isActive }) => `${isActive ? "bg-secondary text-white" : ""} p-1 rounded-md`} to="/all-products"><li>All Products</li></NavLink>
+                        <NavLink className={({ isActive }) => `${isActive ? "bg-secondary text-white" : ""} p-1 rounded-md`} to="/about-us"><li>About Us</li></NavLink>
+                        <NavLink className={({ isActive }) => `${isActive ? "bg-secondary text-white" : ""} p-1 rounded-md`} to="/contact"><li>Contact</li></NavLink>
+                        {
+                            firebaseUser && <NavLink className={({ isActive }) => `${isActive ? "bg-secondary text-white" : ""} p-1 rounded-md`} to="/dashboard"><li>Dashboard</li></NavLink>
+                        }
                     </ul>
                 </div>
 

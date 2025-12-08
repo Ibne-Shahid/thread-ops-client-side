@@ -12,6 +12,9 @@ import PrivateRoutes from "../Provider/PrivateRoutes";
 import OrderForm from "../Pages/OrderForm/OrderForm";
 import Payment from "../Pages/Payment/Payment";
 import Dashboard from "../root-layouts/DashboardLayouts/Dashboard";
+import PaymentSucces from "../Pages/PaymentSuccess/PaymentSucces";
+import PaymentCancel from "../Pages/PaymentCancel/PaymentCancel";
+import DashboardHome from "../Pages/DashboardHome/DashboardHome";
 
 
 const router = createBrowserRouter([
@@ -69,7 +72,16 @@ const router = createBrowserRouter([
         element: <PrivateRoutes><Dashboard></Dashboard></PrivateRoutes>,
         children:[
             {
-
+                element: <DashboardHome></DashboardHome>,
+                index: true
+            },
+            {
+                path: 'payment-success',
+                element: <PaymentSucces></PaymentSucces>
+            },
+            {
+                path: 'payment-cancelled',
+                element: <PaymentCancel></PaymentCancel>
             }
         ]
     }
