@@ -1,18 +1,18 @@
 import { useQuery } from '@tanstack/react-query'
 import React from 'react'
-import useAxios from '../../Hooks/useAxios'
 import Card from '../Card/Card'
 import { Link } from 'react-router'
 import { motion } from 'motion/react'
 import Spinner from '../Loaders/Spinner'
+import useAxiosSecure from '../../Hooks/useAxiosSecure'
 
 const OurProducts = () => {
-  const fetchAxios = useAxios()
+  const axiosSecure = useAxiosSecure()
 
   const { data: ourProducts = [], isLoading, error } = useQuery({
     queryKey: ['topProducts'],
     queryFn: async () => {
-      const res = await fetchAxios.get('/topProducts')
+      const res = await axiosSecure.get('/topProducts')
       return res.data
     }
   })

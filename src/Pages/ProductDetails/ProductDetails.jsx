@@ -4,18 +4,18 @@ import { useQuery } from "@tanstack/react-query";
 import Spinner from "../../components/Loaders/Spinner";
 import NoDetails from "../../components/Errors/NoDetails";
 import useRoles from "../../Hooks/useRoles";
-import useAxios from "../../Hooks/useAxios";
+import useAxiosSecure from "../../Hooks/useAxiosSecure";
 
 const ProductDetails = () => {
   const { id } = useParams();
-  const fetchAxios = useAxios()
+  const axiosSecure = useAxiosSecure()
   const navigate = useNavigate()
   const user = useRoles()
 
   const { data: product, isLoading, error } = useQuery({
     queryKey: ["products", id],
     queryFn: async () => {
-      const res = await fetchAxios.get(`/products/${id}`);
+      const res = await axiosSecure.get(`/products/${id}`);
       return res.data;
     },
   });

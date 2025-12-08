@@ -10,6 +10,7 @@ import Register from "../Pages/Register/Register";
 import ProductDetails from "../Pages/ProductDetails/ProductDetails";
 import PrivateRoutes from "../Provider/PrivateRoutes";
 import OrderForm from "../Pages/OrderForm/OrderForm";
+import Payment from "../Pages/Payment/Payment";
 
 
 const router = createBrowserRouter([
@@ -41,6 +42,10 @@ const router = createBrowserRouter([
             {
                 path: 'product-details/:id/order-form',
                 element: <OrderForm></OrderForm>
+            },
+            {
+                path: 'product-details/:id/order-form/payment',
+                element: <Payment></Payment>
             }
         ]
     },

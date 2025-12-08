@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
-import useAxios from '../../Hooks/useAxios'
 import { useQuery } from '@tanstack/react-query'
 import Card from '../../components/Card/Card'
 import Spinner from '../../components/Loaders/Spinner'
 import NoApp from '../../components/Errors/NoApp'
+import useAxiosSecure from '../../Hooks/useAxiosSecure'
 
 const AllProducts = () => {
-  const fetchAxios = useAxios()
+  const axiosSecure = useAxiosSecure()
 
   const limit = 9
   const [page, setPage] = useState(1)
@@ -16,7 +16,7 @@ const AllProducts = () => {
   const { data: Products = [], isLoading, error } = useQuery({
     queryKey: ['products', page],
     queryFn: async () => {
-      const res = await fetchAxios.get(`/products?limit=${limit}&skip=${skip}`)
+      const res = await axiosSecure.get(`/products?limit=${limit}&skip=${skip}`)
       return res.data
     }
   })
