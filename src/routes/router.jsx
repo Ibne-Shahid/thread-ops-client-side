@@ -15,6 +15,7 @@ import Dashboard from "../root-layouts/DashboardLayouts/Dashboard";
 import PaymentSucces from "../Pages/PaymentSuccess/PaymentSucces";
 import PaymentCancel from "../Pages/PaymentCancel/PaymentCancel";
 import DashboardHome from "../Pages/DashboardHome/DashboardHome";
+import MyOrders from "../Pages/MyOrders/MyOrders";
 
 
 const router = createBrowserRouter([
@@ -82,6 +83,10 @@ const router = createBrowserRouter([
             {
                 path: 'payment-cancelled',
                 element: <PaymentCancel></PaymentCancel>
+            },
+            {
+                path: 'my-orders',
+                element: <MyOrders></MyOrders>
             }
         ]
     }
