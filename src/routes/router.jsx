@@ -11,6 +11,7 @@ import ProductDetails from "../Pages/ProductDetails/ProductDetails";
 import PrivateRoutes from "../Provider/PrivateRoutes";
 import OrderForm from "../Pages/OrderForm/OrderForm";
 import Payment from "../Pages/Payment/Payment";
+import Dashboard from "../root-layouts/DashboardLayouts/Dashboard";
 
 
 const router = createBrowserRouter([
@@ -60,6 +61,15 @@ const router = createBrowserRouter([
             {
                 path: 'register',
                 element: <Register></Register>
+            }
+        ]
+    },
+    {
+        path: 'dashboard',
+        element: <PrivateRoutes><Dashboard></Dashboard></PrivateRoutes>,
+        children:[
+            {
+
             }
         ]
     }
