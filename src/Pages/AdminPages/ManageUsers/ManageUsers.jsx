@@ -26,9 +26,17 @@ const ManageUsers = () => {
                     users.map((user) => (
                         <div key={user.id} className="bg-white shadow rounded-lg p-4 border border-gray-100">
                             <div className="flex justify-between items-start mb-3">
-                                <div>
-                                    <h3 className="font-semibold text-gray-800">{user.name}</h3>
-                                    <p className="text-xs text-gray-500 mt-1">Email: {user.email}</p>
+                                <div className="flex items-center">
+                                    {/* Profile Picture */}
+                                    <img
+                                        src={user.photoURL}
+                                        alt="User Profile"
+                                        className="w-10 h-10 rounded-full object-cover mr-4"
+                                    />
+                                    <div>
+                                        <h3 className="font-semibold text-gray-800">{user.name}</h3>
+                                        <p className="text-xs text-gray-500 mt-1">Email: {user.email}</p>
+                                    </div>
                                 </div>
                                 <div className='flex flex-col'>
                                     <span
@@ -64,6 +72,7 @@ const ManageUsers = () => {
                 <table className="min-w-full text-sm">
                     <thead className="bg-gray-100">
                         <tr>
+                            <th className="p-3 text-left font-semibold">Profile</th>
                             <th className="p-3 text-left font-semibold">Name</th>
                             <th className="p-3 text-left font-semibold">Email</th>
                             <th className="p-3 text-left font-semibold">Role</th>
@@ -75,13 +84,21 @@ const ManageUsers = () => {
                     <tbody>
                         {users.length === 0 ? (
                             <tr>
-                                <td colSpan="5" className="p-8 text-center text-gray-500">
+                                <td colSpan="6" className="p-8 text-center text-gray-500">
                                     No users found
                                 </td>
                             </tr>
                         ) : (
                             users.map((user) => (
                                 <tr key={user.id} className="border-b hover:bg-gray-50">
+                                    {/* Profile Picture */}
+                                    <td className="p-3">
+                                        <img
+                                            src={user.photoURL}
+                                            alt="User Profile"
+                                            className="w-10 h-10 rounded-full object-cover"
+                                        />
+                                    </td>
                                     <td className="p-3 font-medium text-gray-800">{user.name}</td>
                                     <td className="p-3 text-gray-600">{user.email}</td>
 
