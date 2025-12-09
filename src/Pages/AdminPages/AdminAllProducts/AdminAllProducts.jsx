@@ -67,7 +67,7 @@ const AdminAllProducts = () => {
                                         onChange={() => handleToggleHome(product)}
                                         checked={product.showOnHomePage}
                                         disabled={
-                                            topProducts.length >= 6 && !product.showOnHomePage
+                                            topLoading ? true : topProducts.length >= 6 && !product.showOnHomePage
                                         }
                                     />
 
