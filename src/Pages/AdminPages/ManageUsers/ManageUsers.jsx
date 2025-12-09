@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import useAxiosSecure from '../../../Hooks/useAxiosSecure';
 import { useQuery } from '@tanstack/react-query';
+import { toast } from 'react-toastify';
 
 const ManageUsers = () => {
 
@@ -29,8 +30,19 @@ const ManageUsers = () => {
 
 
 
-    const handleStatusUpdate = async (status) => {
+    const handleStatusUpdate = async (user) => {
+        try {
+            const res = await axiosSecure.patch(`/users/${user._id}`, user)
 
+            if (res.data.modifiedCount > 0) {
+                refetch();
+                modalRef.current.close();
+                toast.success('User status updated!')
+            }
+        }
+        catch (err) {
+            toast.error(err.response?.data?.error || "Update failed!")
+        }
     };
 
     return (
@@ -204,10 +216,10 @@ const ManageUsers = () => {
                                 </p>
                             </div>
 
-                            {/* Approve + Suspend Buttons */}
                             <div className="flex justify-between mt-6">
                                 <button
-                                    onClick={() => handleStatusUpdate("approved")}
+                                    disabled={selectedUser.status === "approved"}
+                                    onClick={() => handleStatusUpdate(selectedUser)}
                                     className="btn btn-success text-white"
                                 >
                                     Approve
