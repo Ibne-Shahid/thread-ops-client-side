@@ -3,7 +3,7 @@ import { NavLink } from 'react-router'
 
 const Footer = () => {
     return (
-        <footer className="footer footer-horizontal footer-center bg-base-200 text-base-content rounded p-10">
+        <footer className="footer footer-horizontal footer-center bg-base-300 text-base-content rounded p-10">
             <NavLink to="/" className="btn btn-ghost font-bold text-2xl bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">ThreadOps</NavLink>
             <nav className="grid grid-flow-col gap-4">
                 <a className="link link-hover">About us</a>

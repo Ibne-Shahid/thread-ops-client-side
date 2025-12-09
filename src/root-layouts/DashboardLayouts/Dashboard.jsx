@@ -4,6 +4,7 @@ import { IoCartOutline } from "react-icons/io5";
 import { MdOutlineProductionQuantityLimits } from "react-icons/md";
 import { Link, Outlet } from 'react-router'
 import useRoles from '../../Hooks/useRoles';
+import Footer from '../../components/Footer/Footer';
 
 const Dashboard = () => {
     const user = useRoles()
@@ -21,6 +22,7 @@ const Dashboard = () => {
                 </nav>
                 {/* Page content here */}
                 <Outlet></Outlet>
+                <Footer></Footer>
             </div>
 
             <div className="drawer-side is-drawer-close:overflow-visible">
