@@ -99,7 +99,7 @@ const ProductDetails = () => {
         </p>
 
         <div className="flex gap-4 mt-4">
-          <Link to="order-form"><button disabled={user?.role !== "buyer"} className="btn btn-primary text-white rounded-lg shadow hover:bg-primary/90 transition">
+          <Link to="order-form"><button disabled={!(user?.role === "buyer" && user?.status === "approved")} className="btn btn-primary text-white rounded-lg shadow hover:bg-primary/90 transition">
             Order Now
           </button></Link>
           <button onClick={()=>navigate(-1)} className="btn btn-secondary hover:bg-secondary/90 rounded-lg shadow transition">Back</button>

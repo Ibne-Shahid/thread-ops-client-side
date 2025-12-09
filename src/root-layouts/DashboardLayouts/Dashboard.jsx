@@ -1,7 +1,12 @@
 import React from 'react'
+import { FaUser, FaUsersCog } from 'react-icons/fa'
+import { IoCartOutline } from "react-icons/io5";
+import { MdOutlineProductionQuantityLimits } from "react-icons/md";
 import { Link, Outlet } from 'react-router'
+import useRoles from '../../Hooks/useRoles';
 
 const Dashboard = () => {
+    const user = useRoles()
     return (
         <div className="drawer lg:drawer-open">
             <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
@@ -23,7 +28,7 @@ const Dashboard = () => {
                 <div className="flex min-h-full flex-col items-start bg-base-200 is-drawer-close:w-14 is-drawer-open:w-64">
                     {/* Sidebar content here */}
                     <ul className="menu w-full grow">
-                        {/* List item */}
+
                         <Link>
                             <li to="/dashboard">
                                 <button className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Homepage">
@@ -34,23 +39,72 @@ const Dashboard = () => {
                             </li>
                         </Link>
 
-                        {/* List item */}
+                        {/* Admin Routes  */}
+
+                        {user?.role === "admin" && <>
+                            <Link to="/dashboard/manage-users">
+                                <li>
+                                    <button className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="User Management">
+                                        <FaUsersCog />
+
+                                        <span className="is-drawer-close:hidden">User Management</span>
+                                    </button>
+
+                                </li>
+                            </Link>
+
+                            <Link to="/dashboard/all-products">
+                                <li>
+                                    <button className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Products">
+                                        <MdOutlineProductionQuantityLimits />
+                                        <span className="is-drawer-close:hidden">Products</span>
+                                    </button>
+                                </li>
+                            </Link>
+
+                            <Link to="/dashboard/all-orders">
+                                <li>
+                                    <button className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Orders">
+                                        <IoCartOutline />
+                                        <span className="is-drawer-close:hidden">Orders</span>
+                                    </button>
+                                </li>
+                            </Link>
+                        </>}
+
                         <Link to="/dashboard/my-orders">
                             <li>
                                 <button className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="My Orders">
-                                    {/* My Orders Icon */}
-                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        strokeWidth="2"
-                                        stroke="currentColor"
-                                        className="my-1.5 inline-block size-4">
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="M6 8V6a6 6 0 0112 0v2" />
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="M3 8h18l-1.5 12a2 2 0 01-2 2h-11a2 2 0 01-2-2L3 8z" />
-                                    </svg>
+                                    <IoCartOutline />
 
                                     <span className="is-drawer-close:hidden">My Orders</span>
                                 </button>
+                            </li>
+                        </Link>
+
+                        <Link to="/dashboard/my-profile">
+                            <li>
+                                <button className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="My Profile">
+                                    <FaUser />
+
+                                    <span className="is-drawer-close:hidden">My Profile</span>
+                                </button>
+
+                            </li>
+                        </Link>
+
+                        <Link to="/">
+                            <li>
+                                <button className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Back">
+                                    {/* Back Button */}
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="my-1.5 inline-block size-4">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M19 12H5" />
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 19l-7-7 7-7" />
+                                    </svg>
+
+                                    <span className="is-drawer-close:hidden">Back</span>
+                                </button>
+
                             </li>
                         </Link>
 

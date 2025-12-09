@@ -2,6 +2,7 @@ import React from 'react'
 import useAxiosSecure from '../../Hooks/useAxiosSecure'
 import { useQuery } from '@tanstack/react-query'
 import useAuth from '../../Hooks/useAuth'
+import Spinner from '../../components/Loaders/Spinner'
 
 const MyOrders = () => {
   const { firebaseUser } = useAuth()
@@ -15,7 +16,7 @@ const MyOrders = () => {
     }
   })
 
-  if (isLoading) return <p className="text-center py-10">Loading...</p>
+  if (isLoading) return <Spinner></Spinner>
 
   return (
     <div className="p-4 md:p-8">
