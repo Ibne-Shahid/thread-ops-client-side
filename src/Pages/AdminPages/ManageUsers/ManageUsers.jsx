@@ -29,7 +29,6 @@ const ManageUsers = () => {
     };
 
 
-
     const handleStatusUpdate = async (user) => {
         try {
             const res = await axiosSecure.patch(`/users/${user._id}`, user)
@@ -44,6 +43,21 @@ const ManageUsers = () => {
             toast.error(err.response?.data?.error || "Update failed!")
         }
     };
+
+    const handleMakeAdmin = async (user) => {
+        try {
+            const res = await axiosSecure.patch(`/users/${user._id}/role`, user)
+
+            if (res.data.modifiedCount > 0) {
+                refetch();
+                modalRef.current.close();
+                toast.success('User role updated!')
+            }
+        }
+        catch (err) {
+            toast.error(err.response?.data?.error || "Update failed!")
+        }
+    }
 
     return (
         <div className="p-4 md:p-8 min-h-screen">
@@ -181,14 +195,19 @@ const ManageUsers = () => {
                     {selectedUser && (
                         <>
                             {/* User Header */}
-                            <div className="flex items-center gap-4 pb-4 border-b">
-                                <img
-                                    src={selectedUser.photoURL}
-                                    className="w-14 h-14 rounded-full object-cover"
-                                />
+                            <div className="border-b flex justify-between items-center">
+                                <div className='flex items-center gap-4 pb-4'>
+                                    <img
+                                        src={selectedUser.photoURL}
+                                        className="w-14 h-14 rounded-full object-cover"
+                                    />
+                                    <div>
+                                        <h3 className="font-semibold text-lg">{selectedUser.name}</h3>
+                                        <p className="text-sm text-gray-500">{selectedUser.email}</p>
+                                    </div>
+                                </div>
                                 <div>
-                                    <h3 className="font-semibold text-lg">{selectedUser.name}</h3>
-                                    <p className="text-sm text-gray-500">{selectedUser.email}</p>
+                                    <button onClick={() => handleMakeAdmin(selectedUser)} className='btn btn-primary hover:bg-primary/90'>Make Admin</button>
                                 </div>
                             </div>
 
