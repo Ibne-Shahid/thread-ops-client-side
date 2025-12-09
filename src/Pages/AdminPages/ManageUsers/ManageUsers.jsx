@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import useAxiosSecure from '../../../Hooks/useAxiosSecure';
 import { useQuery } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
+import Swal from 'sweetalert2';
 
 const ManageUsers = () => {
 
@@ -45,19 +46,40 @@ const ManageUsers = () => {
     };
 
     const handleMakeAdmin = async (user) => {
-        try {
-            const res = await axiosSecure.patch(`/users/${user._id}/role`, user)
-
-            if (res.data.modifiedCount > 0) {
-                refetch();
-                modalRef.current.close();
-                toast.success('User role updated!')
+        modalRef.current.close();
+        Swal.fire({
+            title: "Are you sure?",
+            text: `You want to make ${user.name} admin?`,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes!",
+            customClass: {
+                popup: 'swal-z-index-fix'
             }
-        }
-        catch (err) {
-            toast.error(err.response?.data?.error || "Update failed!")
-        }
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    const res = await axiosSecure.patch(`/users/${user._id}/role`, user)
+
+                    if (res.data.modifiedCount > 0) {
+                        refetch();
+
+                        Swal.fire({
+                            title: "Success!",
+                            text: `${user.name} is now an admin.`,
+                            icon: "success",
+                        });
+                    }
+                }
+                catch (err) {
+                    toast.error(err.response?.data?.error || "Update failed!")
+                }
+            }
+        })
     }
+
 
     return (
         <div className="p-4 md:p-8 min-h-screen">
@@ -194,7 +216,6 @@ const ManageUsers = () => {
 
                     {selectedUser && (
                         <>
-                            {/* User Header */}
                             <div className="border-b flex justify-between items-center">
                                 <div className='flex items-center gap-4 pb-4'>
                                     <img
@@ -207,11 +228,10 @@ const ManageUsers = () => {
                                     </div>
                                 </div>
                                 <div>
-                                    <button onClick={() => handleMakeAdmin(selectedUser)} className='btn btn-primary hover:bg-primary/90'>Make Admin</button>
+                                    <button disabled={selectedUser?.role==="admin"} onClick={() => handleMakeAdmin(selectedUser)} className='btn btn-primary hover:bg-primary/90'>Make Admin</button>
                                 </div>
                             </div>
 
-                            {/* Info */}
                             <div className="mt-4 space-y-3 text-sm">
                                 <p>
                                     <span className="font-semibold">Role:</span>{" "}
