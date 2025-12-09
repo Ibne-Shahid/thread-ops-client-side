@@ -1,16 +1,37 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import useAxiosSecure from '../../../Hooks/useAxiosSecure';
 import { useQuery } from '@tanstack/react-query';
 
 const ManageUsers = () => {
+
+    const [showSuspendBox, setShowSuspendBox] = useState(false);
+    const [suspendReason, setSuspendReason] = useState("");
+
     const axiosSecure = useAxiosSecure();
-    const { data: users = [] } = useQuery({
+
+    const { data: users = [], refetch } = useQuery({
         queryKey: ["users"],
         queryFn: async () => {
             const res = await axiosSecure.get('/users');
             return res.data;
         }
     });
+
+    const modalRef = useRef(null);
+    const [selectedUser, setSelectedUser] = useState(null);
+
+    const openModal = (user) => {
+        setSelectedUser(user);
+        setShowSuspendBox(false);
+        setSuspendReason("");
+        modalRef.current.showModal();
+    };
+
+
+
+    const handleStatusUpdate = async (status) => {
+
+    };
 
     return (
         <div className="p-4 md:p-8 min-h-screen">
@@ -27,7 +48,6 @@ const ManageUsers = () => {
                         <div key={user.id} className="bg-white shadow rounded-lg p-4 border border-gray-100">
                             <div className="flex justify-between items-start mb-3">
                                 <div className="flex items-center">
-                                    {/* Profile Picture */}
                                     <img
                                         src={user.photoURL}
                                         alt="User Profile"
@@ -38,18 +58,19 @@ const ManageUsers = () => {
                                         <p className="text-xs text-gray-500 mt-1">Email: {user.email}</p>
                                     </div>
                                 </div>
-                                <div className='flex flex-col'>
-                                    <span
-                                        className="px-2 py-1 rounded text-xs font-semibold whitespace-nowrap"
-                                    >
+
+                                <div className="flex flex-col items-end">
+                                    <span className="text-xs px-2 py-1 rounded bg-gray-100">
                                         {user.role}
                                     </span>
+
                                     <span
-                                        className={`px-2 py-1 rounded text-xs font-semibold ${user.status === "approved"
-                                            ? "bg-green-100 text-green-700"
-                                            : user.status === "pending"
-                                                ? "bg-yellow-100 text-yellow-700"
-                                                : "bg-red-100 text-red-700"
+                                        className={`text-xs px-2 py-1 mt-1 rounded font-semibold 
+                                            ${user.status === "approved"
+                                                ? "bg-green-100 text-green-600"
+                                                : user.status === "pending"
+                                                    ? "bg-yellow-100 text-yellow-600"
+                                                    : "bg-red-100 text-red-600"
                                             }`}
                                     >
                                         {user.status}
@@ -57,11 +78,12 @@ const ManageUsers = () => {
                                 </div>
                             </div>
 
-                            <div className="flex gap-2">
-                                <button className="btn btn-primary text-white rounded text-sm font-medium transition-colors flex-1">
-                                    Update
-                                </button>
-                            </div>
+                            <button
+                                onClick={() => openModal(user)}
+                                className="btn btn-primary w-full text-white"
+                            >
+                                Update
+                            </button>
                         </div>
                     ))
                 )}
@@ -72,12 +94,12 @@ const ManageUsers = () => {
                 <table className="min-w-full text-sm">
                     <thead className="bg-gray-100">
                         <tr>
-                            <th className="p-3 text-left font-semibold">Profile</th>
-                            <th className="p-3 text-left font-semibold">Name</th>
-                            <th className="p-3 text-left font-semibold">Email</th>
-                            <th className="p-3 text-left font-semibold">Role</th>
-                            <th className="p-3 text-left font-semibold">Status</th>
-                            <th className="p-3 text-center font-semibold">Actions</th>
+                            <th className="p-3 text-left">Profile</th>
+                            <th className="p-3 text-left">Name</th>
+                            <th className="p-3 text-left">Email</th>
+                            <th className="p-3 text-left">Role</th>
+                            <th className="p-3 text-left">Status</th>
+                            <th className="p-3 text-center">Actions</th>
                         </tr>
                     </thead>
 
@@ -91,47 +113,38 @@ const ManageUsers = () => {
                         ) : (
                             users.map((user) => (
                                 <tr key={user.id} className="border-b hover:bg-gray-50">
-                                    {/* Profile Picture */}
                                     <td className="p-3">
                                         <img
                                             src={user.photoURL}
-                                            alt="User Profile"
                                             className="w-10 h-10 rounded-full object-cover"
                                         />
                                     </td>
-                                    <td className="p-3 font-medium text-gray-800">{user.name}</td>
+
+                                    <td className="p-3">{user.name}</td>
                                     <td className="p-3 text-gray-600">{user.email}</td>
+                                    <td className="p-3">{user.role}</td>
 
-                                    {/* Role */}
                                     <td className="p-3">
                                         <span
-                                            className="px-2 py-1 rounded text-xs font-semibold"
-                                        >
-                                            {user.role}
-                                        </span>
-                                    </td>
-
-                                    {/* Status */}
-                                    <td className="p-3">
-                                        <span
-                                            className={`px-2 py-1 rounded text-xs font-semibold ${user.status === "approved"
-                                                ? "bg-green-100 text-green-700"
-                                                : user.status === "pending"
-                                                    ? "bg-yellow-100 text-yellow-700"
-                                                    : "bg-red-100 text-red-700"
+                                            className={`text-xs px-2 py-1 rounded font-semibold 
+                                    ${user.status === "approved"
+                                                    ? "bg-green-100 text-green-600"
+                                                    : user.status === "pending"
+                                                        ? "bg-yellow-100 text-yellow-600"
+                                                        : "bg-red-100 text-red-600"
                                                 }`}
                                         >
                                             {user.status}
                                         </span>
                                     </td>
 
-                                    {/* Actions */}
-                                    <td className="p-3">
-                                        <div className="flex gap-2 justify-center">
-                                            <button className="btn btn-primary hover:bg-primary/90 text-white rounded text-sm font-medium transition-colors">
-                                                Update
-                                            </button>
-                                        </div>
+                                    <td className="p-3 text-center">
+                                        <button
+                                            onClick={() => openModal(user)}
+                                            className="btn btn-primary text-white"
+                                        >
+                                            Update
+                                        </button>
                                     </td>
                                 </tr>
                             ))
@@ -139,6 +152,103 @@ const ManageUsers = () => {
                     </tbody>
                 </table>
             </div>
+
+
+            <dialog ref={modalRef} className="modal">
+                <div className="modal-box relative">
+
+                    <button
+                        onClick={() => modalRef.current.close()}
+                        className="btn btn-sm btn-circle absolute right-2 top-2"
+                    >
+                        ✕
+                    </button>
+
+                    <h3 className="font-bold text-lg mb-4">Update User Status</h3>
+
+                    {selectedUser && (
+                        <>
+                            {/* User Header */}
+                            <div className="flex items-center gap-4 pb-4 border-b">
+                                <img
+                                    src={selectedUser.photoURL}
+                                    className="w-14 h-14 rounded-full object-cover"
+                                />
+                                <div>
+                                    <h3 className="font-semibold text-lg">{selectedUser.name}</h3>
+                                    <p className="text-sm text-gray-500">{selectedUser.email}</p>
+                                </div>
+                            </div>
+
+                            {/* Info */}
+                            <div className="mt-4 space-y-3 text-sm">
+                                <p>
+                                    <span className="font-semibold">Role:</span>{" "}
+                                    <span className="px-2 py-1 bg-gray-100 rounded text-gray-700">
+                                        {selectedUser.role}
+                                    </span>
+                                </p>
+
+                                <p>
+                                    <span className="font-semibold">Status:</span>{" "}
+                                    <span
+                                        className={`px-2 py-1 rounded text-white ${selectedUser.status === "approved"
+                                            ? "bg-green-600"
+                                            : selectedUser.status === "pending"
+                                                ? "bg-yellow-500"
+                                                : "bg-red-600"
+                                            }`}
+                                    >
+                                        {selectedUser.status}
+                                    </span>
+                                </p>
+                            </div>
+
+                            {/* Approve + Suspend Buttons */}
+                            <div className="flex justify-between mt-6">
+                                <button
+                                    onClick={() => handleStatusUpdate("approved")}
+                                    className="btn btn-success text-white"
+                                >
+                                    Approve
+                                </button>
+
+                                <button
+                                    onClick={() => setShowSuspendBox(true)}
+                                    className="btn btn-error text-white"
+                                >
+                                    Suspend
+                                </button>
+                            </div>
+
+                            {/* EXPANDABLE SUSPEND BOX */}
+                            {showSuspendBox && (
+                                <div className="mt-5 animate-fadeIn">
+                                    <label className="font-semibold block mb-2">
+                                        Reason for suspension
+                                    </label>
+
+                                    <textarea
+                                        value={suspendReason}
+                                        onChange={(e) => setSuspendReason(e.target.value)}
+                                        placeholder="Write the suspension reason..."
+                                        className="textarea textarea-bordered w-full"
+                                        rows={3}
+                                    />
+
+                                    <button
+                                        onClick={() => handleStatusUpdate("suspended", suspendReason)}
+                                        className="btn btn-error text-white w-full mt-3"
+                                    >
+                                        Suspend This User
+                                    </button>
+                                </div>
+                            )}
+                        </>
+                    )}
+                </div>
+            </dialog>
+
         </div>
     );
 }
