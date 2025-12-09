@@ -1,10 +1,13 @@
-import React from 'react'
+import React, { useRef, useState } from 'react'
 import useAxiosSecure from '../../../Hooks/useAxiosSecure'
 import { useQuery } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
+import UpdateProductModal from '../../../components/Modals/UpdateProductModal'
 
 const AdminAllProducts = () => {
     const axiosSecure = useAxiosSecure()
+    const modalRef = useRef()
+    const [selectedProduct, setSelectedProduct] = useState(null)
 
     const { data: products = [], refetch: refetchProducts } = useQuery({
         queryKey: ['products'],
@@ -33,8 +36,13 @@ const AdminAllProducts = () => {
                 toast.success("Status Updated!")
             }
         } catch (err) {
-            toast.error('Something went wrong!')
+            toast.error('Sorry, something went wrong!')
         }
+    }
+
+    const handleOpenModal = (product) => {
+        setSelectedProduct(product)
+        modalRef.current.showModal()
     }
 
     return (
@@ -70,13 +78,11 @@ const AdminAllProducts = () => {
                                             topLoading ? true : topProducts.length >= 6 && !product.showOnHomePage
                                         }
                                     />
-
-
                                     <label className="ml-2 text-sm">Show on Home</label>
                                 </div>
 
                                 <div className="flex gap-2">
-                                    <button className="btn btn-primary text-white text-sm">Update</button>
+                                    <button onClick={() => handleOpenModal(product)} className="btn btn-primary text-white text-sm">Update</button>
                                     <button className="btn btn-error text-white text-sm">Delete</button>
                                 </div>
                             </div>
@@ -127,12 +133,10 @@ const AdminAllProducts = () => {
                                                 topProducts.length >= 6 && !product.showOnHomePage
                                             }
                                         />
-
-
                                     </td>
                                     <td className="p-3 text-center">
                                         <div className="flex gap-2 justify-center">
-                                            <button className="btn btn-primary hover:bg-primary/90 text-white rounded text-sm font-medium transition-colors">
+                                            <button onClick={() => handleOpenModal(product)} className="btn btn-primary hover:bg-primary/90 text-white rounded text-sm font-medium transition-colors">
                                                 Update
                                             </button>
                                             <button className="btn btn-error text-white rounded text-sm font-medium transition-colors">
@@ -146,8 +150,10 @@ const AdminAllProducts = () => {
                     </tbody>
                 </table>
             </div>
+
+            <UpdateProductModal modalRef={modalRef} selectedProduct={selectedProduct} refetchProducts={refetchProducts}></UpdateProductModal>
         </div>
     )
 }
 
-export default AdminAllProducts
+export default AdminAllProducts;
