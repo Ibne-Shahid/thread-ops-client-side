@@ -21,6 +21,7 @@ import ManageUsers from "../Pages/AdminPages/ManageUsers/ManageUsers";
 import AdminAllProducts from "../Pages/AdminPages/AdminAllProducts/AdminAllProducts";
 import AdminRoutes from "../Provider/AdminRoutes";
 import AdminAllOrders from "../Pages/AdminPages/AdminAllOrders/AdminAllOrders";
+import OrderDetails from "../Pages/OrderDetails/OrderDetails";
 
 
 const router = createBrowserRouter([
@@ -108,6 +109,10 @@ const router = createBrowserRouter([
             {
                 path: 'all-orders',
                 element: <AdminRoutes><AdminAllOrders></AdminAllOrders></AdminRoutes>
+            },
+            {
+                path: 'all-orders/order-details/:orderId',
+                element: <OrderDetails></OrderDetails>
             }
         ]
     }
