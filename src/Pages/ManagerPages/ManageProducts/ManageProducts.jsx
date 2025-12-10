@@ -12,8 +12,10 @@ const ManageProducts = () => {
   const axiosSecure = useAxiosSecure()
   const modalRef = useRef()
   const [selectedProduct, setSelectedProduct] = useState(null)
+  const [searchTerm, setSearchTerm] = useState('')
+  const [selectedCategory, setSelectedCategory] = useState('all')
   const user = useRoles()
-  const {firebaseUser} = useAuth()
+  const { firebaseUser } = useAuth()
 
   const { data: products = [], refetch: refetchProducts } = useQuery({
     queryKey: ['products', firebaseUser],
@@ -21,6 +23,24 @@ const ManageProducts = () => {
       const res = await axiosSecure.get(`/products?email=${firebaseUser?.email}`)
       return res.data
     }
+  })
+
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value)
+  }
+
+  const handleCategoryChange = (e) => {
+    setSelectedCategory(e.target.value)
+  }
+
+  const filteredProducts = products.filter((product) => {
+    const matchesSearch =
+      product.productName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      product.category.toLowerCase().includes(searchTerm.toLowerCase())
+    const matchesCategory =
+      selectedCategory === 'all' || product.category === selectedCategory
+
+    return matchesSearch && matchesCategory
   })
 
   const handleOpenModal = (product) => {
@@ -54,29 +74,54 @@ const ManageProducts = () => {
         } catch (err) {
           toast.error("An error occurred while deleting the product.");
         }
-
       }
     })
-
   }
 
-  if (user?.role === "manager" & user?.status === "pending") return <ManagerApprovalPending></ManagerApprovalPending>
+  if (user?.role === "manager" && user?.status === "pending") return <ManagerApprovalPending></ManagerApprovalPending>
 
   return (
     <div className="p-4 md:p-8 min-h-screen">
       <h1 className="text-2xl font-bold mb-6">Manage Your Products</h1>
 
+      <div className="mb-6 flex gap-4 items-center">
+        <input
+          type="text"
+          placeholder="Search products..."
+          value={searchTerm}
+          onChange={handleSearchChange}
+          className="input input-bordered w-full max-w-xs"
+        />
+        <select
+          value={selectedCategory}
+          onChange={handleCategoryChange}
+          className="select select-bordered w-full max-w-xs"
+        >
+          <option value="all">All Categories</option>
+          <option value="Shirt">Shirt</option>
+          <option value="Pant">Pant</option>
+          <option value="Jacket">Jacket</option>
+          <option value="Accessories">Accessories</option>
+          <option value="Shoes">Shoes</option>
+          <option value="Traditional Wear">Traditional Wear</option>
+        </select>
+      </div>
+
       {/* Mobile Card View */}
       <div className="md:hidden space-y-4">
-        {products.length === 0 ? (
+        {filteredProducts.length === 0 ? (
           <div className="text-center py-10 bg-white shadow rounded-lg">
             <p className="text-gray-500">No products available</p>
           </div>
         ) : (
-          products.map((product) => (
+          filteredProducts.map((product) => (
             <div key={product._id} className="bg-white shadow rounded-lg p-4 border border-gray-100">
               <div className="flex items-center space-x-4">
-                <img src={product.images[0]} alt={product.productName} className="w-20 h-20 object-cover rounded-md" />
+                <img
+                  src={product.images[0]}
+                  alt={product.productName}
+                  className="w-20 h-20 object-cover rounded-md"
+                />
                 <div className="flex-grow">
                   <h3 className="font-semibold text-gray-800">{product.productName}</h3>
                   <p className="text-sm text-gray-500">{product.category}</p>
@@ -86,10 +131,8 @@ const ManageProducts = () => {
               </div>
 
               <div className="mt-4 flex gap-2 items-center">
-
                 <button onClick={() => handleOpenModal(product)} className="btn btn-primary text-white text-sm flex-1">Update</button>
                 <button onClick={() => handleDeleteProduct(product._id)} className="btn btn-error text-white text-sm flex-1">Delete</button>
-
               </div>
             </div>
           ))
@@ -111,17 +154,21 @@ const ManageProducts = () => {
           </thead>
 
           <tbody>
-            {products.length === 0 ? (
+            {filteredProducts.length === 0 ? (
               <tr>
                 <td colSpan="7" className="p-8 text-center text-gray-500">
                   No products available
                 </td>
               </tr>
             ) : (
-              products.map((product) => (
+              filteredProducts.map((product) => (
                 <tr key={product._id} className="border-b hover:bg-gray-50">
                   <td className="p-3">
-                    <img src={product.images[0]} alt={product.productName} className="w-16 h-16 object-cover rounded-md" />
+                    <img
+                      src={product.images[0]}
+                      alt={product.productName}
+                      className="w-16 h-16 object-cover rounded-md"
+                    />
                   </td>
                   <td className="p-3 font-medium">{product.productName}</td>
                   <td className="p-3">${product.price}</td>
@@ -129,10 +176,16 @@ const ManageProducts = () => {
                   <td className="p-3">{product.paymentOption}</td>
                   <td className="p-3 text-center">
                     <div className="flex gap-2 justify-center">
-                      <button onClick={() => handleOpenModal(product)} className="btn btn-primary hover:bg-primary/90 text-white rounded text-sm font-medium transition-colors">
+                      <button
+                        onClick={() => handleOpenModal(product)}
+                        className="btn btn-primary hover:bg-primary/90 text-white rounded text-sm font-medium transition-colors"
+                      >
                         Update
                       </button>
-                      <button onClick={() => handleDeleteProduct(product._id)} className="btn btn-error text-white rounded text-sm font-medium transition-colors">
+                      <button
+                        onClick={() => handleDeleteProduct(product._id)}
+                        className="btn btn-error text-white rounded text-sm font-medium transition-colors"
+                      >
                         Delete
                       </button>
                     </div>
@@ -144,9 +197,13 @@ const ManageProducts = () => {
         </table>
       </div>
 
-      <UpdateProductModal modalRef={modalRef} selectedProduct={selectedProduct} refetchProducts={refetchProducts}></UpdateProductModal>
+      <UpdateProductModal
+        modalRef={modalRef}
+        selectedProduct={selectedProduct}
+        refetchProducts={refetchProducts}
+      ></UpdateProductModal>
     </div>
   )
 }
 
-export default ManageProducts;
+export default ManageProducts
