@@ -63,7 +63,7 @@ const ManageProducts = () => {
   if (user?.role === "manager" & user?.status === "pending") return <ManagerApprovalPending></ManagerApprovalPending>
 
   return (
-    <div className="p-4 md:p-8">
+    <div className="p-4 md:p-8 min-h-screen">
       <h1 className="text-2xl font-bold mb-6">Manage Your Products</h1>
 
       {/* Mobile Card View */}
