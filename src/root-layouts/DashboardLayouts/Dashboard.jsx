@@ -2,6 +2,7 @@ import React from 'react'
 import { FaUser, FaUsersCog } from 'react-icons/fa'
 import { IoCartOutline } from "react-icons/io5";
 import { MdOutlineProductionQuantityLimits } from "react-icons/md";
+import { IoIosAddCircle } from "react-icons/io"
 import { Link, Outlet } from 'react-router'
 import useRoles from '../../Hooks/useRoles';
 import Footer from '../../components/Footer/Footer';
@@ -74,15 +75,35 @@ const Dashboard = () => {
                             </Link>
                         </>}
 
-                        <Link to="/dashboard/my-orders">
-                            <li>
-                                <button className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="My Orders">
-                                    <IoCartOutline />
+                        {/* Manager Routes */}
 
-                                    <span className="is-drawer-close:hidden">My Orders</span>
-                                </button>
-                            </li>
-                        </Link>
+                        {user?.role === "manager" && <>
+                            <Link to="/dashboard/add-products">
+                                <li>
+                                    <button className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Add New Product">
+                                        <IoIosAddCircle />
+
+                                        <span className="is-drawer-close:hidden">Add New Product</span>
+                                    </button>
+                                </li>
+                            </Link>
+                        </>}
+
+                        {/* Buyer Routes */}
+
+                        {user?.role === "buyer" && <>
+                            <Link to="/dashboard/my-orders">
+                                <li>
+                                    <button className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="My Orders">
+                                        <IoCartOutline />
+
+                                        <span className="is-drawer-close:hidden">My Orders</span>
+                                    </button>
+                                </li>
+                            </Link>
+                        </>}
+
+
 
                         <Link to="/dashboard/my-profile">
                             <li>
