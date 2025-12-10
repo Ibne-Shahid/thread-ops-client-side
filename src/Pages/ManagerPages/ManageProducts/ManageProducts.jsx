@@ -1,16 +1,152 @@
-import React from 'react'
-import useRoles from '../../../Hooks/useRoles'
+import React, { useRef, useState } from 'react'
+import useAxiosSecure from '../../../Hooks/useAxiosSecure'
+import { useQuery } from '@tanstack/react-query'
+import { toast } from 'react-toastify'
+import UpdateProductModal from '../../../components/Modals/UpdateProductModal'
+import Swal from 'sweetalert2'
 import ManagerApprovalPending from '../../../components/ManagerApprovalPending/ManagerApprovalPending'
+import useRoles from '../../../Hooks/useRoles'
+import useAuth from '../../../Hooks/useAuth'
 
 const ManageProducts = () => {
-
+  const axiosSecure = useAxiosSecure()
+  const modalRef = useRef()
+  const [selectedProduct, setSelectedProduct] = useState(null)
   const user = useRoles()
+  const {firebaseUser} = useAuth()
+
+  const { data: products = [], refetch: refetchProducts } = useQuery({
+    queryKey: ['products', firebaseUser],
+    queryFn: async () => {
+      const res = await axiosSecure.get(`/products?email=${firebaseUser?.email}`)
+      return res.data
+    }
+  })
+
+  const handleOpenModal = (product) => {
+    setSelectedProduct(product)
+    modalRef.current.showModal()
+  }
+
+  const handleDeleteProduct = async (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!"
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const res = await axiosSecure.delete(`/products/${id}`)
+          if (res.data.deletedCount > 0) {
+            Swal.fire({
+              title: "Deleted!",
+              text: "This file has been deleted.",
+              icon: "success"
+            });
+            refetchProducts()
+          } else {
+            toast.error("Failed to delete the product.")
+          }
+        } catch (err) {
+          toast.error("An error occurred while deleting the product.");
+        }
+
+      }
+    })
+
+  }
 
   if (user?.role === "manager" & user?.status === "pending") return <ManagerApprovalPending></ManagerApprovalPending>
 
   return (
-    <div>ManageProducts</div>
+    <div className="p-4 md:p-8">
+      <h1 className="text-2xl font-bold mb-6">Manage Your Products</h1>
+
+      {/* Mobile Card View */}
+      <div className="md:hidden space-y-4">
+        {products.length === 0 ? (
+          <div className="text-center py-10 bg-white shadow rounded-lg">
+            <p className="text-gray-500">No products available</p>
+          </div>
+        ) : (
+          products.map((product) => (
+            <div key={product._id} className="bg-white shadow rounded-lg p-4 border border-gray-100">
+              <div className="flex items-center space-x-4">
+                <img src={product.images[0]} alt={product.productName} className="w-20 h-20 object-cover rounded-md" />
+                <div className="flex-grow">
+                  <h3 className="font-semibold text-gray-800">{product.productName}</h3>
+                  <p className="text-sm text-gray-500">{product.category}</p>
+                  <p className="text-sm text-gray-500">{product.paymentOption}</p>
+                  <p className="font-medium text-gray-900">${product.price}</p>
+                </div>
+              </div>
+
+              <div className="mt-4 flex gap-2 items-center">
+
+                <button onClick={() => handleOpenModal(product)} className="btn btn-primary text-white text-sm flex-1">Update</button>
+                <button onClick={() => handleDeleteProduct(product._id)} className="btn btn-error text-white text-sm flex-1">Delete</button>
+
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+
+      {/* Desktop Table View */}
+      <div className="hidden md:block overflow-x-auto bg-white shadow rounded-lg">
+        <table className="min-w-full text-sm">
+          <thead className="bg-gray-100">
+            <tr>
+              <th className="p-3 text-left font-semibold">Image</th>
+              <th className="p-3 text-left font-semibold">Product Name</th>
+              <th className="p-3 text-left font-semibold">Price</th>
+              <th className="p-3 text-left font-semibold">Category</th>
+              <th className="p-3 text-left font-semibold">Payment Mode</th>
+              <th className="p-3 text-center font-semibold">Actions</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {products.length === 0 ? (
+              <tr>
+                <td colSpan="7" className="p-8 text-center text-gray-500">
+                  No products available
+                </td>
+              </tr>
+            ) : (
+              products.map((product) => (
+                <tr key={product._id} className="border-b hover:bg-gray-50">
+                  <td className="p-3">
+                    <img src={product.images[0]} alt={product.productName} className="w-16 h-16 object-cover rounded-md" />
+                  </td>
+                  <td className="p-3 font-medium">{product.productName}</td>
+                  <td className="p-3">${product.price}</td>
+                  <td className="p-3">{product.category}</td>
+                  <td className="p-3">{product.paymentOption}</td>
+                  <td className="p-3 text-center">
+                    <div className="flex gap-2 justify-center">
+                      <button onClick={() => handleOpenModal(product)} className="btn btn-primary hover:bg-primary/90 text-white rounded text-sm font-medium transition-colors">
+                        Update
+                      </button>
+                      <button onClick={() => handleDeleteProduct(product._id)} className="btn btn-error text-white rounded text-sm font-medium transition-colors">
+                        Delete
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
+
+      <UpdateProductModal modalRef={modalRef} selectedProduct={selectedProduct} refetchProducts={refetchProducts}></UpdateProductModal>
+    </div>
   )
 }
 
-export default ManageProducts
+export default ManageProducts;

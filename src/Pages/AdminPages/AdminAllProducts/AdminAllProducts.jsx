@@ -4,13 +4,14 @@ import { useQuery } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
 import UpdateProductModal from '../../../components/Modals/UpdateProductModal'
 import Swal from 'sweetalert2'
+import Spinner from '../../../components/Loaders/Spinner'
 
 const AdminAllProducts = () => {
     const axiosSecure = useAxiosSecure()
     const modalRef = useRef()
     const [selectedProduct, setSelectedProduct] = useState(null)
 
-    const { data: products = [], refetch: refetchProducts } = useQuery({
+    const { data: products = [], refetch: refetchProducts, isLoading } = useQuery({
         queryKey: ['products'],
         queryFn: async () => {
             const res = await axiosSecure.get('/products')
@@ -78,6 +79,8 @@ const AdminAllProducts = () => {
 
     }
 
+    if (isLoading) return <Spinner></Spinner>
+
     return (
         <div className="p-4 md:p-8">
             <h1 className="text-2xl font-bold mb-6">All Products</h1>
@@ -96,6 +99,7 @@ const AdminAllProducts = () => {
                                 <div className="flex-grow">
                                     <h3 className="font-semibold text-gray-800">{product.productName}</h3>
                                     <p className="text-sm text-gray-500">{product.category}</p>
+                                    <p className="text-sm text-gray-500">{product.createdBy}</p>
                                     <p className="font-medium text-gray-900">${product.price}</p>
                                 </div>
                             </div>

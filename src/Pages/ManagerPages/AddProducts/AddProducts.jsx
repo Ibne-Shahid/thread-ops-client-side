@@ -4,17 +4,19 @@ import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import useAuth from "../../../Hooks/useAuth";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router";
+import useRoles from "../../../Hooks/useRoles";
+import ManagerApprovalPending from "../../../components/ManagerApprovalPending/ManagerApprovalPending";
 
 const AddProducts = () => {
     const axiosSecure = useAxiosSecure()
     const {firebaseUser} = useAuth()
     const navigate = useNavigate()
+    const user = useRoles()
     
     const {
         register,
         handleSubmit,
         control,
-        reset,
         watch,
         formState: { errors }
     } = useForm({
@@ -62,8 +64,11 @@ const AddProducts = () => {
         const finalData = {
             ...data,
             images: images,
-            createdBy: firebaseUser.displayName
+            createdBy: firebaseUser.displayName,
+            sellerEmail: firebaseUser.email
         };
+        console.log(finalData);
+        
 
         try{
             const res = await axiosSecure.post('/products', finalData)
@@ -79,6 +84,8 @@ const AddProducts = () => {
             toast.error('Operation failed!')
         }
     };
+
+    if (user?.role === "manager" & user?.status === "pending") return <ManagerApprovalPending></ManagerApprovalPending>
 
     return (
         <div className="max-w-3xl mx-auto bg-base-100 shadow-xl p-8 rounded-xl my-10">
