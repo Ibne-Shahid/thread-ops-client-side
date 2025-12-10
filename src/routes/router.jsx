@@ -24,6 +24,9 @@ import AdminAllOrders from "../Pages/AdminPages/AdminAllOrders/AdminAllOrders";
 import OrderDetails from "../Pages/OrderDetails/OrderDetails";
 import AddProducts from "../Pages/ManagerPages/AddProducts/AddProducts";
 import ManagerRoutes from "../Provider/ManagerRoutes";
+import ManageProducts from "../Pages/ManagerPages/ManageProducts/ManageProducts";
+import PendingOrders from "../Pages/ManagerPages/PendingOrders/PendingOrders";
+import ApprovedOrders from "../Pages/ManagerPages/ApprovedOrders/ApprovedOrders";
 
 
 const router = createBrowserRouter([
@@ -119,6 +122,18 @@ const router = createBrowserRouter([
             {
                 path: 'add-products',
                 element: <ManagerRoutes><AddProducts></AddProducts></ManagerRoutes>
+            },
+            {
+                path: 'manage-products',
+                element: <ManagerRoutes><ManageProducts></ManageProducts></ManagerRoutes>
+            },
+            {
+                path: 'pending-orders',
+                element: <ManagerRoutes><PendingOrders></PendingOrders></ManagerRoutes>
+            },
+            {
+                path: 'approved-orders',
+                element: <ManagerRoutes><ApprovedOrders></ApprovedOrders></ManagerRoutes>
             }
         ]
     }
