@@ -1,7 +1,15 @@
 import React, { useState } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
+import useAxiosSecure from "../../../Hooks/useAxiosSecure";
+import useAuth from "../../../Hooks/useAuth";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router";
 
 const AddProducts = () => {
+    const axiosSecure = useAxiosSecure()
+    const {firebaseUser} = useAuth()
+    const navigate = useNavigate()
+    
     const {
         register,
         handleSubmit,
@@ -48,15 +56,28 @@ const AddProducts = () => {
         );
     };
 
-    const onSubmit = (data) => {
+    const onSubmit = async (data) => {
         const images = data.images.map((img) => img.url).filter((u) => u);
 
         const finalData = {
             ...data,
             images: images,
+            createdBy: firebaseUser.displayName
         };
 
-        console.log("Final Submitted Data:", finalData);
+        try{
+            const res = await axiosSecure.post('/products', finalData)
+            
+            if (res.data.insertedId){
+                toast.success('Your product added successfully!')
+                navigate('/dashboard/manage-products')
+            } else {
+                toast.error('Sorry, something went wrong!')
+            }
+            
+        } catch (err){
+            toast.error('Operation failed!')
+        }
     };
 
     return (
@@ -96,6 +117,7 @@ const AddProducts = () => {
                         <option value="Jacket">Jacket</option>
                         <option value="Accessories">Accessories</option>
                         <option value="Shoes">Shoes</option>
+                        <option value="Traditional-Wear">Traditional Wear</option>
                     </select>
                     {errors.category && <p className="text-red-500">{errors.category.message}</p>}
                 </div>
@@ -128,7 +150,7 @@ const AddProducts = () => {
                 </div>
 
                 <div>
-                    <label className="label"><span className="label-text font-semibold">Minimum Order Quantity (MOQ)</span></label>
+                    <label className="label"><span className="label-text font-semibold">Minimum Order Quantity</span></label>
                     <input
                         type="number"
                         className="input input-bordered w-full"
