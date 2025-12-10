@@ -32,6 +32,12 @@ const ProductDetails = () => {
     return url.replace("watch?v=", "embed/");
   };
 
+  
+    const handleOrderButton = (id)=>{
+        navigate(`/product-details/${id}/order-form`)
+  }
+  
+
   return (
     <div className="max-w-6xl mx-auto p-6 grid lg:grid-cols-2 gap-10">
       
@@ -99,9 +105,9 @@ const ProductDetails = () => {
         </p>
 
         <div className="flex gap-4 mt-4">
-          <Link to="order-form"><button disabled={!(user?.role === "buyer" && user?.status === "approved")} className="btn btn-primary text-white rounded-lg shadow hover:bg-primary/90 transition">
+          <button onClick={()=>handleOrderButton(product._id)} disabled={!(user?.role === "buyer" && user?.status === "approved")} className="btn btn-primary text-white rounded-lg shadow hover:bg-primary/90 transition">
             Order Now
-          </button></Link>
+          </button>
           <button onClick={()=>navigate(-1)} className="btn btn-secondary hover:bg-secondary/90 rounded-lg shadow transition">Back</button>
         </div>
       </div>

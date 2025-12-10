@@ -3,6 +3,7 @@ import useAxiosSecure from '../../../Hooks/useAxiosSecure'
 import { useQuery } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
 import UpdateProductModal from '../../../components/Modals/UpdateProductModal'
+import Swal from 'sweetalert2'
 
 const AdminAllProducts = () => {
     const axiosSecure = useAxiosSecure()
@@ -45,6 +46,38 @@ const AdminAllProducts = () => {
         modalRef.current.showModal()
     }
 
+    const handleDeleteProduct = async (id) => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    const res = await axiosSecure.delete(`/products/${id}`)
+                    if (res.data.deletedCount > 0) {
+                        Swal.fire({
+                            title: "Deleted!",
+                            text: "This file has been deleted.",
+                            icon: "success"
+                        });
+                        refetchProducts()
+                    } else {
+                        toast.error("Failed to delete the product.")
+                    }
+                } catch (err) {
+                    toast.error("An error occurred while deleting the product.");
+                }
+
+            }
+        })
+
+    }
+
     return (
         <div className="p-4 md:p-8">
             <h1 className="text-2xl font-bold mb-6">All Products</h1>
@@ -83,7 +116,7 @@ const AdminAllProducts = () => {
 
                                 <div className="flex gap-2">
                                     <button onClick={() => handleOpenModal(product)} className="btn btn-primary text-white text-sm">Update</button>
-                                    <button className="btn btn-error text-white text-sm">Delete</button>
+                                    <button onClick={() => handleDeleteProduct(product._id)} className="btn btn-error text-white text-sm">Delete</button>
                                 </div>
                             </div>
                         </div>
@@ -139,7 +172,7 @@ const AdminAllProducts = () => {
                                             <button onClick={() => handleOpenModal(product)} className="btn btn-primary hover:bg-primary/90 text-white rounded text-sm font-medium transition-colors">
                                                 Update
                                             </button>
-                                            <button className="btn btn-error text-white rounded text-sm font-medium transition-colors">
+                                            <button onClick={() => handleDeleteProduct(product._id)} className="btn btn-error text-white rounded text-sm font-medium transition-colors">
                                                 Delete
                                             </button>
                                         </div>
