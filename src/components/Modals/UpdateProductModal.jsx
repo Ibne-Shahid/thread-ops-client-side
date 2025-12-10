@@ -135,6 +135,7 @@ const UpdateProductModal = ({ modalRef, selectedProduct, refetchProducts }) => {
                                     <option>Jacket</option>
                                     <option>Accessories</option>
                                     <option>Shoes</option>
+                                    <option>Traditional Wear</option>
                                 </select>
                                 {errors.category && (
                                     <p className="text-red-500 text-sm">{errors.category.message}</p>

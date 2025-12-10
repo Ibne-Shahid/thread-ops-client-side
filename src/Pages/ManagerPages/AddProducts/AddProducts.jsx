@@ -117,7 +117,7 @@ const AddProducts = () => {
                         <option value="Jacket">Jacket</option>
                         <option value="Accessories">Accessories</option>
                         <option value="Shoes">Shoes</option>
-                        <option value="Traditional-Wear">Traditional Wear</option>
+                        <option value="Traditional Wear">Traditional Wear</option>
                     </select>
                     {errors.category && <p className="text-red-500">{errors.category.message}</p>}
                 </div>
