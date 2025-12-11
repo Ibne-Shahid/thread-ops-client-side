@@ -29,6 +29,8 @@ import PendingOrders from "../Pages/ManagerPages/PendingOrders/PendingOrders";
 import ApprovedOrders from "../Pages/ManagerPages/ApprovedOrders/ApprovedOrders";
 import TrackOrderManager from "../Pages/ManagerPages/TrackOrderManager/TrackOrderManager";
 import TrackOrder from "../Pages/TrackOrder/TrackOrder";
+import TrackOrderBuyer from "../Pages/TrackOrderBuyer/TrackOrderBuyer";
+import BuyerRoutes from "../Provider/BuyerRoutes";
 
 
 const router = createBrowserRouter([
@@ -99,7 +101,7 @@ const router = createBrowserRouter([
             },
             {
                 path: 'my-orders',
-                element: <MyOrders></MyOrders>
+                element: <BuyerRoutes><MyOrders></MyOrders></BuyerRoutes>
             },
             {
                 path: 'my-orders/order-details/:orderId',
@@ -107,7 +109,11 @@ const router = createBrowserRouter([
             },
             {
                 path: 'track-order',
-                element: <TrackOrder></TrackOrder>
+                element: <BuyerRoutes><TrackOrder></TrackOrder></BuyerRoutes>
+            },
+            {
+                path: 'track-order/:id',
+                element: <TrackOrderBuyer></TrackOrderBuyer>
             },
             {
                 path: 'my-profile',

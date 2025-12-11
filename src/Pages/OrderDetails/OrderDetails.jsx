@@ -16,13 +16,14 @@ const OrderDetails = () => {
         }
     })
 
-    const { data: users = [] } = useQuery({
+    const { data: users = [], isLoading: usersLoading } = useQuery({
         queryKey: ['users'],
         queryFn: async () => {
             const res = await axiosSecure.get('/users')
             return res.data
         }
     })
+    
 
     const { data: products = [] } = useQuery({
         queryKey: ['products'],
@@ -53,7 +54,11 @@ const OrderDetails = () => {
         trackingHistory
     } = orderDetails
 
-    const buyer = users.find(user => user.email === buyerEmail)
+    if(usersLoading){
+        return <Spinner></Spinner>
+    }
+
+    const buyer = users
 
     const product = products.find(prod => prod.productName === productTitle)
 

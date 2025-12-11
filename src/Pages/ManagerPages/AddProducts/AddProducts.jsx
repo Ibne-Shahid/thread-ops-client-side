@@ -18,7 +18,8 @@ const AddProducts = () => {
         handleSubmit,
         control,
         watch,
-        formState: { errors }
+        formState: { errors },
+        setValue
     } = useForm({
         defaultValues: {
             images: [{ url: "" }]
@@ -61,13 +62,19 @@ const AddProducts = () => {
     const onSubmit = async (data) => {
         const images = data.images.map((img) => img.url).filter((u) => u);
 
+        // Convert string numbers to actual numbers
         const finalData = {
             ...data,
+            price: parseFloat(data.price),
+            availableQuantity: parseInt(data.availableQuantity),
+            minimumOrderQuantity: parseInt(data.minimumOrderQuantity),
             images: images,
             createdBy: firebaseUser.displayName
         };
-        console.log(finalData);
         
+        console.log('Submitting product data:', finalData);
+        console.log('Price type:', typeof finalData.price);
+        console.log('Available Quantity type:', typeof finalData.availableQuantity);
 
         try{
             const res = await axiosSecure.post('/products', finalData)
@@ -80,6 +87,7 @@ const AddProducts = () => {
             }
             
         } catch (err){
+            console.error('Error adding product:', err);
             toast.error('Operation failed!')
         }
     };
@@ -129,14 +137,15 @@ const AddProducts = () => {
                 </div>
 
                 <div>
-                    <label className="label"><span className="label-text font-semibold">Price</span></label>
+                    <label className="label"><span className="label-text font-semibold">Price (USD)</span></label>
                     <input
                         type="number"
                         step="0.01"
                         className="input input-bordered w-full"
                         {...register("price", {
                             required: "Price is required",
-                            min: { value: 0.01, message: "Must be greater than 0" }
+                            min: { value: 0.01, message: "Must be greater than 0" },
+                            valueAsNumber: true // This converts to number
                         })}
                     />
                     {errors.price && <p className="text-red-500">{errors.price.message}</p>}
@@ -149,20 +158,22 @@ const AddProducts = () => {
                         className="input input-bordered w-full"
                         {...register("availableQuantity", {
                             required: "Available quantity required",
-                            min: { value: 1, message: "Minimum 1 required" }
+                            min: { value: 1, message: "Minimum 1 required" },
+                            valueAsNumber: true // This converts to number
                         })}
                     />
                     {errors.availableQuantity && <p className="text-red-500">{errors.availableQuantity.message}</p>}
                 </div>
 
                 <div>
-                    <label className="label"><span className="label-text font-semibold">Minimum Order Quantity</span></label>
+                    <label className="label"><span className="label-text font-semibold">Minimum Order Quantity (MOQ)</span></label>
                     <input
                         type="number"
                         className="input input-bordered w-full"
                         {...register("minimumOrderQuantity", {
                             required: "MOQ is required",
-                            min: { value: 1, message: "Minimum 1 required" }
+                            min: { value: 1, message: "Minimum 1 required" },
+                            valueAsNumber: true // This converts to number
                         })}
                     />
                     {errors.minimumOrderQuantity && <p className="text-red-500">{errors.minimumOrderQuantity.message}</p>}

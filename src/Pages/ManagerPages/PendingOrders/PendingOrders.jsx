@@ -21,18 +21,19 @@ const PendingOrders = () => {
 
     const pendingOrders = myPendingorders.filter(orders => orders?.status === "Pending")
 
-    const handleApproveOrder = async (id) => {
+    const handleApproveOrder = async (order) => {
         try {
-            const res = await axiosSecure.patch(`/orders/${id}`, {
+            const res = await axiosSecure.patch(`/orders/${order._id}`, {
                 status: 'Approved'
             });
 
             if (res.data.modifiedCount > 0) {
-                refetch()
-                toast.success('Order approved!')
+                refetch();
+                toast.success('Order approved and product quantity updated!');
             }
         } catch (error) {
-            toast.error('Sorry, something went wrong!')
+            console.error('Error approving order:', error);
+            toast.error(error.response?.data?.message || 'Sorry, something went wrong!');
         }
     };
 
@@ -100,7 +101,7 @@ const PendingOrders = () => {
                             </div>
 
                             <div className='flex gap-2'>
-                                <button onClick={() => handleApproveOrder(order._id)} className='btn btn-success text-white flex-1'>Approve</button>
+                                <button onClick={() => handleApproveOrder(order)} className='btn btn-success text-white flex-1'>Approve</button>
                                 <button onClick={() => handleRejectOrder(order._id)} className='btn btn-error text-white flex-1'>Reject</button>
                                 <Link to={`order-details/${order._id}`}>
                                     <button className="btn btn-primary hover:bg-primary/90 text-white rounded text-sm font-medium transition-colors flex-1">
@@ -156,7 +157,7 @@ const PendingOrders = () => {
 
                                     <td className="p-3 text-center">
                                         <div className="flex justify-center gap-2">
-                                            <button onClick={() => handleApproveOrder(order._id)} className="py-2 px-3 bg-success hover:bg-success/90 text-white rounded text-sm font-medium transition-colors cursor-pointer">
+                                            <button onClick={() => handleApproveOrder(order)} className="py-2 px-3 bg-success hover:bg-success/90 text-white rounded text-sm font-medium transition-colors cursor-pointer">
                                                 Approve
                                             </button>
                                             <button onClick={() => handleRejectOrder(order._id)} className="py-2 px-3 bg-error hover:bg-error/90 text-white rounded text-sm font-medium transition-colors cursor-pointer">
