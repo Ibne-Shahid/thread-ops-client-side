@@ -6,6 +6,7 @@ import { useRef, useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import useAxiosSecure from '../../../Hooks/useAxiosSecure'
 import { toast } from 'react-toastify'
+import { Link } from 'react-router'
 
 const ApprovedOrders = () => {
     const axiosSecure = useAxiosSecure()
@@ -40,9 +41,9 @@ const ApprovedOrders = () => {
                 note: ""
             }
         }
-        
+
         const latestEntry = order.trackingHistory[order.trackingHistory.length - 1]
-        
+
         return {
             orderStatus: latestEntry.orderStatus || order.status || "",
             location: latestEntry.location || "",
@@ -52,15 +53,15 @@ const ApprovedOrders = () => {
 
     const handleOpenModal = (order) => {
         setSelectedOrder(order);
-        
+
         const latestTracking = getLatestTrackingEntry(order);
-        
+
         reset({
             location: latestTracking.location,
             orderStatus: latestTracking.orderStatus,
             note: latestTracking.note
         });
-        
+
         modalRef.current.showModal();
     };
 
@@ -74,7 +75,7 @@ const ApprovedOrders = () => {
 
         try {
             const res = await axiosSecure.patch(`/orders/${selectedOrder._id}`, requestData)
-            
+
             if (res.data.modifiedCount > 0) {
                 toast.success('Order status updated.')
                 modalRef.current.close()
@@ -129,7 +130,7 @@ const ApprovedOrders = () => {
                                         <p className="text-xs text-gray-500 mt-1">
                                             Current Status: {latestTracking.orderStatus}
                                         </p>
-                                        <p className="text-xs text-gray-500 mt-1"> 
+                                        <p className="text-xs text-gray-500 mt-1">
                                             Approval Date:{" "}
                                             {new Date(order.trackingHistory[1].entryDate).toLocaleDateString('en-US', {
                                                 year: 'numeric',
@@ -150,8 +151,8 @@ const ApprovedOrders = () => {
                                 </div>
 
                                 <div className='flex gap-2'>
-                                    <button onClick={() => handleOpenModal(order)} className='btn btn-primary text-white flex-1'>Add Tracking</button>
-                                    <button className='btn btn-secondary text-white flex-1'>View Tracking</button>
+                                    <button disabled={order.status === "Delivered"} onClick={() => handleOpenModal(order)} className='btn btn-primary text-white flex-1'>Add Tracking</button>
+                                    <Link to={`view-tracking/${order._id}`} className='btn btn-secondary text-white flex-1'>View Tracking</Link>
                                 </div>
                             </div>
                         )
@@ -208,9 +209,13 @@ const ApprovedOrders = () => {
                                                 <button disabled={order.status === "Delivered"} onClick={() => handleOpenModal(order)} className="btn btn-primary hover:bg-primary/90 text-white rounded text-sm font-medium transition-colors cursor-pointer">
                                                     Add Tracking
                                                 </button>
-                                                <button className="btn btn-secondary hover:bg-secondary/90 text-white rounded text-sm font-medium transition-colors cursor-pointer">
-                                                    View Tracking
-                                                </button>
+
+                                                <Link to={`view-tracking/${order._id}`}>
+                                                    <button className="btn btn-secondary hover:bg-secondary/90 text-white rounded text-sm font-medium transition-colors cursor-pointer">
+                                                        View Tracking
+                                                    </button>
+                                                </Link>
+
                                             </div>
                                         </td>
                                     </tr>
@@ -248,7 +253,7 @@ const ApprovedOrders = () => {
                                         readOnly
                                     />
                                 </div>
-                                
+
                                 <div>
                                     <label className="block text-sm font-medium">Order ID</label>
                                     <input
@@ -258,7 +263,7 @@ const ApprovedOrders = () => {
                                         readOnly
                                     />
                                 </div>
-                                
+
                                 <div>
                                     <label className="block text-sm font-medium">Customer</label>
                                     <input
@@ -295,7 +300,6 @@ const ApprovedOrders = () => {
                                         <option value="Quality Check Passed">Quality Check Passed</option>
                                         <option value="Packed">Packed</option>
                                         <option value="Shipped">Shipped</option>
-                                        <option value="Out For Delivery">Out For Delivery</option>
                                         <option value="Delivered">Delivered</option>
                                     </select>
                                     {errors.orderStatus && (

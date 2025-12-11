@@ -27,6 +27,7 @@ import ManagerRoutes from "../Provider/ManagerRoutes";
 import ManageProducts from "../Pages/ManagerPages/ManageProducts/ManageProducts";
 import PendingOrders from "../Pages/ManagerPages/PendingOrders/PendingOrders";
 import ApprovedOrders from "../Pages/ManagerPages/ApprovedOrders/ApprovedOrders";
+import TrackOrderManager from "../Pages/ManagerPages/TrackOrderManager/TrackOrderManager";
 
 
 const router = createBrowserRouter([
@@ -138,6 +139,10 @@ const router = createBrowserRouter([
             {
                 path: 'approved-orders',
                 element: <ManagerRoutes><ApprovedOrders></ApprovedOrders></ManagerRoutes>
+            }, 
+            {
+                path: 'approved-orders/view-tracking/:id',
+                element: <ManagerRoutes><TrackOrderManager></TrackOrderManager></ManagerRoutes>
             }
         ]
     }
