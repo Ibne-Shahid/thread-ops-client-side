@@ -5,6 +5,7 @@ import useAuth from '../../../Hooks/useAuth'
 import { useRef, useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import useAxiosSecure from '../../../Hooks/useAxiosSecure'
+import { toast } from 'react-toastify'
 
 const ApprovedOrders = () => {
     const axiosSecure = useAxiosSecure()
@@ -29,9 +30,8 @@ const ApprovedOrders = () => {
         }
     })
 
-    const approvedOrders = myApprovedorders.filter(orders => orders?.status === "Approved")
+    const approvedOrders = myApprovedorders.filter(orders => orders?.status === "Approved" || orders?.status === "Delivered")
 
-    // Helper function to get the latest tracking entry
     const getLatestTrackingEntry = (order) => {
         if (!order.trackingHistory || order.trackingHistory.length === 0) {
             return {
@@ -41,7 +41,6 @@ const ApprovedOrders = () => {
             }
         }
         
-        // Get the last tracking entry (most recent)
         const latestEntry = order.trackingHistory[order.trackingHistory.length - 1]
         
         return {
@@ -54,7 +53,6 @@ const ApprovedOrders = () => {
     const handleOpenModal = (order) => {
         setSelectedOrder(order);
         
-        // Get the latest tracking data from the trackingHistory array
         const latestTracking = getLatestTrackingEntry(order);
         
         reset({
@@ -76,15 +74,22 @@ const ApprovedOrders = () => {
 
         try {
             const res = await axiosSecure.patch(`/orders/${selectedOrder._id}`, requestData)
-            console.log(res.data);
+            
+            if (res.data.modifiedCount > 0) {
+                toast.success('Order status updated.')
+                modalRef.current.close()
+                refetch()
+            }
+            else {
+                toast.error('Order status update failed!')
+            }
 
         } catch (err) {
-
+            toast.error('Sorry, something went wrong!')
         }
 
     }
 
-    // Cleanup effect
     useEffect(() => {
         return () => {
             reset();
@@ -125,13 +130,13 @@ const ApprovedOrders = () => {
                                             Current Status: {latestTracking.orderStatus}
                                         </p>
                                         <p className="text-xs text-gray-500 mt-1"> 
-                                            Last Updated:{" "}
-                                            {new Date(order.updatedAt).toLocaleDateString('en-US', {
+                                            Approval Date:{" "}
+                                            {new Date(order.trackingHistory[1].entryDate).toLocaleDateString('en-US', {
                                                 year: 'numeric',
                                                 month: 'numeric',
                                                 day: 'numeric',
                                             })}{" "}
-                                            {new Date(order.updatedAt).toLocaleTimeString('en-US', {
+                                            {new Date(order.trackingHistory[1].entryDate).toLocaleTimeString('en-US', {
                                                 hour: '2-digit',
                                                 minute: '2-digit',
                                             })}
@@ -187,12 +192,12 @@ const ApprovedOrders = () => {
                                         <td className="p-3">{order.quantity}</td>
                                         <td className="p-3 font-medium">{latestTracking.orderStatus}</td>
                                         <td className="p-3">
-                                            {new Date(order.updatedAt).toLocaleDateString('en-US', {
+                                            {new Date(order.trackingHistory[1].entryDate).toLocaleDateString('en-US', {
                                                 year: 'numeric',
                                                 month: 'numeric',
                                                 day: 'numeric',
                                             })}{" "}
-                                            {new Date(order.updatedAt).toLocaleTimeString('en-US', {
+                                            {new Date(order.trackingHistory[1].entryDate).toLocaleTimeString('en-US', {
                                                 hour: '2-digit',
                                                 minute: '2-digit',
                                             })}
@@ -200,7 +205,7 @@ const ApprovedOrders = () => {
 
                                         <td className="p-3 text-center">
                                             <div className="flex justify-center gap-2">
-                                                <button onClick={() => handleOpenModal(order)} className="btn btn-primary hover:bg-primary/90 text-white rounded text-sm font-medium transition-colors cursor-pointer">
+                                                <button disabled={order.status === "Delivered"} onClick={() => handleOpenModal(order)} className="btn btn-primary hover:bg-primary/90 text-white rounded text-sm font-medium transition-colors cursor-pointer">
                                                     Add Tracking
                                                 </button>
                                                 <button className="btn btn-secondary hover:bg-secondary/90 text-white rounded text-sm font-medium transition-colors cursor-pointer">
@@ -310,16 +315,6 @@ const ApprovedOrders = () => {
                                 </div>
 
                                 <div className="flex justify-end pt-4 space-x-2">
-                                    <button 
-                                        type="button" 
-                                        onClick={() => {
-                                            modalRef.current.close();
-                                            reset();
-                                        }}
-                                        className="btn btn-ghost"
-                                    >
-                                        Cancel
-                                    </button>
                                     <button type="submit" className="btn btn-primary">
                                         Update Tracking Details
                                     </button>
