@@ -18,17 +18,14 @@ const AdminAllOrders = () => {
     const [searchTerm, setSearchTerm] = useState('')
     const [statusFilter, setStatusFilter] = useState('All')
 
-    // Handle search input change
     const handleSearchChange = (e) => {
         setSearchTerm(e.target.value)
     }
 
-    // Handle status filter change
     const handleStatusChange = (e) => {
         setStatusFilter(e.target.value)
     }
 
-    // Filter orders based on search and status
     const filteredOrders = orders.filter((order) => {
         const searchMatch =
             order.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -47,9 +44,8 @@ const AdminAllOrders = () => {
         <div className="p-4 md:p-8">
             <h1 className="text-2xl font-bold mb-6">All Orders</h1>
 
-            {/* Search and Status Filter */}
             <div className="flex justify-between items-center mb-6">
-                {/* Search Input */}
+                
                 <input
                     type="text"
                     placeholder="Search by Customer Name or Product"
@@ -58,7 +54,6 @@ const AdminAllOrders = () => {
                     className="p-2 border border-gray-300 rounded-lg w-1/3"
                 />
 
-                {/* Status Filter */}
                 <select
                     value={statusFilter}
                     onChange={handleStatusChange}
@@ -69,6 +64,7 @@ const AdminAllOrders = () => {
                     <option value="Approved">Approved</option>
                     <option value="Rejected">Rejected</option>
                 </select>
+
             </div>
 
             {/* Mobile Card View */}

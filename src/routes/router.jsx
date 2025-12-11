@@ -82,7 +82,7 @@ const router = createBrowserRouter([
     {
         path: 'dashboard',
         element: <PrivateRoutes><Dashboard></Dashboard></PrivateRoutes>,
-        children:[
+        children: [
             {
                 element: <DashboardHome></DashboardHome>,
                 index: true
@@ -130,6 +130,10 @@ const router = createBrowserRouter([
             {
                 path: 'pending-orders',
                 element: <ManagerRoutes><PendingOrders></PendingOrders></ManagerRoutes>
+            },
+            {
+                path: 'pending-orders/order-details/:orderId',
+                element: <OrderDetails></OrderDetails>
             },
             {
                 path: 'approved-orders',

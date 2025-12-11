@@ -44,7 +44,8 @@ const OrderForm = () => {
             productTitle: product?.productName,
             orderPrice,
             productPrice: product?.price,
-            paymentMethod: product?.paymentOption
+            paymentMethod: product?.paymentOption,
+            sellerEmail: product?.sellerEmail
         };
 
         Swal.fire({
