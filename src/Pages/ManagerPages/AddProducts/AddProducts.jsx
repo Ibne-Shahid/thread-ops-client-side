@@ -64,8 +64,7 @@ const AddProducts = () => {
         const finalData = {
             ...data,
             images: images,
-            createdBy: firebaseUser.displayName,
-            sellerEmail: firebaseUser.email
+            createdBy: firebaseUser.displayName
         };
         console.log(finalData);
         

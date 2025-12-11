@@ -82,7 +82,7 @@ const AdminAllProducts = () => {
     if (isLoading) return <Spinner></Spinner>
 
     return (
-        <div className="p-4 md:p-8">
+        <div className="p-4 md:p-8 min-h-screen">
             <h1 className="text-2xl font-bold mb-6">All Products</h1>
 
             {/* Mobile Card View */}
