@@ -1,14 +1,25 @@
-import useAxiosSecure from '../../../Hooks/useAxiosSecure'
 import { useQuery } from '@tanstack/react-query'
 import Spinner from '../../../components/Loaders/Spinner'
-import { Link } from 'react-router'
 import useRoles from '../../../Hooks/useRoles'
 import useAuth from '../../../Hooks/useAuth'
+import { useRef, useState, useEffect } from 'react'
+import { useForm } from 'react-hook-form'
+import useAxiosSecure from '../../../Hooks/useAxiosSecure'
 
-const AdminAllOrders = () => {
+const ApprovedOrders = () => {
     const axiosSecure = useAxiosSecure()
     const user = useRoles()
     const { firebaseUser } = useAuth()
+    const modalRef = useRef()
+    const [selectedOrder, setSelectedOrder] = useState(null)
+
+    const { register, handleSubmit, reset, formState: { errors } } = useForm({
+        defaultValues: {
+            location: "",
+            orderStatus: "",
+            note: ""
+        }
+    })
 
     const { data: myApprovedorders = [], isLoading, refetch } = useQuery({
         queryKey: ['orders', firebaseUser?.email],
@@ -20,13 +31,72 @@ const AdminAllOrders = () => {
 
     const approvedOrders = myApprovedorders.filter(orders => orders?.status === "Approved")
 
+    // Helper function to get the latest tracking entry
+    const getLatestTrackingEntry = (order) => {
+        if (!order.trackingHistory || order.trackingHistory.length === 0) {
+            return {
+                orderStatus: order.status || "",
+                location: "",
+                note: ""
+            }
+        }
+        
+        // Get the last tracking entry (most recent)
+        const latestEntry = order.trackingHistory[order.trackingHistory.length - 1]
+        
+        return {
+            orderStatus: latestEntry.orderStatus || order.status || "",
+            location: latestEntry.location || "",
+            note: latestEntry.note || ""
+        }
+    }
+
+    const handleOpenModal = (order) => {
+        setSelectedOrder(order);
+        
+        // Get the latest tracking data from the trackingHistory array
+        const latestTracking = getLatestTrackingEntry(order);
+        
+        reset({
+            location: latestTracking.location,
+            orderStatus: latestTracking.orderStatus,
+            note: latestTracking.note
+        });
+        
+        modalRef.current.showModal();
+    };
+
+    const onSubmit = async (data) => {
+
+        const requestData = {
+            status: data.orderStatus,
+            location: data.location,
+            note: data.note,
+        }
+
+        try {
+            const res = await axiosSecure.patch(`/orders/${selectedOrder._id}`, requestData)
+            console.log(res.data);
+
+        } catch (err) {
+
+        }
+
+    }
+
+    // Cleanup effect
+    useEffect(() => {
+        return () => {
+            reset();
+        };
+    }, []);
 
     if (isLoading) return <Spinner />
     if (user?.role === "manager" & user?.status === "pending") return <ManagerApprovalPending></ManagerApprovalPending>
 
     return (
         <div className="p-4 md:p-8 min-h-screen">
-            <h1 className="text-2xl font-bold mb-6">Pending Orders</h1>
+            <h1 className="text-2xl font-bold mb-6">Approved Orders</h1>
 
             {/* Mobile Card View */}
             <div className="md:hidden space-y-4">
@@ -35,45 +105,52 @@ const AdminAllOrders = () => {
                         <p className="text-gray-500">No orders found</p>
                     </div>
                 ) : (
-                    approvedOrders.map((order) => (
-                        <div
-                            key={order._id}
-                            className="bg-white shadow rounded-lg p-4 border border-gray-100"
-                        >
-                            <div className="flex justify-between items-start mb-3">
-                                <div>
-                                    <h3 className="font-semibold text-gray-800">{order.productTitle}</h3>
-                                    <p className="text-xs text-gray-500 mt-1">
-                                        Order ID: {order._id}
-                                    </p>
-                                    <p className="text-xs text-gray-500 mt-1">
-                                        Customer: {order.firstName} {order.lastName}
-                                    </p>
-                                    <p className="text-xs text-gray-500 mt-1"> Approval Date:{" "}
-                                        {new Date(order.trackingHistory[1].entryDate).toLocaleDateString('en-US', {
-                                            year: 'numeric',
-                                            month: 'numeric',
-                                            day: 'numeric',
-                                        })}{" "}
-                                        {new Date(order.trackingHistory[1].entryDate).toLocaleTimeString('en-US', {
-                                            hour: '2-digit',
-                                            minute: '2-digit',
-                                        })}
-                                    </p>
+                    approvedOrders.map((order) => {
+                        const latestTracking = getLatestTrackingEntry(order);
+                        return (
+                            <div
+                                key={order._id}
+                                className="bg-white shadow rounded-lg p-4 border border-gray-100"
+                            >
+                                <div className="flex justify-between items-start mb-3">
+                                    <div>
+                                        <h3 className="font-semibold text-gray-800">{order.productTitle}</h3>
+                                        <p className="text-xs text-gray-500 mt-1">
+                                            Order ID: {order._id}
+                                        </p>
+                                        <p className="text-xs text-gray-500 mt-1">
+                                            Customer: {order.firstName} {order.lastName}
+                                        </p>
+                                        <p className="text-xs text-gray-500 mt-1">
+                                            Current Status: {latestTracking.orderStatus}
+                                        </p>
+                                        <p className="text-xs text-gray-500 mt-1"> 
+                                            Last Updated:{" "}
+                                            {new Date(order.updatedAt).toLocaleDateString('en-US', {
+                                                year: 'numeric',
+                                                month: 'numeric',
+                                                day: 'numeric',
+                                            })}{" "}
+                                            {new Date(order.updatedAt).toLocaleTimeString('en-US', {
+                                                hour: '2-digit',
+                                                minute: '2-digit',
+                                            })}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div className='mb-2'>
+                                    <p className="text-gray-500 text-xs">Quantity</p>
+                                    <p className="font-medium">{order.quantity}</p>
+                                </div>
+
+                                <div className='flex gap-2'>
+                                    <button onClick={() => handleOpenModal(order)} className='btn btn-primary text-white flex-1'>Add Tracking</button>
+                                    <button className='btn btn-secondary text-white flex-1'>View Tracking</button>
                                 </div>
                             </div>
-
-                            <div className='mb-2'>
-                                <p className="text-gray-500 text-xs">Quantity</p>
-                                <p className="font-medium">{order.quantity}</p>
-                            </div>
-
-                            <div className='flex gap-2'>
-                                <button className='btn btn-primary text-white flex-1'>Add Tracking</button>
-                                <button className='btn btn-secondary text-white flex-1'>View Tracking</button>
-                            </div>
-                        </div>
-                    ))
+                        )
+                    })
                 )}
             </div>
 
@@ -86,7 +163,8 @@ const AdminAllOrders = () => {
                             <th className="p-3 text-left font-semibold">Customer</th>
                             <th className="p-3 text-left font-semibold">Product</th>
                             <th className="p-3 text-left font-semibold">Quantity</th>
-                            <th className="p-3 text-left font-semibold">Approval Date</th>
+                            <th className="p-3 text-left font-semibold">Current Status</th>
+                            <th className="p-3 text-left font-semibold">Last Updated</th>
                             <th className="p-3 text-center font-semibold">Actions</th>
                         </tr>
                     </thead>
@@ -99,43 +177,164 @@ const AdminAllOrders = () => {
                                 </td>
                             </tr>
                         ) : (
-                            approvedOrders.map((order) => (
-                                <tr key={order._id} className="border-b hover:bg-gray-50">
-                                    <td className="p-3 font-mono text-gray-600">{order._id}</td>
-                                    <td className="p-3">{order.firstName} {order.lastName}</td>
-                                    <td className="p-3 font-medium">{order.productTitle}</td>
-                                    <td className="p-3">{order.quantity}</td>
-                                    <td className="p-3">
-                                        {new Date(order.trackingHistory[1].entryDate).toLocaleDateString('en-US', {
-                                            year: 'numeric',
-                                            month: 'numeric',
-                                            day: 'numeric',
-                                        })}{" "}
-                                        {new Date(order.trackingHistory[1].entryDate).toLocaleTimeString('en-US', {
-                                            hour: '2-digit',
-                                            minute: '2-digit',
-                                        })}
-                                    </td>
+                            approvedOrders.map((order) => {
+                                const latestTracking = getLatestTrackingEntry(order);
+                                return (
+                                    <tr key={order._id} className="border-b hover:bg-gray-50">
+                                        <td className="p-3 font-mono text-gray-600">{order._id}</td>
+                                        <td className="p-3">{order.firstName} {order.lastName}</td>
+                                        <td className="p-3 font-medium">{order.productTitle}</td>
+                                        <td className="p-3">{order.quantity}</td>
+                                        <td className="p-3 font-medium">{latestTracking.orderStatus}</td>
+                                        <td className="p-3">
+                                            {new Date(order.updatedAt).toLocaleDateString('en-US', {
+                                                year: 'numeric',
+                                                month: 'numeric',
+                                                day: 'numeric',
+                                            })}{" "}
+                                            {new Date(order.updatedAt).toLocaleTimeString('en-US', {
+                                                hour: '2-digit',
+                                                minute: '2-digit',
+                                            })}
+                                        </td>
 
-                                    <td className="p-3 text-center">
-                                        <div className="flex justify-center gap-2">
-                                            <button className="btn btn-primary hover:bg-primary/90 text-white rounded text-sm font-medium transition-colors cursor-pointer">
-                                                Add Tracking
-                                            </button>
-                                            <button className="btn btn-secondary hover:bg-secondary/90 text-white rounded text-sm font-medium transition-colors cursor-pointer">
-                                                View Tracking
-                                            </button>
-                                        </div>
-                                    </td>
-
-                                </tr>
-                            ))
+                                        <td className="p-3 text-center">
+                                            <div className="flex justify-center gap-2">
+                                                <button onClick={() => handleOpenModal(order)} className="btn btn-primary hover:bg-primary/90 text-white rounded text-sm font-medium transition-colors cursor-pointer">
+                                                    Add Tracking
+                                                </button>
+                                                <button className="btn btn-secondary hover:bg-secondary/90 text-white rounded text-sm font-medium transition-colors cursor-pointer">
+                                                    View Tracking
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                )
+                            })
                         )}
                     </tbody>
                 </table>
             </div>
+
+            <dialog ref={modalRef} className="modal">
+                <div className="modal-box relative">
+
+                    <button
+                        onClick={() => {
+                            modalRef.current.close();
+                            reset();
+                        }}
+                        className="btn btn-sm btn-circle absolute right-2 top-2"
+                    >
+                        ✕
+                    </button>
+
+                    <h3 className="font-bold text-lg mb-4">Manage Product Tracking Details</h3>
+
+                    {selectedOrder ? (
+                        <>
+                            <div className="space-y-4 mb-6">
+                                <div>
+                                    <label className="block text-sm font-medium">Product</label>
+                                    <input
+                                        type="text"
+                                        value={selectedOrder.productTitle}
+                                        className="input input-bordered w-full bg-gray-50"
+                                        readOnly
+                                    />
+                                </div>
+                                
+                                <div>
+                                    <label className="block text-sm font-medium">Order ID</label>
+                                    <input
+                                        type="text"
+                                        value={selectedOrder._id}
+                                        className="input input-bordered w-full bg-gray-50"
+                                        readOnly
+                                    />
+                                </div>
+                                
+                                <div>
+                                    <label className="block text-sm font-medium">Customer</label>
+                                    <input
+                                        type="text"
+                                        value={`${selectedOrder.firstName} ${selectedOrder.lastName}`}
+                                        className="input input-bordered w-full bg-gray-50"
+                                        readOnly
+                                    />
+                                </div>
+                            </div>
+
+                            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-6">
+
+                                <div>
+                                    <label className="block text-sm font-medium">Location</label>
+                                    <input
+                                        {...register("location", { required: "Location is required" })}
+                                        className="input input-bordered w-full"
+                                        placeholder="Enter current location"
+                                    />
+                                    {errors.location && (
+                                        <p className="text-red-500 text-sm">{errors.location.message}</p>
+                                    )}
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm font-medium">Order Status</label>
+                                    <select
+                                        {...register("orderStatus", { required: "Order Status is required" })}
+                                        className="select select-bordered w-full"
+                                    >
+                                        <option value="In Production">In Production</option>
+                                        <option value="Quality Check Started">Quality Check Started</option>
+                                        <option value="Quality Check Passed">Quality Check Passed</option>
+                                        <option value="Packed">Packed</option>
+                                        <option value="Shipped">Shipped</option>
+                                        <option value="Out For Delivery">Out For Delivery</option>
+                                        <option value="Delivered">Delivered</option>
+                                    </select>
+                                    {errors.orderStatus && (
+                                        <p className="text-red-500 text-sm">{errors.orderStatus.message}</p>
+                                    )}
+                                </div>
+
+
+                                <div>
+                                    <label className="block text-sm font-medium">Note</label>
+                                    <textarea
+                                        {...register("note")}
+                                        className="textarea textarea-bordered w-full"
+                                        placeholder="Add any notes here..."
+                                        rows={3}
+                                    ></textarea>
+                                </div>
+
+                                <div className="flex justify-end pt-4 space-x-2">
+                                    <button 
+                                        type="button" 
+                                        onClick={() => {
+                                            modalRef.current.close();
+                                            reset();
+                                        }}
+                                        className="btn btn-ghost"
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button type="submit" className="btn btn-primary">
+                                        Update Tracking Details
+                                    </button>
+                                </div>
+
+                            </form>
+                        </>
+                    ) : (
+                        <div className="text-center text-red-500">Product not found.</div>
+                    )}
+
+                </div>
+            </dialog>
         </div>
     )
 }
 
-export default AdminAllOrders
+export default ApprovedOrders

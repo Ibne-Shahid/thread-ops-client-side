@@ -6,7 +6,7 @@ import useRoles from '../../../Hooks/useRoles'
 import useAuth from '../../../Hooks/useAuth'
 import { toast } from 'react-toastify'
 
-const AdminAllOrders = () => {
+const PendingOrders = () => {
     const axiosSecure = useAxiosSecure()
     const user = useRoles()
     const { firebaseUser } = useAuth()
@@ -180,4 +180,4 @@ const AdminAllOrders = () => {
     )
 }
 
-export default AdminAllOrders
+export default PendingOrders

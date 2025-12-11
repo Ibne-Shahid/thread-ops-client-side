@@ -93,7 +93,7 @@ const AdminAllOrders = () => {
                                     className={`px-2 py-1 rounded text-xs font-semibold whitespace-nowrap ${order.status === 'Pending'
                                         ? 'bg-yellow-100 text-yellow-700'
                                         : order.status === 'Approved'
-                                            ? 'bg-green-100 text-green-700'
+                                            ? 'bg-green-100 text-green-700' : order.status === "Delivered" ? 'bg-green-100 text-green-700'
                                             : 'bg-red-100 text-red-700'
                                         }`}
                                 >
