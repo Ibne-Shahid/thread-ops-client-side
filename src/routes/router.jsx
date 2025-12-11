@@ -101,6 +101,10 @@ const router = createBrowserRouter([
                 element: <MyOrders></MyOrders>
             },
             {
+                path: 'my-orders/order-details/:orderId',
+                element: <OrderDetails></OrderDetails>
+            },
+            {
                 path: 'my-profile',
                 element: <PrivateRoutes><MyProfile></MyProfile></PrivateRoutes>
             },

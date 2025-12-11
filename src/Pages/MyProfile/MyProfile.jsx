@@ -66,13 +66,6 @@ const MyProfile = () => {
                     </div>
                     <div className="flex gap-3">
                         <button
-                            onClick={handleEditProfile}
-                            className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
-                        >
-                            <Edit className="w-4 h-4" />
-                            Edit Profile
-                        </button>
-                        <button
                             onClick={handleLogout}
                             className="cursor-pointer flex items-center gap-2 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
                         >
@@ -144,24 +137,6 @@ const MyProfile = () => {
                                         <p className="text-gray-900">{user?.email}</p>
                                     </div>
                                 </div>
-                                {user?.phone && (
-                                    <div className="flex items-start gap-3">
-                                        <Phone className="w-4 h-4 text-gray-400 mt-1" />
-                                        <div>
-                                            <p className="text-sm text-gray-500">Phone</p>
-                                            <p className="text-gray-900">{user.phone}</p>
-                                        </div>
-                                    </div>
-                                )}
-                                {user?.address && (
-                                    <div className="flex items-start gap-3">
-                                        <MapPin className="w-4 h-4 text-gray-400 mt-1" />
-                                        <div>
-                                            <p className="text-sm text-gray-500">Address</p>
-                                            <p className="text-gray-900">{user.address}</p>
-                                        </div>
-                                    </div>
-                                )}
                             </div>
                         </div>
                     </div>

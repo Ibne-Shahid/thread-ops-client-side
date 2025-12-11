@@ -1,7 +1,10 @@
 import React from 'react'
 import { motion } from 'motion/react' 
+import { Link } from 'react-router'
+import useAuth from '../../Hooks/useAuth'
 
 const Hero = () => {
+  const {firebaseUser} = useAuth()
   return (
     <div className="relative w-full md:h-[50vh] lg:h-[70vh] bg-cover bg-center" style={{ backgroundImage: "url('/hero.jpg')" }}>
       <div className="absolute inset-0 bg-black opacity-50"></div> 
@@ -34,18 +37,18 @@ const Hero = () => {
           animate={{ opacity: 1, y: 0 }}   
           transition={{ duration: 1, delay: 0.6 }}
         >
-          <a
-            href="#get-started"
+          <Link
+            to={!firebaseUser ? "/login" : "/dashboard"}
             className="btn btn-primary text-white py-3 px-6 text-lg font-semibold rounded-lg hover:bg-warning-focus transition-all duration-300"
           >
             Get Started
-          </a>
-          <a
-            href="#sell"
+          </Link>
+          <Link
+            to="/all-products"
             className="btn btn-secondary text-white py-3 px-6 text-lg font-semibold rounded-lg hover:bg-primary-focus transition-all duration-300"
           >
             View Collection
-          </a>
+          </Link>
         </motion.div>
         
       </div>

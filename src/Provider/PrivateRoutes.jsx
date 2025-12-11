@@ -26,8 +26,8 @@ const PrivateRoutes = ({ children }) => {
                     </p>
                     <div className="flex justify-center gap-4">
 
-                        <button onClick={() => navigate(-1)} className="btn btn-primary text-white rounded-md hover:bg-primary/90">
-                            Go Back
+                        <button onClick={() => navigate('/')} className="btn btn-primary text-white rounded-md hover:bg-primary/90">
+                            Go Home
                         </button>
 
                         <button onClick={() => navigate("/login", { state: location.pathname , replace: true })} className="btn btn-secondary text-white rounded-md hover:bg-secondary/90">
