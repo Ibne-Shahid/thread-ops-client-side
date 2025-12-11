@@ -232,7 +232,6 @@ const TrackOrderManager = () => {
                                                 'bg-purple-500'
                                             }`}></div>
                                             
-                                            {/* Timeline Content */}
                                             <div className="ml-6 md:ml-12">
                                                 <div className="bg-gray-50 rounded-lg p-4 border border-gray-100 hover:border-gray-300 transition-colors">
                                                     <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
@@ -268,7 +267,6 @@ const TrackOrderManager = () => {
                                                             )}
                                                         </div>
                                                         
-                                                        {/* Status Badge */}
                                                         <div className={`self-start px-3 py-1 rounded-full text-xs font-medium ${
                                                             entry?.orderStatus === 'Delivered' ? 'bg-green-100 text-green-800' :
                                                             entry?.orderStatus === 'Shipped' ? 'bg-blue-100 text-blue-800' :

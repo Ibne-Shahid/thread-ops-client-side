@@ -102,7 +102,7 @@ const router = createBrowserRouter([
             },
             {
                 path: 'my-profile',
-                element: <MyProfile></MyProfile>
+                element: <PrivateRoutes><MyProfile></MyProfile></PrivateRoutes>
             },
             {
                 path: 'manage-users',
