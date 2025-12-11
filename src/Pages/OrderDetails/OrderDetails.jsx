@@ -91,12 +91,12 @@ const OrderDetails = () => {
                 <div className="flex flex-col md:flex-row justify-between items-center md:items-start mb-4">
                     {product && product.images && product.images.length > 0 ? (
                         <img
-                            src={product.images[0]} 
+                            src={product.images[0]}
                             alt={productTitle}
                             className="w-48 h-48 object-cover rounded-lg md:w-64 md:h-64 lg:w-72 lg:h-72"
                         />
                     ) : (
-                        <div className="w-48 h-48 bg-gray-300 mb-4 md:w-64 md:h-64 lg:w-72 lg:h-72"></div> 
+                        <div className="w-48 h-48 bg-gray-300 mb-4 md:w-64 md:h-64 lg:w-72 lg:h-72"></div>
                     )}
                     <div className="space-y-4 mt-3 md:mt-0 md:ml-6 md:w-2/3">
                         <p><strong>Product:</strong> {productTitle}</p>
@@ -131,9 +131,11 @@ const OrderDetails = () => {
                                 <hr />
                                 <div className="timeline-middle">
                                     <div
-                                        className={`w-4 h-4 rounded-full border-2 ${index === trackingHistory.length - 1
-                                            ? "bg-green-500 border-green-700"
-                                            : "bg-yellow-500 border-yellow-700"
+                                        className={`w-4 h-4 rounded-full border-2 ${entry.orderStatus === 'Rejected'
+                                            ? "bg-red-500 border-red-700"
+                                            : index === trackingHistory.length - 1
+                                                ? "bg-green-500 border-green-700"
+                                                : "bg-yellow-500 border-yellow-700"
                                             }`}
                                     ></div>
                                 </div>

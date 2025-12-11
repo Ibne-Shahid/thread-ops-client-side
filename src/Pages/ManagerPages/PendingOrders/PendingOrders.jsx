@@ -19,15 +19,15 @@ const AdminAllOrders = () => {
         }
     })
 
-    const pendingOrders = myPendingorders.filter(orders=> orders?.status === "Pending")
+    const pendingOrders = myPendingorders.filter(orders => orders?.status === "Pending")
 
     const handleApproveOrder = async (id) => {
         try {
             const res = await axiosSecure.patch(`/orders/${id}`, {
                 status: 'Approved'
             });
-            
-            if(res.data.modifiedCount > 0){
+
+            if (res.data.modifiedCount > 0) {
                 refetch()
                 toast.success('Order approved!')
             }
@@ -35,6 +35,21 @@ const AdminAllOrders = () => {
             toast.error('Sorry, something went wrong!')
         }
     };
+
+    const handleRejectOrder = async (id) => {
+        try {
+            const res = await axiosSecure.patch(`/orders/${id}`, {
+                status: 'Rejected'
+            });
+
+            if (res.data.modifiedCount > 0) {
+                refetch()
+                toast.success('Order Rejected!')
+            }
+        } catch (error) {
+            toast.error('Sorry, something went wrong!')
+        }
+    }
 
 
     if (isLoading) return <Spinner />
@@ -86,7 +101,7 @@ const AdminAllOrders = () => {
 
                             <div className='flex gap-2'>
                                 <button onClick={() => handleApproveOrder(order._id)} className='btn btn-success text-white flex-1'>Approve</button>
-                                <button className='btn btn-error text-white flex-1'>Reject</button>
+                                <button onClick={() => handleRejectOrder(order._id)} className='btn btn-error text-white flex-1'>Reject</button>
                                 <Link to={`order-details/${order._id}`}>
                                     <button className="btn btn-primary hover:bg-primary/90 text-white rounded text-sm font-medium transition-colors flex-1">
                                         View Details
@@ -144,7 +159,7 @@ const AdminAllOrders = () => {
                                             <button onClick={() => handleApproveOrder(order._id)} className="py-2 px-3 bg-success hover:bg-success/90 text-white rounded text-sm font-medium transition-colors cursor-pointer">
                                                 Approve
                                             </button>
-                                            <button className="py-2 px-3 bg-error hover:bg-error/90 text-white rounded text-sm font-medium transition-colors cursor-pointer">
+                                            <button onClick={() => handleRejectOrder(order._id)} className="py-2 px-3 bg-error hover:bg-error/90 text-white rounded text-sm font-medium transition-colors cursor-pointer">
                                                 Reject
                                             </button>
                                             <Link to={`order-details/${order._id}`}>
