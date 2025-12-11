@@ -28,6 +28,7 @@ import ManageProducts from "../Pages/ManagerPages/ManageProducts/ManageProducts"
 import PendingOrders from "../Pages/ManagerPages/PendingOrders/PendingOrders";
 import ApprovedOrders from "../Pages/ManagerPages/ApprovedOrders/ApprovedOrders";
 import TrackOrderManager from "../Pages/ManagerPages/TrackOrderManager/TrackOrderManager";
+import TrackOrder from "../Pages/TrackOrder/TrackOrder";
 
 
 const router = createBrowserRouter([
@@ -103,6 +104,10 @@ const router = createBrowserRouter([
             {
                 path: 'my-orders/order-details/:orderId',
                 element: <OrderDetails></OrderDetails>
+            },
+            {
+                path: 'track-order',
+                element: <TrackOrder></TrackOrder>
             },
             {
                 path: 'my-profile',

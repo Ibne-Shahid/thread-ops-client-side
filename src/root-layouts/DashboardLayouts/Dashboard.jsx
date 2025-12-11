@@ -3,6 +3,7 @@ import { FaUser } from 'react-icons/fa'
 import { IoCartOutline } from "react-icons/io5";
 import { MdOutlineProductionQuantityLimits, MdManageAccounts, MdPendingActions } from "react-icons/md";
 import { IoMdAddCircleOutline } from "react-icons/io"
+import { CiDeliveryTruck } from "react-icons/ci"
 import { AiOutlineLike } from "react-icons/ai"
 import { Link, Outlet } from 'react-router'
 import useRoles from '../../Hooks/useRoles';
@@ -129,6 +130,16 @@ const Dashboard = () => {
                                         <IoCartOutline />
 
                                         <span className="is-drawer-close:hidden">My Orders</span>
+                                    </button>
+                                </li>
+                            </Link>
+
+                            <Link to="/dashboard/track-order">
+                                <li>
+                                    <button className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Track Order">
+                                        <CiDeliveryTruck />
+
+                                        <span className="is-drawer-close:hidden">Track Order</span>
                                     </button>
                                 </li>
                             </Link>

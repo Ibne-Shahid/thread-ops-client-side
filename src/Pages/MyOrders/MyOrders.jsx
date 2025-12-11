@@ -6,11 +6,14 @@ import Spinner from '../../components/Loaders/Spinner'
 import { Link, useNavigate } from 'react-router'
 import { toast } from 'react-toastify'
 import Swal from 'sweetalert2'
+import useRoles from '../../Hooks/useRoles'
+import BuyerApprovalPending from '../../components/BuyerApprovalPending/BuyerApprovalPending'
 
 const MyOrders = () => {
     const { firebaseUser } = useAuth()
     const axiosSecure = useAxiosSecure()
     const navigate = useNavigate()
+    const user = useRoles()
 
     const { data: myOrders = [], isLoading, refetch } = useQuery({
         queryKey: ['orders', firebaseUser?.email],
@@ -32,7 +35,7 @@ const MyOrders = () => {
                 confirmButtonColor: "#3085d6",
                 cancelButtonColor: "#d33",
                 confirmButtonText: "Yes, delete it!"
-            }).then( async (result) => {
+            }).then(async (result) => {
                 if (result.isConfirmed) {
 
                     const res = await axiosSecure.delete(`/orders/${id}/my-order`)
@@ -58,6 +61,8 @@ const MyOrders = () => {
         }
 
     }
+
+    if (user?.role === "buyer" && user?.status === "pending") return <BuyerApprovalPending></BuyerApprovalPending>
 
     if (isLoading) return <Spinner></Spinner>
 
