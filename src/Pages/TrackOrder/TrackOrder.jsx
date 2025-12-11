@@ -1,92 +1,39 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router'
-import { 
-  Truck, 
-  Package, 
-  CheckCircle, 
-  Clock, 
-  XCircle,
-  ChevronRight,
-  Search,
-  Filter,
-  Calendar,
-  MapPin,
-  Mail,
-  Phone,
-  DollarSign,
-  ShoppingBag,
-  User
-} from 'lucide-react'
+import { Truck, Package, CheckCircle, Clock, XCircle, ChevronRight, Search, Filter, Calendar, MapPin, Mail, DollarSign, ShoppingBag, User } from 'lucide-react'
+import { useQuery } from '@tanstack/react-query'
+import useAxiosSecure from '../../Hooks/useAxiosSecure'
+import useAuth from '../../Hooks/useAuth'
 
 const TrackOrder = () => {
   const navigate = useNavigate()
   const [searchTerm, setSearchTerm] = useState('')
   const [statusFilter, setStatusFilter] = useState('all')
 
-  // Order data matching your JSON structure
-  const orders = [
-    {
-      _id: "6938c421843f0e5cba319cc2",
-      firstName: "Nana",
-      lastName: "Patekar",
-      quantity: "2000",
-      contact: "56869420",
-      address: "Chennai, India",
-      notes: "",
-      buyerEmail: "nana@patekar.com",
-      productId: "6935e7121e40a80de2b985d3",
-      productTitle: "Cotton Sports Cap",
-      orderPrice: 15980,
-      productPrice: 7.99,
-      paymentMethod: "Cash on Delivery",
-      paymentStatus: "Pending",
-      status: "Pending",
-      transactionId: null,
-      orderDate: "2025-12-10T00:51:45.681+00:00",
-      trackingHistory: [],
-      sellerEmail: "spider@man.com",
-      trackingId: null,
-      updatedAt: "2025-12-11T04:25:53.937+00:00"
-    },
-    {
-      _id: "6938c48a843f0e5cba319cc3",
-      firstName: "Nana",
-      lastName: "Patekar",
-      quantity: "5000",
-      contact: "8569421",
-      address: "Mumbai, India",
-      notes: "",
-      buyerEmail: "nana@patekar.com",
-      productId: "67698fa1a12bcf0012340011",
-      productTitle: "Windbreaker Jacket",
-      orderPrice: 275000,
-      productPrice: 55,
-      paymentMethod: "Cash on Delivery",
-      paymentStatus: "Pending",
-      status: "Delivered",
-      transactionId: null,
-      orderDate: "2025-12-10T00:53:30.282+00:00",
-      trackingHistory: Array(8),
-      sellerEmail: "aa@m.com",
-      trackingId: null,
-      updatedAt: "2025-12-11T04:25:53.937+00:00"
+  const {firebaseUser} = useAuth()
+
+  const axiosSecure = useAxiosSecure()
+
+  const { data: orders = [] } = useQuery({
+    queryKey: ['orders', firebaseUser],
+    queryFn: async ()=>{
+        const res = await axiosSecure.get(`/orders?email=${firebaseUser?.email}`)
+        return res.data
     }
-  ]
+  })
 
   const getStatusIcon = (status) => {
     switch (status) {
       case 'Delivered':
         return <CheckCircle className="w-5 h-5 text-success" />
-      case 'Shipped':
-        return <Truck className="w-5 h-5 text-info" />
-      case 'Processing':
-        return <Clock className="w-5 h-5 text-warning" />
-      case 'Cancelled':
+      case 'Approved':
+        return <Truck className="w-5 h-5 text-warning" />
+      case 'Rejected':
         return <XCircle className="w-5 h-5 text-error" />
       case 'Pending':
         return <Clock className="w-5 h-5 text-warning animate-pulse" />
       default:
-        return <Package className="w-5 h-5" />
+        return <Package className="w-5 h-5 text-info" />
     }
   }
 
@@ -94,16 +41,14 @@ const TrackOrder = () => {
     switch (status) {
       case 'Delivered':
         return 'badge-success'
-      case 'Shipped':
-        return 'badge-info'
-      case 'Processing':
+      case 'Approved':
         return 'badge-warning'
       case 'Pending':
         return 'badge-warning'
-      case 'Cancelled':
+      case 'Rejected':
         return 'badge-error'
       default:
-        return 'badge-neutral'
+        return 'badge-info'
     }
   }
 
@@ -127,7 +72,6 @@ const TrackOrder = () => {
     navigate(`/tracking/${orderId}`)
   }
 
-  // Filter orders based on search and status
   const filteredOrders = orders.filter(order => {
     const matchesSearch = 
       order.productTitle.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -140,15 +84,14 @@ const TrackOrder = () => {
   })
 
   return (
-    <div className="min-h-screen bg-base-200 p-4 md:p-6">
+    <div className="min-h-screen p-4 md:p-6">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
+
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900">Order Tracking</h1>
           <p className="text-gray-600 mt-2">Track and manage all your orders</p>
         </div>
 
-        {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           <div className="card bg-base-100 shadow-sm">
             <div className="card-body p-4">
@@ -213,7 +156,6 @@ const TrackOrder = () => {
           </div>
         </div>
 
-        {/* Search and Filter */}
         <div className="card bg-base-100 shadow-md mb-6">
           <div className="card-body p-4 md:p-6">
             <div className="flex flex-col md:flex-row gap-4">
@@ -238,10 +180,9 @@ const TrackOrder = () => {
                   <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52 z-10">
                     <li><button onClick={() => setStatusFilter('all')}>All Orders</button></li>
                     <li><button onClick={() => setStatusFilter('Pending')}>Pending</button></li>
-                    <li><button onClick={() => setStatusFilter('Processing')}>Processing</button></li>
-                    <li><button onClick={() => setStatusFilter('Shipped')}>Shipped</button></li>
+                    <li><button onClick={() => setStatusFilter('Approved')}>Approved</button></li>
                     <li><button onClick={() => setStatusFilter('Delivered')}>Delivered</button></li>
-                    <li><button onClick={() => setStatusFilter('Cancelled')}>Cancelled</button></li>
+                    <li><button onClick={() => setStatusFilter('Rejected')}>Rejected</button></li>
                   </ul>
                 </div>
               </div>
@@ -276,7 +217,7 @@ const TrackOrder = () => {
                             {order.productTitle}
                           </div>
                           <div className="text-sm text-gray-500">
-                            Order: {order._id.slice(-8)}
+                            Order: {order._id}
                           </div>
                           <div className="flex items-center gap-1 text-sm text-gray-500 mt-1">
                             <Calendar className="w-3 h-3" />
@@ -327,7 +268,7 @@ const TrackOrder = () => {
                           </span>
                         </div>
                         <div className="text-sm text-gray-500 mt-1">
-                          Updated: {formatDate(order.updatedAt)}
+                          Updated: {order.updatedAt ? formatDate(order.updatedAt) : "Pending Approval"}
                         </div>
                         <div className="text-sm mt-1">
                           Tracking: {order.trackingHistory?.length || 0} updates
@@ -361,11 +302,10 @@ const TrackOrder = () => {
               onClick={() => handleOrderClick(order._id)}
             >
               <div className="card-body p-4">
-                {/* Header */}
                 <div className="flex justify-between items-start mb-3">
                   <div>
                     <h3 className="font-bold text-lg">{order.productTitle}</h3>
-                    <p className="text-sm text-gray-500">Order: {order._id.slice(-8)}</p>
+                    <p className="text-sm text-gray-500">Order: {order._id}</p>
                   </div>
                   <span className={`badge ${getStatusBadgeClass(order.status)} gap-1`}>
                     {getStatusIcon(order.status)}
@@ -373,7 +313,6 @@ const TrackOrder = () => {
                   </span>
                 </div>
 
-                {/* Customer Info */}
                 <div className="flex items-center gap-2 mb-2">
                   <User className="w-4 h-4 text-gray-400" />
                   <span className="font-medium">
@@ -386,7 +325,6 @@ const TrackOrder = () => {
                   <span className="text-sm text-gray-600 truncate">{order.address}</span>
                 </div>
 
-                {/* Order Details */}
                 <div className="grid grid-cols-2 gap-4 mb-4">
                   <div>
                     <p className="text-sm text-gray-500">Quantity</p>
@@ -406,7 +344,6 @@ const TrackOrder = () => {
                   </div>
                 </div>
 
-                {/* Tracking Info */}
                 <div className="flex items-center justify-between pt-3 border-t">
                   <div className="flex items-center gap-2 text-sm text-gray-600">
                     <Truck className="w-4 h-4" />
