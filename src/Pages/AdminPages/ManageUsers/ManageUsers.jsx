@@ -175,9 +175,9 @@ const ManageUsers = () => {
             </div>
 
             {/* Desktop Table View */}
-            <div className="hidden md:block overflow-x-auto bg-white shadow rounded-lg">
+            <div className="hidden md:block overflow-x-auto shadow rounded-lg">
                 <table className="min-w-full text-sm">
-                    <thead className="bg-gray-100">
+                    <thead className="bg-base-200">
                         <tr>
                             <th className="p-3 text-left">Profile</th>
                             <th className="p-3 text-left">Name</th>
@@ -197,7 +197,7 @@ const ManageUsers = () => {
                             </tr>
                         ) : (
                             users.map((user) => (
-                                <tr key={user._id} className="border-b hover:bg-gray-50">
+                                <tr key={user._id} className="border-b">
                                     <td className="p-3">
                                         <img
                                             src={user.photoURL}
@@ -206,7 +206,7 @@ const ManageUsers = () => {
                                     </td>
 
                                     <td className="p-3">{user.name}</td>
-                                    <td className="p-3 text-gray-600">{user.email}</td>
+                                    <td className="p-3 text-gray-300">{user.email}</td>
                                     <td className="p-3">{user.role}</td>
 
                                     <td className="p-3">

@@ -25,7 +25,7 @@ const NoDetails = () => {
         </button>
 
         <Link
-          to="/all-products"
+          to="/allProducts"
           
         >
           <button className="btn btn-outline btn-secondary px-5 py-2 rounded-lg shadow transition">Go Back</button>

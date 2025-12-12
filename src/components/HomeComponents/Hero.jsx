@@ -44,7 +44,7 @@ const Hero = () => {
             Get Started
           </Link>
           <Link
-            to="/all-products"
+            to="/allProducts"
             className="btn btn-secondary text-white py-3 px-6 text-lg font-semibold rounded-lg hover:bg-primary-focus transition-all duration-300"
           >
             View Collection

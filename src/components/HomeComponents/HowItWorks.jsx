@@ -23,7 +23,7 @@ const HowItWorks = () => {
                         <div className="text-4xl mx-auto text-secondary mb-4">
                             <FaUsers />
                         </div>
-                        <h3 className="text-xl font-semibold text-gray-300">Sign Up & Login</h3>
+                        <h3 className="text-xl font-semibold ">Sign Up & Login</h3>
                         <p className="text-gray-600 mt-2">Easily create an account or log in to your existing account.</p>
                     </div>
                 </div>
@@ -33,7 +33,7 @@ const HowItWorks = () => {
                         <div className="text-4xl mx-auto text-secondary mb-4">
                             <FaUpload />
                         </div>
-                        <h3 className="text-xl font-semibold text-gray-300">Upload Garment Details</h3>
+                        <h3 className="text-xl font-semibold ">Upload Garment Details</h3>
                         <p className="text-gray-600 mt-2">Add new garment information easily, from fabrics to designs.</p>
                     </div>
                 </div>
@@ -43,7 +43,7 @@ const HowItWorks = () => {
                         <div className="text-4xl mx-auto text-secondary mb-4">
                             <FaTasks />
                         </div>
-                        <h3 className="text-xl font-semibold text-gray-300">Manage Orders</h3>
+                        <h3 className="text-xl font-semibold ">Manage Orders</h3>
                         <p className="text-gray-600 mt-2">Track your garment orders and stay on top of deadlines.</p>
                     </div>
                 </div>
@@ -53,7 +53,7 @@ const HowItWorks = () => {
                         <div className="text-4xl mx-auto text-secondary mb-4">
                             <FaChartLine />
                         </div>
-                        <h3 className="text-xl font-semibold text-gray-300">Track & Analyze</h3>
+                        <h3 className="text-xl font-semibold ">Track & Analyze</h3>
                         <p className="text-gray-600 mt-2">Analyze garment performance with real-time data insights.</p>
                     </div>
                 </div>

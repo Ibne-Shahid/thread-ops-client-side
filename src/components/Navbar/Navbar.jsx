@@ -35,7 +35,7 @@ const Navbar = () => {
                         </li>
 
                         <li>
-                            <NavLink to="/all-products">All Products</NavLink>
+                            <NavLink to="/allProducts">All Products</NavLink>
                         </li>
 
                         <li>
@@ -84,7 +84,7 @@ const Navbar = () => {
                 <div className='hidden lg:block'>
                     <ul className="menu menu-horizontal px-10 gap-3 font-semibold">
                         <NavLink className={({ isActive }) => `${isActive ? "bg-secondary text-white" : ""} p-1 rounded-md`} to="/"><li>Home</li></NavLink>
-                        <NavLink className={({ isActive }) => `${isActive ? "bg-secondary text-white" : ""} p-1 rounded-md`} to="/all-products"><li>All Products</li></NavLink>
+                        <NavLink className={({ isActive }) => `${isActive ? "bg-secondary text-white" : ""} p-1 rounded-md`} to="/allProducts"><li>All Products</li></NavLink>
                         <NavLink className={({ isActive }) => `${isActive ? "bg-secondary text-white" : ""} p-1 rounded-md`} to="/about-us"><li>About Us</li></NavLink>
                         <NavLink className={({ isActive }) => `${isActive ? "bg-secondary text-white" : ""} p-1 rounded-md`} to="/contact"><li>Contact</li></NavLink>
                         {

@@ -32,15 +32,15 @@ const ProductDetails = () => {
     return url.replace("watch?v=", "embed/");
   };
 
-  
-    const handleOrderButton = (id)=>{
-        navigate(`/product-details/${id}/order-form`)
+
+  const handleOrderButton = (id) => {
+    navigate(`/product-details/${id}/order-form`)
   }
-  
+
 
   return (
     <div className="max-w-6xl mx-auto p-6 grid lg:grid-cols-2 gap-10">
-      
+
       <div>
 
         {product.images?.length === 1 && (
@@ -53,7 +53,7 @@ const ProductDetails = () => {
 
         {product.images?.length > 1 && (
           <div>
-            
+
             <img
               src={product.images[0]}
               alt={product.productName}
@@ -77,7 +77,7 @@ const ProductDetails = () => {
       <div className="space-y-6">
         <h1 className="text-3xl font-bold">{product.productName}</h1>
 
-        <p className="text-gray-700 leading-relaxed">
+        <p className="text-gray-500 leading-relaxed">
           {product.productDescription}
         </p>
 
@@ -100,16 +100,19 @@ const ProductDetails = () => {
           </div>
         )}
 
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-gray-500">
           Category: <span className="font-semibold">{product.category}</span>
         </p>
 
         <div className="flex gap-4 mt-4">
-          <button onClick={()=>handleOrderButton(product._id)} disabled={!(user?.role === "buyer" && user?.status === "approved")} className="btn btn-primary text-white rounded-lg shadow hover:bg-primary/90 transition">
+          <button onClick={() => handleOrderButton(product._id)} disabled={!(user?.role === "buyer" && user?.status === "approved") || user?.status === "suspended"} className="btn btn-primary text-white rounded-lg shadow hover:bg-primary/90 transition">
             Order Now
           </button>
-          <button onClick={()=>navigate(-1)} className="btn btn-secondary hover:bg-secondary/90 rounded-lg shadow transition">Back</button>
+          <button onClick={() => navigate(-1)} className="btn btn-secondary hover:bg-secondary/90 rounded-lg shadow transition">Back</button>
         </div>
+        {user?.status === "suspended" && (
+          <p className="text-red-500 text-xs">*You are suspended!</p>
+        )}
       </div>
     </div>
   );

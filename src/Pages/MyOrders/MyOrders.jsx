@@ -73,15 +73,15 @@ const MyOrders = () => {
             {/* Mobile Card View */}
             <div className="md:hidden space-y-4">
                 {myOrders.length === 0 ? (
-                    <div className="text-center py-10 bg-white shadow rounded-lg">
+                    <div className="text-center py-10 shadow rounded-lg">
                         <p className="text-gray-500">No orders found</p>
                     </div>
                 ) : (
                     myOrders.map((order) => (
-                        <div key={order._id} className="bg-white shadow rounded-lg p-4 border border-gray-100">
+                        <div key={order._id} className="shadow rounded-lg p-4 border border-gray-100">
                             <div className="flex justify-between items-start mb-3">
                                 <div>
-                                    <h3 className="font-semibold text-gray-800">{order.productTitle}</h3>
+                                    <h3 className="font-semibold">{order.productTitle}</h3>
                                     <p className="text-xs text-gray-500 mt-1">Order ID: {order._id}</p>
                                 </div>
                                 <span
@@ -119,9 +119,9 @@ const MyOrders = () => {
             </div>
 
             {/* Desktop Table View */}
-            <div className="hidden md:block overflow-x-auto bg-white shadow rounded-lg">
+            <div className="hidden md:block overflow-x-auto bg-base-300 shadow rounded-lg">
                 <table className="min-w-full text-sm">
-                    <thead className="bg-gray-100">
+                    <thead className='bg-base-200'>
                         <tr>
                             <th className="p-3 text-left font-semibold">Order ID</th>
                             <th className="p-3 text-left font-semibold">Product</th>
@@ -141,8 +141,8 @@ const MyOrders = () => {
                             </tr>
                         ) : (
                             myOrders.map((order) => (
-                                <tr key={order._id} className="border-b hover:bg-gray-50">
-                                    <td className="p-3 font-mono text-gray-600">{order._id}</td>
+                                <tr key={order._id} className="border-b">
+                                    <td className="p-3 font-mono">{order._id}</td>
                                     <td className="p-3 font-medium">{order.productTitle}</td>
                                     <td className="p-3">{order.quantity}</td>
 

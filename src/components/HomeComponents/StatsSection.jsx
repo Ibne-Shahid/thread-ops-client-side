@@ -13,12 +13,12 @@ const StatsSection = () => {
         <section className="py-20">
             <div className="max-w-7xl mx-auto px-6 text-center">
 
-                <motion.h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4" initial={{ opacity: 0, y: -50 }}
+                <motion.h1 className="text-4xl md:text-5xl font-extrabold mb-4" initial={{ opacity: 0, y: -50 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 1 }}>
                     Trusted by Garment Leaders Worldwide
                 </motion.h1>
-                <p className="text-gray-400 text-lg mb-14">
+                <p className="text-lg mb-14">
                     Join hundreds of factories optimizing their garment production with ThreadOps.
                 </p>
 

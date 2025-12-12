@@ -7,7 +7,7 @@ const WhyChoose = () => {
             <div className="max-w-7xl mx-auto px-6">
 
                 <div className="text-center mb-14">
-                    <motion.h1 className="text-4xl md:text-5xl font-extrabold text-gray-900" initial={{ opacity: 0, y: -50 }}
+                    <motion.h1 className="text-4xl md:text-5xl font-extrabold" initial={{ opacity: 0, y: -50 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 1 }}>
                         Why Choose <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">ThreadOps?</span>
@@ -25,7 +25,7 @@ const WhyChoose = () => {
                         <div className="text-blue-600 text-4xl mb-4">
                             📊
                         </div>
-                        <h3 className="text-xl font-semibold text-gray-800">Real-Time Monitoring</h3>
+                        <h3 className="text-xl font-semibold ">Real-Time Monitoring</h3>
                         <p className="mt-2 text-gray-500">
                             Track production, orders, and inventory with up-to-the-minute accuracy.
                         </p>
@@ -35,7 +35,7 @@ const WhyChoose = () => {
                         <div className="text-blue-600 text-4xl mb-4">
                             ⚡
                         </div>
-                        <h3 className="text-xl font-semibold text-gray-800">Lightning Fast Workflow</h3>
+                        <h3 className="text-xl font-semibold ">Lightning Fast Workflow</h3>
                         <p className="mt-2 text-gray-500">
                             Reduce manual errors and speed up your entire garment operation.
                         </p>
@@ -45,7 +45,7 @@ const WhyChoose = () => {
                         <div className="text-blue-600 text-4xl mb-4">
                             🔐
                         </div>
-                        <h3 className="text-xl font-semibold text-gray-800">Secure & Reliable</h3>
+                        <h3 className="text-xl font-semibold ">Secure & Reliable</h3>
                         <p className="mt-2 text-gray-500">
                             Enterprise-grade data protection with 99.9% uptime guarantee.
                         </p>
@@ -55,7 +55,7 @@ const WhyChoose = () => {
                         <div className="text-blue-600 text-4xl mb-4">
                             🏭
                         </div>
-                        <h3 className="text-xl font-semibold text-gray-800">Built for Factories</h3>
+                        <h3 className="text-xl font-semibold ">Built for Factories</h3>
                         <p className="mt-2 text-gray-500">
                             Designed specifically for garment manufacturers & production teams.
                         </p>
@@ -65,7 +65,7 @@ const WhyChoose = () => {
                         <div className="text-blue-600 text-4xl mb-4">
                             🤝
                         </div>
-                        <h3 className="text-xl font-semibold text-gray-800">Easy Team Collaboration</h3>
+                        <h3 className="text-xl font-semibold ">Easy Team Collaboration</h3>
                         <p className="mt-2 text-gray-500">
                             Seamlessly connect managers, QC teams, merchandisers & workers.
                         </p>
@@ -75,7 +75,7 @@ const WhyChoose = () => {
                         <div className="text-blue-600 text-4xl mb-4">
                             📈
                         </div>
-                        <h3 className="text-xl font-semibold text-gray-800">Insights That Matter</h3>
+                        <h3 className="text-xl font-semibold ">Insights That Matter</h3>
                         <p className="mt-2 text-gray-500">
                             Powerful analytics to help you make faster, smarter decisions.
                         </p>

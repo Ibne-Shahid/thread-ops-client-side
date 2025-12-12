@@ -1,5 +1,5 @@
 import React from 'react';
-import { LogOut, Mail, Phone, MapPin, Calendar, Briefcase, Users, Shield, Package, Edit, Building, FileText, CheckCircle } from 'lucide-react';
+import { LogOut, Mail, Briefcase, Users, Shield, Package, Edit, Building, FileText, CheckCircle, AlertCircle } from 'lucide-react';
 import useRoles from '../../Hooks/useRoles';
 import useAuth from '../../Hooks/useAuth';
 
@@ -15,13 +15,8 @@ const MyProfile = () => {
             })
             .catch((error) => {
                 const errorMessage = error.message
-
                 toast.error(errorMessage)
             })
-    };
-
-    const handleEditProfile = () => {
-
     };
 
     const getRoleBadge = (role) => {
@@ -56,13 +51,13 @@ const MyProfile = () => {
     const roleBadge = getRoleBadge(user?.role);
 
     return (
-        <div className="min-h-screen bg-gray-50 p-4 md:p-6">
+        <div className="min-h-screen p-4 md:p-6">
             <div className="max-w-6xl mx-auto">
 
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
                     <div>
-                        <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Profile</h1>
-                        <p className="text-gray-600 mt-1">ThreadOps</p>
+                        <h1 className="text-2xl md:text-3xl font-bold ">Profile</h1>
+                        <p className="text-gray-400 mt-1">ThreadOps</p>
                     </div>
                     <div className="flex gap-3">
                         <button
@@ -79,9 +74,8 @@ const MyProfile = () => {
 
                     <div className="lg:col-span-1 space-y-6">
 
-                        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                        <div className="rounded-xl shadow-sm border border-gray-200 p-6">
                             <div className="flex flex-col items-center">
-
                                 <div className="relative mb-4">
                                     <div className="w-32 h-32 rounded-full bg-gray-200 flex items-center justify-center border-4 border-white shadow">
                                         {user?.photoURL ? (
@@ -101,9 +95,14 @@ const MyProfile = () => {
                                             <CheckCircle className="w-3 h-3 text-white" />
                                         </div>
                                     )}
+                                    {user?.status === 'suspended' && (
+                                        <div className="absolute bottom-2 right-2 w-6 h-6 bg-red-500 rounded-full border-2 border-white flex items-center justify-center">
+                                            <AlertCircle className="w-3 h-3 text-white" />
+                                        </div>
+                                    )}
                                 </div>
 
-                                <h2 className="text-xl font-bold text-gray-900 text-center">{user?.name}</h2>
+                                <h2 className="text-xl font-bold text-center">{user?.name}</h2>
                                 <div className="flex items-center gap-2 mt-2">
                                     <span className={`px-3 py-1 rounded-full text-sm font-medium border ${roleBadge.color} flex items-center gap-1`}>
                                         {roleBadge.icon}
@@ -114,9 +113,9 @@ const MyProfile = () => {
                                 <div className="mt-4">
                                     <span className={`px-3 py-1 rounded-full text-sm font-medium ${user?.status === 'approved'
                                         ? 'bg-green-100 text-green-800'
-                                        : user?.status === 'pending' ?
-                                            'bg-yellow-100 text-yellow-800' :
-                                            'bg-red-100 text-red-800'
+                                        : user?.status === 'pending'
+                                            ? 'bg-yellow-100 text-yellow-800'
+                                            : 'bg-red-100 text-red-800'
                                         }`}>
                                         {user?.status === 'approved' ? 'Active' : user?.status === 'pending' ? 'Pending' : 'Suspended'}
                                     </span>
@@ -124,17 +123,17 @@ const MyProfile = () => {
                             </div>
                         </div>
 
-                        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-                            <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                                <Mail className="w-5 h-5 text-gray-500" />
+                        <div className="rounded-xl shadow-sm border border-gray-200 p-6">
+                            <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                                <Mail className="w-5 h-5 text-gray-300" />
                                 Contact Information
                             </h3>
                             <div className="space-y-3">
                                 <div className="flex items-start gap-3">
-                                    <Mail className="w-4 h-4 text-gray-400 mt-1" />
+                                    <Mail className="w-4 h-4 text-gray-300 mt-1" />
                                     <div>
-                                        <p className="text-sm text-gray-500">Email</p>
-                                        <p className="text-gray-900">{user?.email}</p>
+                                        <p className="text-sm text-gray-400">Email</p>
+                                        <p>{user?.email}</p>
                                     </div>
                                 </div>
                             </div>
@@ -142,11 +141,11 @@ const MyProfile = () => {
                     </div>
 
                     <div className="lg:col-span-2 space-y-6">
-                        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                        <div className="rounded-xl shadow-sm border border-gray-200 p-6">
                             <div className="flex justify-between items-start mb-6">
                                 <div>
-                                    <h3 className="text-xl font-bold text-gray-900 mb-2">Role Details</h3>
-                                    <p className="text-gray-600">Information about your permissions and responsibilities</p>
+                                    <h3 className="text-xl font-bold mb-2">Role Details</h3>
+                                    <p className="text-gray-400">Information about your permissions and responsibilities</p>
                                 </div>
                                 <div className={`px-4 py-2 rounded-lg ${roleBadge.color}`}>
                                     {roleBadge.label}
@@ -155,19 +154,19 @@ const MyProfile = () => {
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
-                                    <h4 className="font-semibold text-gray-900 mb-3">Permissions</h4>
+                                    <h4 className="font-semibold mb-3">Permissions</h4>
                                     <ul className="space-y-2">
                                         {user?.role === 'admin' && (
                                             <>
-                                                <li className="flex items-center gap-2 text-gray-700">
+                                                <li className="flex items-center gap-2 text-gray-400">
                                                     <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                                                     Full system access
                                                 </li>
-                                                <li className="flex items-center gap-2 text-gray-700">
+                                                <li className="flex items-center gap-2 text-gray-400">
                                                     <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                                                     User management
                                                 </li>
-                                                <li className="flex items-center gap-2 text-gray-700">
+                                                <li className="flex items-center gap-2 text-gray-400">
                                                     <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                                                     System configuration
                                                 </li>
@@ -175,15 +174,15 @@ const MyProfile = () => {
                                         )}
                                         {user?.role === 'manager' && (
                                             <>
-                                                <li className="flex items-center gap-2 text-gray-700">
+                                                <li className="flex items-center gap-2 text-gray-400">
                                                     <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                                                     Production oversight
                                                 </li>
-                                                <li className="flex items-center gap-2 text-gray-700">
+                                                <li className="flex items-center gap-2 text-gray-400">
                                                     <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                                                     Inventory management
                                                 </li>
-                                                <li className="flex items-center gap-2 text-gray-700">
+                                                <li className="flex items-center gap-2 text-gray-400">
                                                     <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                                                     Team coordination
                                                 </li>
@@ -191,15 +190,15 @@ const MyProfile = () => {
                                         )}
                                         {user?.role === 'buyer' && (
                                             <>
-                                                <li className="flex items-center gap-2 text-gray-700">
+                                                <li className="flex items-center gap-2 text-gray-400">
                                                     <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                                                     Order placement
                                                 </li>
-                                                <li className="flex items-center gap-2 text-gray-700">
+                                                <li className="flex items-center gap-2 text-gray-400">
                                                     <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                                                     Track shipments
                                                 </li>
-                                                <li className="flex items-center gap-2 text-gray-700">
+                                                <li className="flex items-center gap-2 text-gray-400">
                                                     <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                                                     View inventory
                                                 </li>
@@ -209,20 +208,24 @@ const MyProfile = () => {
                                 </div>
 
                                 <div>
-                                    <h4 className="font-semibold text-gray-900 mb-3">System Information</h4>
+                                    <h4 className="font-semibold mb-3">System Information</h4>
                                     <div className="space-y-3">
                                         <div className="flex justify-between items-center">
-                                            <span className="text-gray-600">Account Status</span>
+                                            <span className="text-gray-400">Account Status</span>
                                             <span className={`px-2 py-1 rounded text-sm ${user?.status === 'approved'
                                                 ? 'bg-green-100 text-green-800'
-                                                : 'bg-yellow-100 text-yellow-800'
+                                                : user?.status === 'pending'
+                                                    ? 'bg-yellow-100 text-yellow-800'
+                                                    : 'bg-red-100 text-red-800'
                                                 }`}>
-                                                {user?.status === 'approved' ? 'Active' : 'Pending Approval'}
+                                                {user?.status === 'approved' ? 'Active' :
+                                                    user?.status === 'pending' ? 'Pending Approval' :
+                                                        'Suspended'}
                                             </span>
                                         </div>
                                         <div className="flex justify-between items-center">
-                                            <span className="text-gray-600">Last Updated</span>
-                                            <span className="text-gray-900">
+                                            <span className="text-gray-400">Last Updated</span>
+                                            <span>
                                                 {user?.updatedAt ? new Date(user?.updatedAt).toLocaleDateString() : new Date(user?.joinDate).toLocaleDateString()}
                                             </span>
                                         </div>
@@ -231,47 +234,63 @@ const MyProfile = () => {
                             </div>
                         </div>
 
-                        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-                            <h3 className="text-lg font-semibold text-gray-900 mb-4">Additional Information</h3>
+                        <div className="rounded-xl shadow-sm border border-gray-200 p-6">
+                            <h3 className="text-lg font-semibold mb-4">Additional Information</h3>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
-                                    <h4 className="font-medium text-gray-900 mb-3">System Details</h4>
+                                    <h4 className="font-medium mb-3">System Details</h4>
                                     <div className="space-y-3">
                                         <div>
-                                            <label className="block text-sm text-gray-500">User ID</label>
-                                            <p className="text-gray-900 font-mono text-sm truncate">{user?._id}</p>
+                                            <label className="block text-sm text-gray-400">User ID</label>
+                                            <p className="font-mono text-sm truncate">{user?._id}</p>
                                         </div>
                                         <div>
-                                            <label className="block text-sm text-gray-500">Account Role</label>
+                                            <label className="block text-sm text-gray-400">Account Role</label>
                                             <div className="flex items-center gap-2">
                                                 {user?.role === 'admin' && <Shield className="w-4 h-4 text-red-500" />}
                                                 {user?.role === 'manager' && <Users className="w-4 h-4 text-blue-500" />}
                                                 {user?.role === 'buyer' && <Briefcase className="w-4 h-4 text-green-500" />}
-                                                <span className="text-gray-900 capitalize">{user?.role}</span>
+                                                <span className="capitalize">{user?.role}</span>
                                             </div>
                                         </div>
-                                        
                                     </div>
+
                                 </div>
                                 <div>
-                                    <h4 className="font-medium text-gray-900 mb-3">Account Status</h4>
+                                    <h4 className="font-medium">Account Status</h4>
                                     <div className="space-y-3">
                                         <div>
-                                            <label className="block text-sm text-gray-500">Status</label>
+                                            <label className="block text-sm text-gray-400">Status</label>
                                             <div className="flex items-center gap-2">
                                                 <div className={`w-2 h-2 rounded-full ${user?.status === 'approved' ? 'bg-green-500' :
-                                                        user?.status === 'pending' ? 'bg-yellow-500' : 'bg-red-500'
+                                                    user?.status === 'pending' ? 'bg-yellow-500' :
+                                                        'bg-red-500'
                                                     }`}></div>
-                                                <span className="text-gray-900 capitalize">{user?.status || 'N/A'}</span>
+                                                <span className="capitalize">{user?.status || 'N/A'}</span>
                                             </div>
                                         </div>
                                         <div>
-                                            <label className="block text-sm text-gray-500">Joined On</label>
-                                            <p className="text-gray-900">{user?.joinDate ? new Date(user.joinDate).toLocaleDateString() : 'N/A'}</p>
+                                            <label className="block text-sm text-gray-400">Joined On</label>
+                                            <p>{user?.joinDate ? new Date(user.joinDate).toLocaleDateString() : 'N/A'}</p>
                                         </div>
-                                        
                                     </div>
                                 </div>
+                                {user?.status === 'suspended' && user?.suspendReason && (
+                                    <div className="mt-4 pt-4 border-t border-gray-200">
+                                        <label className="text-sm text-gray-500 mb-2 flex items-center gap-2">
+                                            <AlertCircle className="w-4 h-4 text-red-500" />
+                                            Suspension Reason
+                                        </label>
+                                        <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                                            <p className="text-red-800 text-sm leading-relaxed">
+                                                {user.suspendReason}
+                                            </p>
+                                        </div>
+                                        <p className="text-xs text-gray-500 mt-2">
+                                            Please contact support for more information or to appeal this suspension.
+                                        </p>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </div>

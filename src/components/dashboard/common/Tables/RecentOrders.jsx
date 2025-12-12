@@ -30,12 +30,12 @@ export const RecentOrders = ({ orders = [], title = "Recent Orders" }) => {
 
   if (recentOrders.length === 0) {
     return (
-      <div className="card bg-white shadow-lg">
+      <div className="card shadow-lg">
         <div className="card-body">
           <h3 className="card-title mb-4">{title}</h3>
           <div className="text-center py-8">
             <FaTruck className="text-4xl text-gray-300 mx-auto mb-3" />
-            <p className="text-gray-500">No orders found</p>
+            <p className="text-gray-400">No orders found</p>
             <p className="text-sm text-gray-400 mt-1">Orders will appear here once placed</p>
           </div>
         </div>
@@ -44,7 +44,7 @@ export const RecentOrders = ({ orders = [], title = "Recent Orders" }) => {
   }
 
   return (
-    <div className="card bg-white shadow-lg">
+    <div className="card shadow-lg">
       <div className="card-body">
         <div className="flex justify-between items-center mb-4">
           <h3 className="card-title">{title}</h3>

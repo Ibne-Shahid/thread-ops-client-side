@@ -72,7 +72,7 @@ export const BuyerDashboard = ({
       
       <StatsCards stats={buyerStats} />
       
-      <div className="card bg-white shadow-lg">
+      <div className="card shadow-lg">
         <div className="card-body">
           <h3 className="card-title mb-6">Order Tracking</h3>
           {recentOrders.length > 0 ? (
@@ -84,7 +84,7 @@ export const BuyerDashboard = ({
                     <div key={order._id} className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg border border-gray-100">
                       <div>
                         <p className="font-semibold">{order.productTitle}</p>
-                        <p className="text-sm text-gray-600">Qty: {order.quantity}</p>
+                        <p className="text-sm ">Qty: {order.quantity}</p>
                       </div>
                       <div className="text-right">
                         <p className="font-bold text-primary">${order.orderPrice}</p>
@@ -100,7 +100,7 @@ export const BuyerDashboard = ({
                 <div>
                   <h4 className="font-bold mb-4">Quick Actions</h4>
                   <div className="grid grid-cols-2 gap-3">
-                    <button onClick={()=>navigate('/all-products')} className="btn btn-outline btn-primary">
+                    <button onClick={()=>navigate('/allProducts')} className="btn btn-outline btn-primary">
                       <FaShoppingBag className="mr-2" />
                       New Order
                     </button>
@@ -120,7 +120,7 @@ export const BuyerDashboard = ({
             <div className="text-center py-12">
               <FaShoppingBag className="text-4xl text-gray-300 mx-auto mb-4" />
               <p className="text-gray-600">No orders yet</p>
-              <button className="btn btn-primary mt-4">Place Your First Order</button>
+              <button onClick={()=>navigate('/allProducts')} className="btn btn-primary mt-4">Place Your First Order</button>
             </div>
           )}
         </div>

@@ -5,12 +5,10 @@ import {
 } from 'recharts';
 
 export const RevenueChart = ({ timeRange, onTimeRangeChange, orders = [] }) => {
-  // Orders থেকে real revenue data বের করো
   const calculateRevenueData = () => {
     const now = new Date();
     const dataMap = {};
     
-    // Last 7 days এর জন্য
     if (timeRange === 'week') {
       const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
       days.forEach(day => {
@@ -33,7 +31,6 @@ export const RevenueChart = ({ timeRange, onTimeRangeChange, orders = [] }) => {
       return Object.values(dataMap);
     }
     
-    // Last 30 days এর জন্য (monthly)
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     const monthMap = {};
     
@@ -52,7 +49,6 @@ export const RevenueChart = ({ timeRange, onTimeRangeChange, orders = [] }) => {
       monthMap[key].orders += 1;
     });
     
-    // শুধু শেষের 6 মাস দেখাও
     const sortedMonths = Object.values(monthMap)
       .sort((a, b) => {
         const monthA = months.indexOf(a.month.split(' ')[0]);
@@ -66,10 +62,9 @@ export const RevenueChart = ({ timeRange, onTimeRangeChange, orders = [] }) => {
 
   const chartData = calculateRevenueData();
   
-  // যদি কোনো data না থাকে
   if (chartData.length === 0 || chartData.every(item => item.revenue === 0)) {
     return (
-      <div className="card bg-white shadow-lg">
+      <div className="card shadow-lg">
         <div className="card-body">
           <div className="flex justify-between items-center mb-4">
             <h3 className="card-title">Revenue Trend</h3>
@@ -84,8 +79,8 @@ export const RevenueChart = ({ timeRange, onTimeRangeChange, orders = [] }) => {
           </div>
           <div className="h-64 flex items-center justify-center">
             <div className="text-center">
-              <p className="text-gray-500 mb-2">No revenue data available</p>
-              <p className="text-sm text-gray-400">Start receiving orders to see revenue trends</p>
+              <p className="text-gray-400 mb-2">No revenue data available</p>
+              <p className="text-sm text-gray-300">Start receiving orders to see revenue trends</p>
             </div>
           </div>
         </div>
@@ -94,7 +89,7 @@ export const RevenueChart = ({ timeRange, onTimeRangeChange, orders = [] }) => {
   }
 
   return (
-    <div className="card bg-white shadow-lg">
+    <div className="card shadow-lg">
       <div className="card-body">
         <div className="flex justify-between items-center mb-4">
           <h3 className="card-title">Revenue Trend</h3>
@@ -157,11 +152,11 @@ export const RevenueChart = ({ timeRange, onTimeRangeChange, orders = [] }) => {
         <div className="flex justify-center gap-6 mt-4">
           <div className="flex items-center gap-2">
             <div className="w-3 h-3 rounded-full bg-purple-500"></div>
-            <span className="text-sm text-gray-600">Revenue (USD)</span>
+            <span className="text-sm text-gray-300">Revenue (USD)</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-3 h-3 rounded-full bg-green-500"></div>
-            <span className="text-sm text-gray-600">Orders Count</span>
+            <span className="text-sm text-gray-300">Orders Count</span>
           </div>
         </div>
       </div>

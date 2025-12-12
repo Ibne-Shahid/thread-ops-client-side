@@ -82,23 +82,23 @@ const TrackOrderBuyer = () => {
     }
 
     return (
-        <div className="min-h-screen bg-gray-50 p-4 md:p-6">
+        <div className="min-h-screen p-4 md:p-6">
 
             <div className="max-w-6xl mx-auto">
 
                 <div className="mb-6 md:mb-8">
                     <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                         <div>
-                            <h1 className="text-2xl md:text-3xl font-bold text-gray-800">Track Your Order</h1>
-                            <p className="text-gray-600 mt-1">Keep track of your purchase in real-time</p>
+                            <h1 className="text-2xl md:text-3xl font-bold">Track Your Order</h1>
+                            <p className=" mt-1">Keep track of your purchase in real-time</p>
                         </div>
 
                         <div className="flex flex-col items-end">
                             <div className={`px-4 py-2 rounded-lg ${getCurrentStatus() === 'Delivered' ? 'bg-green-100 text-green-800 border border-green-200' :
                                 getCurrentStatus() === 'Shipped' ? 'bg-blue-100 text-blue-800 border border-blue-200' :
-                                    getCurrentStatus() === 'Processing' ? 'bg-purple-100 text-purple-800 border border-purple-200' :
+                                    
                                         getCurrentStatus() === 'Pending' ? 'bg-yellow-100 text-yellow-800 border border-yellow-200' :
-                                            'bg-gray-100 text-gray-800 border border-gray-200'
+                                            'bg-purple-100 text-purple-800 border border-purple-200' 
                                 }`}>
                                 <span className="font-semibold text-lg">{getCurrentStatus()}</span>
                             </div>
@@ -111,21 +111,21 @@ const TrackOrderBuyer = () => {
 
                     <div className="lg:col-span-1 space-y-6">
 
-                        <div className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
-                            <h2 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                        <div className="rounded-xl border border-gray-200 p-5 shadow-sm">
+                            <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
                                 <FaShoppingBag className="text-blue-500" />
                                 Order Summary
                             </h2>
                             <div className="space-y-4">
                                 <div>
                                     <label className="text-sm text-gray-500">Product</label>
-                                    <p className="font-medium mt-1 text-gray-800">{order?.productTitle || 'N/A'}</p>
+                                    <p className="font-medium mt-1 ">{order?.productTitle || 'N/A'}</p>
                                 </div>
 
                                 <div className="grid grid-cols-2 gap-4">
                                     <div>
                                         <label className="text-sm text-gray-500">Order Date</label>
-                                        <p className="font-medium mt-1 flex items-center gap-2 text-gray-800">
+                                        <p className="font-medium mt-1 flex items-center gap-2">
                                             <FaCalendarAlt className="text-gray-400 text-sm" />
                                             {formatDate(order?.orderDate)}
                                         </p>
@@ -134,7 +134,7 @@ const TrackOrderBuyer = () => {
                                         <label className="text-sm text-gray-500">Total Amount</label>
                                         <p className="font-medium mt-1 flex items-center gap-2 text-green-600">
                                             <FaDollarSign className="text-green-400 text-sm" />
-                                            {order?.orderPrice ? `$${order.orderPrice}` : 'N/A'}
+                                            {order?.orderPrice ? `$${parseFloat(order.orderPrice).toFixed(2)}` : 'N/A'}
                                         </p>
                                     </div>
                                 </div>
@@ -142,18 +142,18 @@ const TrackOrderBuyer = () => {
                                 <div className="grid grid-cols-2 gap-4">
                                     <div>
                                         <label className="text-sm text-gray-500">Quantity</label>
-                                        <p className="font-medium mt-1 text-gray-800">{order?.quantity || '1'} units</p>
+                                        <p className="font-medium mt-1 ">{order?.quantity || '1'} units</p>
                                     </div>
                                     <div>
                                         <label className="text-sm text-gray-500">Unit Price</label>
-                                        <p className="font-medium mt-1 text-gray-800">${order?.productPrice || 'N/A'}</p>
+                                        <p className="font-medium mt-1 ">${order?.productPrice || 'N/A'}</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
-                            <h2 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                        <div className="rounded-xl border border-gray-200 p-5 shadow-sm">
+                            <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
                                 <FaTruck className="text-purple-500" />
                                 Delivery Information
                             </h2>
@@ -170,7 +170,7 @@ const TrackOrderBuyer = () => {
                                     {order?.address && (
                                         <div>
                                             <label className="text-sm text-gray-500">Delivery Address</label>
-                                            <p className="font-medium mt-1 text-gray-800 flex items-start gap-2">
+                                            <p className="font-medium mt-1 flex items-start gap-2">
                                                 <FaHome className="text-gray-400 mt-1" />
                                                 <span>{order.address}</span>
                                             </p>
@@ -180,7 +180,7 @@ const TrackOrderBuyer = () => {
                                     {order?.contact && (
                                         <div>
                                             <label className="text-sm text-gray-500">Contact Number</label>
-                                            <p className="font-medium mt-1 text-gray-800 flex items-center gap-2">
+                                            <p className="font-medium mt-1 flex items-center gap-2">
                                                 <FaPhone className="text-gray-400" />
                                                 {order.contact}
                                             </p>
@@ -190,8 +190,8 @@ const TrackOrderBuyer = () => {
                             }
                         </div>
 
-                        <div className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
-                            <h2 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                        <div className="rounded-xl border border-gray-200 p-5 shadow-sm">
+                            <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
                                 <FaShieldAlt className="text-green-500" />
                                 Payment & Security
                             </h2>
@@ -199,17 +199,17 @@ const TrackOrderBuyer = () => {
                                 order?.status === "Rejected" ? <p className='text-xl font-bold text-red-500'>Order Rejected</p> : <div className="space-y-4">
                                     <div>
                                         <label className="text-sm text-gray-500">Payment Method</label>
-                                        <p className="font-medium mt-1 text-gray-800 flex items-center gap-2">
+                                        <p className="font-medium mt-1 flex items-center gap-2">
                                             <FaCreditCard className="text-gray-400" />
                                             {order?.paymentMethod || 'N/A'}
                                         </p>
                                     </div>
 
                                     <div>
-                                        <label className="text-sm text-gray-500">Payment Status</label>
+                                        <label className="text-sm text-gray-500">Payment Status</label> {" "}
                                         <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium mt-1 ${order?.paymentStatus === 'Paid' ? 'bg-green-100 text-green-800' :
                                             order?.paymentStatus === 'Pending' ? 'bg-yellow-100 text-yellow-800' :
-                                                'bg-gray-100 text-gray-800'
+                                                'bg-gray-100 text-gray-500'
                                             }`}>
                                             {order?.paymentStatus || 'Pending'}
                                         </span>
@@ -227,13 +227,13 @@ const TrackOrderBuyer = () => {
                     </div>
 
                     <div className="lg:col-span-2">
-                        <div className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm h-full">
+                        <div className="rounded-xl border border-gray-200 p-5 shadow-sm h-full">
                             <div className="flex items-center justify-between mb-6">
-                                <h2 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
+                                <h2 className="text-lg font-semibold flex items-center gap-2">
                                     <FaTruck className="text-blue-500" />
                                     Order Journey
                                 </h2>
-                                <span className="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-full">
+                                <span className="text-sm text-gray-500 bg-base-200 px-3 py-1 rounded-full">
                                     {order?.trackingHistory?.length || 1} updates
                                 </span>
                             </div>
@@ -252,7 +252,7 @@ const TrackOrderBuyer = () => {
                                                     <div className="flex items-center gap-3 mb-3">
                                                         <FaClock className="text-2xl text-blue-500" />
                                                         <div>
-                                                            <h3 className="font-semibold text-gray-800 text-lg">Order Placed</h3>
+                                                            <h3 className="font-semibold text-lg">Order Placed</h3>
                                                             <p className="text-gray-600 text-sm">Your order has been received</p>
                                                         </div>
                                                     </div>
@@ -346,14 +346,14 @@ const TrackOrderBuyer = () => {
                             <div className="mt-8 pt-6 border-t border-gray-200">
                                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                                     <div>
-                                        <h4 className="text-sm font-medium text-gray-700 mb-1">Need Help?</h4>
-                                        <p className="text-xs text-gray-500">Questions about your order?</p>
+                                        <h4 className="text-sm font-medium  mb-1">Need Help?</h4>
+                                        <p className="text-xs ">Questions about your order?</p>
                                     </div>
                                     <div className="flex gap-3">
-                                        <button className="px-4 py-2 bg-gray-100 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-200 transition-colors">
+                                        <button className="px-4 py-2 bg-secondary text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-200 transition-colors">
                                             Contact Support
                                         </button>
-                                        <button className="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors">
+                                        <button className="px-4 py-2 bg-primary text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors">
                                             View Invoice
                                         </button>
                                     </div>
@@ -364,27 +364,27 @@ const TrackOrderBuyer = () => {
                 </div>
 
                 {/* Bottom Info Section */}
-                <div className="mt-6 bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
+                <div className="mt-6 rounded-xl border border-gray-200 p-5 shadow-sm">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div className="text-center">
                             <div className="inline-flex items-center justify-center w-12 h-12 bg-blue-100 rounded-full mb-3">
                                 <FaBoxOpen className="text-blue-500 text-xl" />
                             </div>
-                            <h4 className="font-medium text-gray-800">Package Protection</h4>
+                            <h4 className="font-medium ">Package Protection</h4>
                             <p className="text-sm text-gray-600 mt-1">All packages are insured against damage</p>
                         </div>
                         <div className="text-center">
                             <div className="inline-flex items-center justify-center w-12 h-12 bg-green-100 rounded-full mb-3">
                                 <FaShieldAlt className="text-green-500 text-xl" />
                             </div>
-                            <h4 className="font-medium text-gray-800">Secure Delivery</h4>
+                            <h4 className="font-medium ">Secure Delivery</h4>
                             <p className="text-sm text-gray-600 mt-1">Signature required for all deliveries</p>
                         </div>
                         <div className="text-center">
                             <div className="inline-flex items-center justify-center w-12 h-12 bg-purple-100 rounded-full mb-3">
                                 <FaClock className="text-purple-500 text-xl" />
                             </div>
-                            <h4 className="font-medium text-gray-800">24/7 Tracking</h4>
+                            <h4 className="font-medium ">24/7 Tracking</h4>
                             <p className="text-sm text-gray-600 mt-1">Track your order anytime, anywhere</p>
                         </div>
                     </div>

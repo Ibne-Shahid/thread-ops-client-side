@@ -94,7 +94,7 @@ const TrackOrder = () => {
             <div className="max-w-7xl mx-auto">
 
                 <div className="mb-8">
-                    <h1 className="text-3xl font-bold text-gray-900">Order Tracking</h1>
+                    <h1 className="text-3xl font-bold">Order Tracking</h1>
                     <p className="text-gray-600 mt-2">Track and manage all your orders</p>
                 </div>
 
