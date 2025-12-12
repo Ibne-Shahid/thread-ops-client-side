@@ -31,6 +31,7 @@ import TrackOrderManager from "../Pages/ManagerPages/TrackOrderManager/TrackOrde
 import TrackOrder from "../Pages/TrackOrder/TrackOrder";
 import TrackOrderBuyer from "../Pages/TrackOrderBuyer/TrackOrderBuyer";
 import BuyerRoutes from "../Provider/BuyerRoutes";
+import ErrorPage from "../components/Errors/ErrorPage";
 
 
 const router = createBrowserRouter([
@@ -160,6 +161,9 @@ const router = createBrowserRouter([
                 element: <ManagerRoutes><TrackOrderManager></TrackOrderManager></ManagerRoutes>
             }
         ]
+    },{
+        path: '*',
+        element:<ErrorPage></ErrorPage>
     }
 ])
 

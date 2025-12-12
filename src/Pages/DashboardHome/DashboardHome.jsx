@@ -41,7 +41,6 @@ const DashboardHome = () => {
   return (
     <div className="min-h-screen bg-gray-50 p-4 md:p-6">
       <div className="max-w-7xl mx-auto">
-        {/* Role Badge */}
         <div className="flex justify-end mb-4">
           <div className={`badge badge-lg ${userRole === 'admin' ? 'badge-primary' : 
                          userRole === 'manager' ? 'badge-secondary' : 'badge-accent'}`}>
@@ -52,7 +51,6 @@ const DashboardHome = () => {
           </div>
         </div>
 
-        {/* Render Dashboard Based on Role */}
         {userRole === 'admin' && (
           <AdminDashboard
             userData={userData}
