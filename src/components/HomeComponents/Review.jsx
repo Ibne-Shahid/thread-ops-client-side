@@ -49,8 +49,8 @@ const Review = ({ reviewsPromise }) => {
                                     </div>
                                 </div>
                                 <div>
-                                    <h3 className="text-lg font-semibold text-gray-800">{review.name}</h3>
-                                    <p className="text-sm text-gray-500">{review.role}</p>
+                                    <h3 className="text-lg font-semibold ">{review.name}</h3>
+                                    <p className="text-sm">{review.role}</p>
                                 </div>
                             </div>
 
@@ -63,7 +63,7 @@ const Review = ({ reviewsPromise }) => {
                                 ))}
                             </div>
 
-                            <p className="text-gray-600 mt-3 text-base leading-relaxed">
+                            <p className="text-gray-400 mt-3 text-base leading-relaxed">
                                 {review.review}
                             </p>
 

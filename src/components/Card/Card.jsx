@@ -19,12 +19,12 @@ const Card = ({ product }) => {
       </figure>
 
       <div className="p-5 flex-grow flex flex-col space-y-2">
-        <h2 className="text-lg font-bold text-gray-800">{product.productName}</h2>
-        <p className="text-sm text-gray-600">{product.category}</p>
+        <h2 className="text-lg font-bold">{product.productName}</h2>
+        <p className="text-sm ">{product.category}</p>
 
         <div className="flex items-center justify-between mt-2">
           <span className="text-md font-semibold text-green-700">${product.price}</span>
-          <span className="text-sm text-gray-500">Stock: {product.availableQuantity}</span>
+          <span className="text-sm ">Stock: {product.availableQuantity}</span>
         </div>
 
         <Link to={`/product-details/${product._id}`} className="mt-auto">

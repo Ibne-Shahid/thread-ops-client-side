@@ -3,7 +3,7 @@ import { motion } from 'motion/react'
 
 const WhyChoose = () => {
     return (
-        <div className="py-20 bg-gradient-to-b from-white to-gray-50">
+        <div className="py-20">
             <div className="max-w-7xl mx-auto px-6">
 
                 <div className="text-center mb-14">

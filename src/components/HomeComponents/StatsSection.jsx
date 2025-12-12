@@ -10,7 +10,7 @@ const StatsSection = () => {
     ];
 
     return (
-        <section className="py-20 bg-gradient-to-r from-blue-50 to-white">
+        <section className="py-20">
             <div className="max-w-7xl mx-auto px-6 text-center">
 
                 <motion.h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4" initial={{ opacity: 0, y: -50 }}
@@ -18,13 +18,13 @@ const StatsSection = () => {
                     transition={{ duration: 1 }}>
                     Trusted by Garment Leaders Worldwide
                 </motion.h1>
-                <p className="text-gray-500 text-lg mb-14">
+                <p className="text-gray-400 text-lg mb-14">
                     Join hundreds of factories optimizing their garment production with ThreadOps.
                 </p>
 
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-10">
                     {stats.map((stat) => (
-                        <motion.div key={stat.id} className="p-6 bg-white rounded-2xl shadow-lg hover:shadow-2xl transition" initial={{ opacity: 0, y: 30 }}
+                        <motion.div key={stat.id} className="p-6 bg-base-200 rounded-2xl shadow-lg hover:shadow-2xl transition" initial={{ opacity: 0, y: 30 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 1, delay: 0.6 }}>
                             <h3 className="text-4xl md:text-5xl font-bold text-primary mb-2">{stat.value}</h3>
