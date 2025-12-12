@@ -31,10 +31,9 @@ export const OrderStatusChart = ({ orders = [] }) => {
 
   const chartData = getOrderStatusData();
   
-  // যদি কোনো order না থাকে
   if (chartData.length === 0) {
     return (
-      <div className="card bg-white shadow-lg">
+      <div className="card shadow-lg">
         <div className="card-body">
           <h3 className="card-title mb-4">Order Status Distribution</h3>
           <div className="h-64 flex items-center justify-center">
@@ -51,7 +50,7 @@ export const OrderStatusChart = ({ orders = [] }) => {
   const totalOrders = orders.length;
 
   return (
-    <div className="card bg-white shadow-lg">
+    <div className="card shadow-lg">
       <div className="card-body">
         <div className="flex justify-between items-center mb-4">
           <h3 className="card-title">Order Status Distribution</h3>
@@ -103,7 +102,7 @@ export const OrderStatusChart = ({ orders = [] }) => {
         </div>
         <div className="mt-4 grid grid-cols-2 gap-2">
           {chartData.map((item, index) => (
-            <div key={index} className="flex items-center justify-between p-2 bg-gray-50 rounded">
+            <div key={index} className="flex items-center justify-between p-2 bg-base-200 rounded">
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 rounded-full" style={{ backgroundColor: item.color }}></div>
                 <span className="text-sm font-medium">{item.name}</span>

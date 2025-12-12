@@ -281,7 +281,7 @@ const MyProfile = () => {
                                             <AlertCircle className="w-4 h-4 text-red-500" />
                                             Suspension Reason
                                         </label>
-                                        <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                                        <div className="bg-red-300 border border-red-200 rounded-lg p-4">
                                             <p className="text-red-800 text-sm leading-relaxed">
                                                 {user.suspendReason}
                                             </p>

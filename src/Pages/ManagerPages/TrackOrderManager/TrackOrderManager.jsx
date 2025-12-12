@@ -12,7 +12,6 @@ import {
     FaExclamationTriangle, 
     FaCalendarAlt,
     FaBox,
-    FaShoppingBag,
     FaUser,
     FaDollarSign,
     FaPhone,
@@ -67,39 +66,37 @@ const TrackOrderManager = () => {
 
     if (!order) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-gray-50">
+            <div className="min-h-screen flex items-center justify-center">
                 <div className="text-center p-8 max-w-md">
                     <FaExclamationTriangle className="text-4xl text-red-500 mx-auto mb-4" />
-                    <h2 className="text-2xl font-semibold text-gray-800 mb-2">Order Not Found</h2>
-                    <p className="text-gray-600">Unable to load order details for ID: {id}</p>
+                    <h2 className="text-2xl font-semibold mb-2">Order Not Found</h2>
+                    <p className="text-gray-300">Unable to load order details for ID: {id}</p>
                 </div>
             </div>
         )
     }
 
     return (
-        <div className="min-h-screen bg-gray-50 p-4 md:p-6">
+        <div className="min-h-screen p-4 md:p-6">
             
             <div className="max-w-7xl mx-auto">
                 
                 <div className="mb-6 md:mb-8">
                     <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                         <div>
-                            <h1 className="text-2xl md:text-3xl font-bold text-gray-800">Order Tracking</h1>
+                            <h1 className="text-2xl md:text-3xl font-bold">Order Tracking</h1>
                             <div className="flex flex-wrap items-center gap-2 mt-2">
-                                <span className="text-sm text-gray-600">Order ID:</span>
-                                <span className="font-mono text-sm bg-gray-100 px-3 py-1 rounded-md">{id}</span>
-                                <span className="text-sm text-gray-600">• Manager View</span>
+                                <span className="text-sm text-gray-300">Order ID:</span>
+                                <span className="font-mono text-sm bg-base-200 px-3 py-1 rounded-md">{id}</span>
+                                <span className="text-sm text-gray-300">• Manager View</span>
                             </div>
                         </div>
                         
                         <div className="flex items-center gap-3">
                             <div className={`px-4 py-2 rounded-lg ${
                                 getCurrentStatus() === 'Delivered' ? 'bg-green-100 text-green-800' :
-                                getCurrentStatus() === 'Shipped' ? 'bg-blue-100 text-blue-800' :
-                                getCurrentStatus() === 'Processing' ? 'bg-purple-100 text-purple-800' :
                                 getCurrentStatus() === 'Pending' ? 'bg-yellow-100 text-yellow-800' :
-                                'bg-gray-100 text-gray-800'
+                                'bg-purple-100 text-purple-800'
                             }`}>
                                 <span className="font-semibold">{getCurrentStatus()}</span>
                             </div>
@@ -111,8 +108,8 @@ const TrackOrderManager = () => {
                     
                     <div className="lg:col-span-1 space-y-6">
                         
-                        <div className="bg-white rounded-xl border border-gray-200 p-5">
-                            <h2 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                        <div className="rounded-xl border border-gray-200 p-5">
+                            <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
                                 <FaInfoCircle className="text-blue-500" />
                                 Order Information
                             </h2>
@@ -148,8 +145,8 @@ const TrackOrderManager = () => {
                             </div>
                         </div>
 
-                        <div className="bg-white rounded-xl border border-gray-200 p-5">
-                            <h2 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                        <div className="rounded-xl border border-gray-200 p-5">
+                            <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
                                 <FaUser className="text-green-500" />
                                 Customer Information
                             </h2>
@@ -188,27 +185,27 @@ const TrackOrderManager = () => {
                             </div>
                         </div>
 
-                        <div className="bg-white rounded-xl border border-gray-200 p-5">
-                            <h2 className="text-lg font-semibold text-gray-800 mb-4">Tracking Summary</h2>
+                        <div className="rounded-xl border border-gray-200 p-5">
+                            <h2 className="text-lg font-semibold mb-4">Tracking Summary</h2>
                             <div className="grid grid-cols-2 gap-4">
-                                <div className="text-center p-3 bg-gray-50 rounded-lg">
-                                    <div className="text-2xl font-bold text-gray-800">{order?.trackingHistory?.length || 0}</div>
-                                    <div className="text-sm text-gray-500 mt-1">Total Updates</div>
+                                <div className="text-center p-3 bg-base-200 rounded-lg">
+                                    <div className="text-2xl font-bold">{order?.trackingHistory?.length || 0}</div>
+                                    <div className="text-sm text-gray-300 mt-1">Total Updates</div>
                                 </div>
-                                <div className="text-center p-3 bg-gray-50 rounded-lg">
-                                    <div className="text-2xl font-bold text-gray-800">
+                                <div className="text-center p-3 bg-base-200 rounded-lg">
+                                    <div className="text-2xl font-bold ">
                                         {order?.trackingHistory?.[0] ? formatDate(order.trackingHistory[0].entryDate).split(' ')[0] : 'N/A'}
                                     </div>
-                                    <div className="text-sm text-gray-500 mt-1">First Update</div>
+                                    <div className="text-sm text-gray-300 mt-1">First Update</div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <div className="lg:col-span-2">
-                        <div className="bg-white rounded-xl border border-gray-200 p-5 h-full">
+                        <div className="rounded-xl border border-gray-200 p-5 h-full">
                             <div className="flex items-center justify-between mb-6">
-                                <h2 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
+                                <h2 className="text-lg font-semiboldflex items-center gap-2">
                                     <FaTruck className="text-blue-500" />
                                     Tracking History
                                 </h2>

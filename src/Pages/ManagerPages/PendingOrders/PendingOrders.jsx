@@ -63,25 +63,25 @@ const PendingOrders = () => {
             {/* Mobile Card View */}
             <div className="md:hidden space-y-4">
                 {pendingOrders.length === 0 ? (
-                    <div className="text-center py-10 bg-white shadow rounded-lg">
+                    <div className="text-center py-10 shadow rounded-lg">
                         <p className="text-gray-500">No orders found</p>
                     </div>
                 ) : (
                     pendingOrders.map((order) => (
                         <div
                             key={order._id}
-                            className="bg-white shadow rounded-lg p-4 border border-gray-100"
+                            className="shadow rounded-lg p-4 border border-gray-100"
                         >
                             <div className="flex justify-between items-start mb-3">
                                 <div>
-                                    <h3 className="font-semibold text-gray-800">{order.productTitle}</h3>
+                                    <h3 className="font-semibold">{order.productTitle}</h3>
                                     <p className="text-xs text-gray-500 mt-1">
                                         Order ID: {order._id}
                                     </p>
-                                    <p className="text-xs text-gray-500 mt-1">
+                                    <p className="text-xs text-gray-300 mt-1">
                                         Customer: {order.firstName} {order.lastName}
                                     </p>
-                                    <p className="text-xs text-gray-500 mt-1"> Order Date:{" "}
+                                    <p className="text-xs text-gray-300 mt-1"> Order Date:{" "}
                                         {new Date(order.orderDate).toLocaleDateString('en-US', {
                                             year: 'numeric',
                                             month: 'numeric',
@@ -116,9 +116,9 @@ const PendingOrders = () => {
             </div>
 
             {/* Desktop Table View */}
-            <div className="hidden md:block overflow-x-auto bg-white shadow rounded-lg">
+            <div className="hidden md:block overflow-x-auto shadow rounded-lg">
                 <table className="min-w-full text-sm">
-                    <thead className="bg-gray-100">
+                    <thead className="bg-base-200">
                         <tr>
                             <th className="p-3 text-left font-semibold">Order ID</th>
                             <th className="p-3 text-left font-semibold">Customer</th>
@@ -138,7 +138,7 @@ const PendingOrders = () => {
                             </tr>
                         ) : (
                             pendingOrders.map((order) => (
-                                <tr key={order._id} className="border-b hover:bg-gray-50">
+                                <tr key={order._id} className="border-b">
                                     <td className="p-3 font-mono text-gray-600">{order._id}</td>
                                     <td className="p-3">{order.firstName} {order.lastName}</td>
                                     <td className="p-3 font-medium">{order.productTitle}</td>

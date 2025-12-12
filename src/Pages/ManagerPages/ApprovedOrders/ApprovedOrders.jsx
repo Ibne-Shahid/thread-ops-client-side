@@ -107,7 +107,7 @@ const ApprovedOrders = () => {
             {/* Mobile Card View */}
             <div className="md:hidden space-y-4">
                 {approvedOrders.length === 0 ? (
-                    <div className="text-center py-10 bg-white shadow rounded-lg">
+                    <div className="text-center py-10 shadow rounded-lg">
                         <p className="text-gray-500">No orders found</p>
                     </div>
                 ) : (
@@ -116,21 +116,21 @@ const ApprovedOrders = () => {
                         return (
                             <div
                                 key={order._id}
-                                className="bg-white shadow rounded-lg p-4 border border-gray-100"
+                                className="shadow rounded-lg p-4 border border-gray-100"
                             >
                                 <div className="flex justify-between items-start mb-3">
                                     <div>
-                                        <h3 className="font-semibold text-gray-800">{order.productTitle}</h3>
-                                        <p className="text-xs text-gray-500 mt-1">
+                                        <h3 className="font-semibold">{order.productTitle}</h3>
+                                        <p className="text-xs text-gray-300 mt-1">
                                             Order ID: {order._id}
                                         </p>
-                                        <p className="text-xs text-gray-500 mt-1">
+                                        <p className="text-xs text-gray-300 mt-1">
                                             Customer: {order.firstName} {order.lastName}
                                         </p>
-                                        <p className="text-xs text-gray-500 mt-1">
+                                        <p className="text-xs text-gray-300 mt-1">
                                             Current Status: {latestTracking.orderStatus}
                                         </p>
-                                        <p className="text-xs text-gray-500 mt-1">
+                                        <p className="text-xs text-gray-300 mt-1">
                                             Approval Date:{" "}
                                             {new Date(order.trackingHistory[1].entryDate).toLocaleDateString('en-US', {
                                                 year: 'numeric',
@@ -146,7 +146,7 @@ const ApprovedOrders = () => {
                                 </div>
 
                                 <div className='mb-2'>
-                                    <p className="text-gray-500 text-xs">Quantity</p>
+                                    <p className="text-gray-400 text-xs">Quantity</p>
                                     <p className="font-medium">{order.quantity}</p>
                                 </div>
 
@@ -161,9 +161,9 @@ const ApprovedOrders = () => {
             </div>
 
             {/* Desktop Table View */}
-            <div className="hidden md:block overflow-x-auto bg-white shadow rounded-lg">
+            <div className="hidden md:block overflow-x-auto shadow rounded-lg">
                 <table className="min-w-full text-sm">
-                    <thead className="bg-gray-100">
+                    <thead className="bg-base-200">
                         <tr>
                             <th className="p-3 text-left font-semibold">Order ID</th>
                             <th className="p-3 text-left font-semibold">Customer</th>
@@ -178,7 +178,7 @@ const ApprovedOrders = () => {
                     <tbody>
                         {approvedOrders.length === 0 ? (
                             <tr>
-                                <td colSpan="7" className="p-8 text-center text-gray-500">
+                                <td colSpan="7" className="p-8 text-center text-gray-100">
                                     No orders found
                                 </td>
                             </tr>
@@ -186,7 +186,7 @@ const ApprovedOrders = () => {
                             approvedOrders.map((order) => {
                                 const latestTracking = getLatestTrackingEntry(order);
                                 return (
-                                    <tr key={order._id} className="border-b hover:bg-gray-50">
+                                    <tr key={order._id} className="border-b">
                                         <td className="p-3 font-mono text-gray-600">{order._id}</td>
                                         <td className="p-3">{order.firstName} {order.lastName}</td>
                                         <td className="p-3 font-medium">{order.productTitle}</td>

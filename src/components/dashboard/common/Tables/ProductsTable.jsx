@@ -4,7 +4,7 @@ import { FaBox, FaEye, FaEdit, FaTrash, FaHome } from 'react-icons/fa';
 export const ProductsTable = ({ products = [], title = "Products" }) => {
     if (products.length === 0) {
         return (
-            <div className="card bg-white shadow-lg">
+            <div className="cardshadow-lg">
                 <div className="card-body">
                     <h3 className="card-title mb-4">{title}</h3>
                     <div className="text-center py-8">
@@ -18,7 +18,7 @@ export const ProductsTable = ({ products = [], title = "Products" }) => {
     }
 
     return (
-        <div className="card bg-white shadow-lg">
+        <div className="card shadow-lg">
             <div className="card-body">
                 <div className="flex justify-between items-center mb-4">
                     <h3 className="card-title">{title}</h3>

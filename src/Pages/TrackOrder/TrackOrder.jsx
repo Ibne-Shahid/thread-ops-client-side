@@ -299,7 +299,6 @@ const TrackOrder = () => {
                     </div>
                 </div>
 
-                {/* Orders Grid - Mobile/Tablet View */}
                 <div className="lg:hidden space-y-4">
                     {filteredOrders.map((order) => (
                         <div
@@ -371,7 +370,6 @@ const TrackOrder = () => {
                     ))}
                 </div>
 
-                {/* Empty State */}
                 {filteredOrders.length === 0 && (
                     <div className="card bg-base-100 shadow-md">
                         <div className="card-body">

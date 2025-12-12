@@ -88,7 +88,7 @@ const Register = () => {
             <input
               type="text"
               {...register("displayName", { required: true })}
-              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm"
+              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm text-gray-800"
               placeholder='Enter your name'
             />
             {errors.displayName?.type === "required" && (<p role='alert' className='text-red-500'>Name is Required</p>)}
@@ -99,7 +99,7 @@ const Register = () => {
             <input
               type="email"
               {...register('email', { required: true })}
-              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm"
+              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm text-gray-800"
               placeholder='Enter your email'
             />
             {errors.email?.type === "required" && (<p role='alert' className='text-red-500'>Email is Required</p>)}
@@ -110,7 +110,7 @@ const Register = () => {
             <input
               type="url"
               {...register("photoURL")}
-              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm"
+              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm text-gray-800"
               placeholder='Enter your Photo URL'
             />
           </div>
@@ -119,7 +119,7 @@ const Register = () => {
             <label htmlFor="role" className="block text-sm font-medium text-gray-700">Role</label>
             <select
               {...register('role')}
-              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm"
+              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm text-gray-800"
               defaultValue="buyer"
             >
               <option value="buyer">Buyer</option>
@@ -134,7 +134,7 @@ const Register = () => {
               type="text"
               value="Pending"
               disabled
-              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 text-gray-500"
+              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 text-gray-500 text-gray-800"
             />
           </div>
 
@@ -153,7 +153,7 @@ const Register = () => {
                   message: "Password must contain both uppercase and lowercase letters"
                 }
               })}
-              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm"
+              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm text-gray-800"
               placeholder="Create a strong password"
             />
             {errors.password && <p role='alert' className='text-red-500'>{errors.password.message}</p>}

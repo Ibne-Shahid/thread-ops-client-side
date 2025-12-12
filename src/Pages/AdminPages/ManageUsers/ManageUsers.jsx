@@ -206,7 +206,7 @@ const ManageUsers = () => {
                                     </td>
 
                                     <td className="p-3">{user.name}</td>
-                                    <td className="p-3 text-gray-300">{user.email}</td>
+                                    <td className="p-3">{user.email}</td>
                                     <td className="p-3">{user.role}</td>
 
                                     <td className="p-3">

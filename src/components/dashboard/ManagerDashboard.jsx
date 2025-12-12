@@ -76,7 +76,7 @@ export const ManagerDashboard = ({
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <OrderStatusChart orders={orders} />
         
-        <div className="card bg-white shadow-lg">
+        <div className="card shadow-lg">
           <div className="card-body">
             <h3 className="card-title mb-4">Production Progress</h3>
             <div className="space-y-4">
