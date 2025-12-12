@@ -10,6 +10,8 @@ const PendingOrders = () => {
     const axiosSecure = useAxiosSecure()
     const user = useRoles()
     const { firebaseUser } = useAuth()
+    
+    const isSuspended = user?.status === "suspended"
 
     const { data: myPendingorders = [], isLoading, refetch } = useQuery({
         queryKey: ['orders', firebaseUser?.email],
@@ -22,6 +24,8 @@ const PendingOrders = () => {
     const pendingOrders = myPendingorders.filter(orders => orders?.status === "Pending")
 
     const handleApproveOrder = async (order) => {
+        if (isSuspended) return;
+        
         try {
             const res = await axiosSecure.patch(`/orders/${order._id}`, {
                 status: 'Approved'
@@ -38,6 +42,8 @@ const PendingOrders = () => {
     };
 
     const handleRejectOrder = async (id) => {
+        if (isSuspended) return;
+        
         try {
             const res = await axiosSecure.patch(`/orders/${id}`, {
                 status: 'Rejected'
@@ -52,13 +58,19 @@ const PendingOrders = () => {
         }
     }
 
-
     if (isLoading) return <Spinner />
     if (user?.role === "manager" & user?.status === "pending") return <ManagerApprovalPending></ManagerApprovalPending>
 
     return (
         <div className="p-4 md:p-8 min-h-screen">
             <h1 className="text-2xl font-bold mb-6">Pending Orders</h1>
+            
+            {/* Suspension Notice */}
+            {isSuspended && (
+                <div className="bg-warning/20 text-warning-content p-4 rounded-lg mb-6 border border-warning">
+                    <p className="font-semibold">Your account is currently suspended. You cannot approve or reject orders.</p>
+                </div>
+            )}
 
             {/* Mobile Card View */}
             <div className="md:hidden space-y-4">
@@ -101,14 +113,25 @@ const PendingOrders = () => {
                             </div>
 
                             <div className='flex gap-2'>
-                                <button onClick={() => handleApproveOrder(order)} className='btn btn-success text-white flex-1'>Approve</button>
-                                <button onClick={() => handleRejectOrder(order._id)} className='btn btn-error text-white flex-1'>Reject</button>
+                                <button 
+                                    onClick={() => handleApproveOrder(order)} 
+                                    disabled={isSuspended}
+                                    className={`btn flex-1 ${isSuspended ? 'btn-disabled opacity-50 cursor-not-allowed' : 'btn-success text-white'}`}
+                                >
+                                    Approve
+                                </button>
+                                <button 
+                                    onClick={() => handleRejectOrder(order._id)} 
+                                    disabled={isSuspended}
+                                    className={`btn flex-1 ${isSuspended ? 'btn-disabled opacity-50 cursor-not-allowed' : 'btn-error text-white'}`}
+                                >
+                                    Reject
+                                </button>
                                 <Link to={`order-details/${order._id}`}>
                                     <button className="btn btn-primary hover:bg-primary/90 text-white rounded text-sm font-medium transition-colors flex-1">
                                         View Details
                                     </button>
                                 </Link>
-
                             </div>
                         </div>
                     ))
@@ -157,20 +180,27 @@ const PendingOrders = () => {
 
                                     <td className="p-3 text-center">
                                         <div className="flex justify-center gap-2">
-                                            <button onClick={() => handleApproveOrder(order)} className="py-2 px-3 bg-success hover:bg-success/90 text-white rounded text-sm font-medium transition-colors cursor-pointer">
+                                            <button 
+                                                onClick={() => handleApproveOrder(order)} 
+                                                disabled={isSuspended}
+                                                className={`py-2 px-3 rounded text-sm font-medium transition-colors ${isSuspended ? 'bg-gray-400 cursor-not-allowed opacity-50' : 'bg-success hover:bg-success/90 text-white'}`}
+                                            >
                                                 Approve
                                             </button>
-                                            <button onClick={() => handleRejectOrder(order._id)} className="py-2 px-3 bg-error hover:bg-error/90 text-white rounded text-sm font-medium transition-colors cursor-pointer">
+                                            <button 
+                                                onClick={() => handleRejectOrder(order._id)} 
+                                                disabled={isSuspended}
+                                                className={`py-2 px-3 rounded text-sm font-medium transition-colors ${isSuspended ? 'bg-gray-400 cursor-not-allowed opacity-50' : 'bg-error hover:bg-error/90 text-white'}`}
+                                            >
                                                 Reject
                                             </button>
                                             <Link to={`order-details/${order._id}`}>
-                                                <button className="py-2 px-3 bg-primary hover:bg-primary/90 text-white rounded text-sm font-medium transition-colors cursor-pointer">
+                                                <button className="py-2 px-3 bg-primary hover:bg-primary/90 text-white rounded text-sm font-medium transition-colors">
                                                     View
                                                 </button>
                                             </Link>
                                         </div>
                                     </td>
-
                                 </tr>
                             ))
                         )}

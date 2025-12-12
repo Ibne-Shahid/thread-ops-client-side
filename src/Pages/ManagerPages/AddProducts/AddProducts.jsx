@@ -245,7 +245,8 @@ const AddProducts = () => {
                     {errors.paymentOption && <p className="text-red-500">{errors.paymentOption.message}</p>}
                 </div>
 
-                <button type="submit" className="btn btn-primary w-full">Add Product</button>
+                <button disabled={user?.status === "suspended"} type="submit" className="btn btn-primary w-full">Add Product</button>
+                {user?.status === "suspended" && (<p className="text-red-500 text-xs">*You are suspended.</p>)}
             </form>
 
             {/* IMAGE PREVIEW MODAL */}
