@@ -80,6 +80,43 @@ const ManageUsers = () => {
         })
     }
 
+    const handleSuspend = async (status, suspendReason, user) => {
+        const suspensionUpdate = { status, suspendReason }
+        modalRef.current.close()
+
+        Swal.fire({
+            title: "Are you sure?",
+            text: `You want to suspend ${user.name}?`,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes!",
+            customClass: {
+                popup: 'swal-z-index-fix'
+            }
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    const res = await axiosSecure.patch(`/users/${user._id}/suspension`, suspensionUpdate)
+                    if (res.data.modifiedCount > 0) {
+                        refetch();
+
+                        Swal.fire({
+                            title: "Success!",
+                            text: `${user.name} is suspended.`,
+                            icon: "success",
+                        })
+                    }
+                } catch (err) {
+
+                }
+            }
+        })
+
+
+    }
+
 
     return (
         <div className="p-4 md:p-8 min-h-screen">
@@ -93,7 +130,7 @@ const ManageUsers = () => {
                     </div>
                 ) : (
                     users.map((user) => (
-                        <div key={user.id} className="bg-white shadow rounded-lg p-4 border border-gray-100">
+                        <div key={user._id} className="bg-white shadow rounded-lg p-4 border border-gray-100">
                             <div className="flex justify-between items-start mb-3">
                                 <div className="flex items-center">
                                     <img
@@ -160,7 +197,7 @@ const ManageUsers = () => {
                             </tr>
                         ) : (
                             users.map((user) => (
-                                <tr key={user.id} className="border-b hover:bg-gray-50">
+                                <tr key={user._id} className="border-b hover:bg-gray-50">
                                     <td className="p-3">
                                         <img
                                             src={user.photoURL}
@@ -228,7 +265,7 @@ const ManageUsers = () => {
                                     </div>
                                 </div>
                                 <div>
-                                    <button disabled={selectedUser?.role==="admin"} onClick={() => handleMakeAdmin(selectedUser)} className='btn btn-primary hover:bg-primary/90'>Make Admin</button>
+                                    <button disabled={selectedUser?.role === "admin" || selectedUser?.status === "suspended"} onClick={() => handleMakeAdmin(selectedUser)} className='btn btn-primary hover:bg-primary/90'>Make Admin</button>
                                 </div>
                             </div>
 
@@ -257,7 +294,7 @@ const ManageUsers = () => {
 
                             <div className="flex justify-between mt-6">
                                 <button
-                                    disabled={selectedUser.status === "approved"}
+                                    disabled={selectedUser.status === "approved" || selectedUser.status === "suspended"}
                                     onClick={() => handleStatusUpdate(selectedUser)}
                                     className="btn btn-success text-white"
                                 >
@@ -265,6 +302,7 @@ const ManageUsers = () => {
                                 </button>
 
                                 <button
+                                    disabled={selectedUser?.role === "admin" || selectedUser?.status === "suspended"}
                                     onClick={() => setShowSuspendBox(true)}
                                     className="btn btn-error text-white"
                                 >
@@ -288,7 +326,7 @@ const ManageUsers = () => {
                                     />
 
                                     <button
-                                        onClick={() => handleStatusUpdate("suspended", suspendReason)}
+                                        onClick={() => handleSuspend("suspended", suspendReason, selectedUser)}
                                         className="btn btn-error text-white w-full mt-3"
                                     >
                                         Suspend This User
