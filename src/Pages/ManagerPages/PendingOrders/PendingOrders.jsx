@@ -67,7 +67,7 @@ const PendingOrders = () => {
             
             {/* Suspension Notice */}
             {isSuspended && (
-                <div className="bg-warning/20 text-warning-content p-4 rounded-lg mb-6 border border-warning">
+                <div className="bg-warning/50 text-warning-content p-4 rounded-lg mb-6 border border-warning">
                     <p className="font-semibold">Your account is currently suspended. You cannot approve or reject orders.</p>
                 </div>
             )}
