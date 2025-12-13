@@ -82,6 +82,7 @@ const ManageProducts = () => {
 
   return (
     <div className="p-4 md:p-8 min-h-screen">
+      <title>ThreadOps || Manage Products - Manager Dashboard</title>
       <h1 className="text-2xl font-bold mb-6">Manage Your Products</h1>
 
       <div className="mb-6 flex gap-4 items-center">

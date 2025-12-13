@@ -87,6 +87,8 @@ const Payment = () => {
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100 p-6">
 
+            <title>ThreadOps || Payment</title>
+
             <div className="bg-white shadow-xl rounded-2xl w-full max-w-xl p-8 border border-gray-200">
 
                 <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">

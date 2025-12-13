@@ -68,6 +68,7 @@ const MyOrders = () => {
 
     return (
         <div className="p-4 md:p-8 min-h-screen">
+            <title>ThreadOps || My Orders - Buyer Dashboard</title>
             <h1 className="text-2xl font-bold mb-6">My Orders</h1>
 
             {/* Mobile Card View */}

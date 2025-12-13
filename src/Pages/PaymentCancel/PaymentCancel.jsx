@@ -15,6 +15,7 @@ const PaymentCancel = () => {
 
     return (
         <div className="flex items-center justify-center min-h-screen bg-base-200 px-4">
+            <title>ThreadOps || Payment Failed</title>
             <div className="card w-full max-w-md shadow-xl bg-base-100">
                 <div className="card-body text-center">
                     <div className="flex justify-center mb-4">

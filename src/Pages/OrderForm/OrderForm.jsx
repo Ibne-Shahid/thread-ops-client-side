@@ -83,12 +83,12 @@ const OrderForm = () => {
             }
         });
 
-        // Send to backend if needed:
-        // await axiosSecure.post("/orders", finalOrder);
     };
 
     return (
         <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-lg mt-10">
+
+            <title>ThreadOps || Order Form</title>
 
             <h1 className="text-3xl font-bold mb-6 text-center">Place Your Order</h1>
 

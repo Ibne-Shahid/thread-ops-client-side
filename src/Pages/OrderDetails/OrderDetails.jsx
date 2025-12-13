@@ -64,6 +64,7 @@ const OrderDetails = () => {
 
     return (
         <div className="container mx-auto p-6 space-y-6">
+            <title>ThreadOps || Order Details</title>
             <h1 className="text-3xl font-bold text-center mb-4">Order Details</h1>
 
             {/* Customer Information */}

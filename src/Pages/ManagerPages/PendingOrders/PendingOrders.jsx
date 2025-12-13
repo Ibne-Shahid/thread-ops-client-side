@@ -63,6 +63,7 @@ const PendingOrders = () => {
 
     return (
         <div className="p-4 md:p-8 min-h-screen">
+            <title>ThreadOps || Pending Orders - Manager Dashboard</title>
             <h1 className="text-2xl font-bold mb-6">Pending Orders</h1>
             
             {/* Suspension Notice */}
