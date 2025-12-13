@@ -124,6 +124,7 @@ const Contact = () => {
 
   return (
     <div className="min-h-screen bg-base-100">
+      <title>ThreadOps || Contact</title>
       <div className="hero bg-gradient-to-br from-primary/5 to-secondary/5">
         <div className="hero-content text-center py-16">
           <div className="max-w-4xl">

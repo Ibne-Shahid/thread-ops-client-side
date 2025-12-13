@@ -77,7 +77,9 @@ const AboutUs = () => {
   ];
 
   return (
+    
     <div className="min-h-screen bg-base-100">
+      <title>ThreadOps || About Us</title>
       <div className="hero bg-gradient-to-br from-primary/10 to-secondary/10 min-h-[60vh]">
         <div className="hero-content text-center">
           <div className="max-w-4xl">

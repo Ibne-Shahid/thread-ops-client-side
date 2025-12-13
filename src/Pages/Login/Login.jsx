@@ -55,6 +55,7 @@ const Login = () => {
 
   return (
     <div className="flex items-center justify-center">
+      <title>ThreadOps || Login</title>
       <div className="bg-white p-8 rounded-lg shadow-lg max-w-sm w-full">
         <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Login</h2>
 

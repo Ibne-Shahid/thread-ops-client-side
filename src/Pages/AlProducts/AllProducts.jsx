@@ -37,6 +37,7 @@ const AllProducts = () => {
 
   return (
     <div className="container mx-auto px-5 py-10">
+      <title>ThreadOps || All Products</title>
       <h1 className="text-3xl font-bold text-gray-800 mb-8 text-center">
         All Products
       </h1>

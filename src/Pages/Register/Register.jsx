@@ -79,6 +79,7 @@ const Register = () => {
 
   return (
     <div className="flex items-center justify-center">
+      <title>ThreadOps || Registration</title>
       <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-md">
         <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Create an Account</h2>
 

@@ -13,6 +13,7 @@ const Home = () => {
     
   return (
     <div>
+      <title>ThreadOps || Home</title>
         <Hero></Hero>
         <OurProducts></OurProducts>
         <HowItWorks></HowItWorks>
