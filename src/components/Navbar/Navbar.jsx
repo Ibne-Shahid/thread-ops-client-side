@@ -46,7 +46,7 @@ const Navbar = () => {
                             <NavLink to="/contact">Contact</NavLink>
                         </li>
                         {
-                            <li>
+                           firebaseUser && <li>
                                 <NavLink to="/dashboard">Dashboard</NavLink>
                             </li>
                         }
@@ -74,12 +74,16 @@ const Navbar = () => {
                     </ul>
                 </div>
                 <NavLink to="/" className="btn btn-ghost font-bold text-2xl bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent text-center lg:text-start">ThreadOps</NavLink>
-                <div className="mr-2">
+                <div className="mr-2 hidden md:block">
                     <ThemeToggle />
                 </div>
             </div>
 
             <div className="navbar-end flex-nowrap">
+
+                <div className="mr-2 md:hidden">
+                    <ThemeToggle />
+                </div>
 
                 <div className='hidden lg:block'>
                     <ul className="menu menu-horizontal px-10 gap-3 font-semibold">

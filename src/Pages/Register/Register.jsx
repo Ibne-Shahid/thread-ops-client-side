@@ -135,7 +135,7 @@ const Register = () => {
               type="text"
               value="Pending"
               disabled
-              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 text-gray-500 text-gray-800"
+              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 text-gray-500"
             />
           </div>
 
