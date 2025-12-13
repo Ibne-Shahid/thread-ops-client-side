@@ -1,10 +1,10 @@
 import React from 'react';
-import { 
-  FaUsers, 
-  FaChartLine, 
-  FaGlobe, 
-  FaShieldAlt, 
-  FaLeaf, 
+import {
+  FaUsers,
+  FaChartLine,
+  FaGlobe,
+  FaShieldAlt,
+  FaLeaf,
   FaHandshake,
   FaTrophy,
   FaBuilding,
@@ -77,8 +77,9 @@ const AboutUs = () => {
   ];
 
   return (
-    
-    <div className="min-h-screen bg-base-100">
+
+    // FIX: Added overflow-x-hidden to prevent horizontal scrollbar/white space on the right
+    <div className="min-h-screen bg-base-100 overflow-x-hidden">
       <title>ThreadOps || About Us</title>
       <div className="hero bg-gradient-to-br from-primary/10 to-secondary/10 min-h-[60vh]">
         <div className="hero-content text-center">
@@ -87,35 +88,35 @@ const AboutUs = () => {
               Revolutionizing <span className="text-primary">Garment Management</span>
             </h1>
             <p className="text-xl opacity-80 mb-8">
-              ThreadOps is the leading platform transforming how fashion brands manage their production, 
+              ThreadOps is the leading platform transforming how fashion brands manage their production,
               inventory, and supply chains with cutting-edge technology.
             </p>
-            <div className="stats shadow-lg bg-base-100">
-              <div className="stat">
-                <div className="stat-figure text-primary">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full">
+              <div className="stat bg-base-100 rounded-lg shadow-lg p-6 text-center">
+                <div className="stat-figure text-primary mb-3">
                   <FaUsers className="text-3xl" />
                 </div>
-                <div className="stat-title">Happy Clients</div>
-                <div className="stat-value text-primary">500+</div>
-                <div className="stat-desc">Global fashion brands</div>
+                <div className="stat-title text-lg font-semibold">Happy Clients</div>
+                <div className="stat-value text-primary text-3xl lg:text-4xl my-2">500+</div>
+                <div className="stat-desc text-sm">Global fashion brands</div>
               </div>
-              
-              <div className="stat">
-                <div className="stat-figure text-secondary">
+
+              <div className="stat bg-base-100 rounded-lg shadow-lg p-6 text-center">
+                <div className="stat-figure text-secondary mb-3">
                   <FaGlobe className="text-3xl" />
                 </div>
-                <div className="stat-title">Countries</div>
-                <div className="stat-value text-secondary">45+</div>
-                <div className="stat-desc">Active operations</div>
+                <div className="stat-title text-lg font-semibold">Countries</div>
+                <div className="stat-value text-secondary text-3xl lg:text-4xl my-2">45+</div>
+                <div className="stat-desc text-sm">Active operations</div>
               </div>
-              
-              <div className="stat">
-                <div className="stat-figure text-accent">
+
+              <div className="stat bg-base-100 rounded-lg shadow-lg p-6 text-center">
+                <div className="stat-figure text-accent mb-3">
                   <FaTrophy className="text-3xl" />
                 </div>
-                <div className="stat-title">Awards</div>
-                <div className="stat-value text-accent">12</div>
-                <div className="stat-desc">Industry recognition</div>
+                <div className="stat-title text-lg font-semibold">Awards</div>
+                <div className="stat-value text-accent text-3xl lg:text-4xl my-2">12</div>
+                <div className="stat-desc text-sm">Industry recognition</div>
               </div>
             </div>
           </div>
@@ -133,7 +134,7 @@ const AboutUs = () => {
                 <h2 className="card-title text-3xl">Our Mission</h2>
               </div>
               <p className="text-lg">
-                To empower fashion brands with intelligent tools that streamline garment production, 
+                To empower fashion brands with intelligent tools that streamline garment production,
                 reduce waste, and create sustainable, efficient supply chains for the modern fashion industry.
               </p>
               <div className="divider"></div>
@@ -163,7 +164,7 @@ const AboutUs = () => {
                 <h2 className="card-title text-3xl">Our Vision</h2>
               </div>
               <p className="text-lg">
-                To become the global standard for garment management, creating a world where every piece 
+                To become the global standard for garment management, creating a world where every piece
                 of clothing is produced efficiently, sustainably, and transparently from concept to customer.
               </p>
               <div className="divider"></div>
@@ -194,7 +195,7 @@ const AboutUs = () => {
               The principles that guide every decision we make at ThreadOps
             </p>
           </div>
-          
+
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {values.map((value, index) => (
               <div key={index} className="card bg-base-100 shadow-lg hover:shadow-xl transition-shadow duration-300">
@@ -218,7 +219,7 @@ const AboutUs = () => {
             The passionate team driving innovation in garment management
           </p>
         </div>
-        
+
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           {teamMembers.map((member) => (
             <div key={member.id} className="card bg-base-100 shadow-xl">
@@ -250,7 +251,7 @@ const AboutUs = () => {
               Milestones in our mission to transform garment management
             </p>
           </div>
-          
+
           <div className="timeline timeline-vertical lg:timeline-horizontal">
             {milestones.map((milestone, index) => (
               <div key={index} className="timeline-item">
