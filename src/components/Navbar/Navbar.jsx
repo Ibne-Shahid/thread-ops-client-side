@@ -46,7 +46,7 @@ const Navbar = () => {
                             <NavLink to="/contact">Contact</NavLink>
                         </li>
                         {
-                           firebaseUser && <li>
+                            firebaseUser && <li>
                                 <NavLink to="/dashboard">Dashboard</NavLink>
                             </li>
                         }
@@ -74,17 +74,9 @@ const Navbar = () => {
                     </ul>
                 </div>
                 <NavLink to="/" className="btn btn-ghost font-bold text-2xl bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent text-center lg:text-start">ThreadOps</NavLink>
-                <div className="mr-2 hidden md:block">
-                    <ThemeToggle />
-                </div>
             </div>
 
-            <div className="navbar-end flex-nowrap">
-
-                <div className="mr-2 md:hidden">
-                    <ThemeToggle />
-                </div>
-
+            <div className="navbar-center">
                 <div className='hidden lg:block'>
                     <ul className="menu menu-horizontal px-10 gap-3 font-semibold">
                         <NavLink className={({ isActive }) => `${isActive ? "bg-secondary text-white" : ""} p-1 rounded-md`} to="/"><li>Home</li></NavLink>
@@ -95,6 +87,13 @@ const Navbar = () => {
                             firebaseUser && <NavLink className={({ isActive }) => `${isActive ? "bg-secondary text-white" : ""} p-1 rounded-md`} to="/dashboard"><li>Dashboard</li></NavLink>
                         }
                     </ul>
+                </div>
+            </div>
+
+            <div className="navbar-end flex-nowrap">
+
+                <div className="mr-2">
+                    <ThemeToggle />
                 </div>
 
                 <div className='mr-3 bg-base-300 p-1 rounded-full'>

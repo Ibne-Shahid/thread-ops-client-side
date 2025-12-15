@@ -16,7 +16,6 @@ const AllProducts = () => {
   const limit = 9
   const skip = (page - 1) * limit
 
-  // Fetch all products
   const { data: products = [], isLoading, error } = useQuery({
     queryKey: ['products'],
     queryFn: async () => {
@@ -25,7 +24,6 @@ const AllProducts = () => {
     }
   })
 
-  // Filter products যখন search বা category change হয়
   useEffect(() => {
     if (!products || products.length === 0) return
 
@@ -35,7 +33,6 @@ const AllProducts = () => {
     if (searchTerm) {
       const term = searchTerm.toLowerCase()
       result = result.filter(product => {
-        // productName দিয়ে search করবে
         return product.productName?.toLowerCase().includes(term) ||
                product.category?.toLowerCase().includes(term)
       })
@@ -51,7 +48,6 @@ const AllProducts = () => {
     setFilteredProducts(result)
   }, [products, searchTerm, category])
 
-  // Categories বের করছি
   const categories = ['all', ...new Set(products.map(p => p.category).filter(Boolean))]
 
   // Pagination calculation
@@ -59,7 +55,6 @@ const AllProducts = () => {
   const totalPages = Math.ceil(totalProducts / limit)
   const paginatedProducts = filteredProducts.slice(skip, skip + limit)
 
-  // যখন filter change হয়, page reset করি
   useEffect(() => {
     setPage(1)
   }, [searchTerm, category])

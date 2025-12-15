@@ -78,7 +78,6 @@ const AboutUs = () => {
 
   return (
 
-    // FIX: Added overflow-x-hidden to prevent horizontal scrollbar/white space on the right
     <div className="min-h-screen bg-base-100 overflow-x-hidden">
       <title>ThreadOps || About Us</title>
       <div className="hero bg-gradient-to-br from-primary/10 to-secondary/10 min-h-[60vh]">
@@ -252,20 +251,22 @@ const AboutUs = () => {
             </p>
           </div>
 
-          <div className="timeline timeline-vertical lg:timeline-horizontal">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {milestones.map((milestone, index) => (
-              <div key={index} className="timeline-item">
-                <div className="timeline-marker"></div>
-                <div className="timeline-content">
-                  <div className="card bg-base-100 shadow-lg">
-                    <div className="card-body">
-                      <div className="badge badge-primary mb-2">{milestone.year}</div>
-                      <h3 className="card-title text-lg">{milestone.title}</h3>
-                      <p className="opacity-70">{milestone.description}</p>
+              <div key={index} className="flex">
+                <div className="card bg-base-100 shadow-lg h-full w-full">
+                  <div className="card-body">
+                    <div className="badge badge-primary mb-2">
+                      {milestone.year}
                     </div>
+                    <h3 className="card-title text-lg">
+                      {milestone.title}
+                    </h3>
+                    <p className="opacity-70">
+                      {milestone.description}
+                    </p>
                   </div>
                 </div>
-                {index < milestones.length - 1 && <hr className="timeline-connector" />}
               </div>
             ))}
           </div>
