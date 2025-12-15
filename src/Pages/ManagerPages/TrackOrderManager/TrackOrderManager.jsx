@@ -88,9 +88,9 @@ const TrackOrderManager = () => {
                         <div>
                             <h1 className="text-2xl md:text-3xl font-bold">Order Tracking</h1>
                             <div className="flex flex-wrap items-center gap-2 mt-2">
-                                <span className="text-sm text-gray-300">Order ID:</span>
+                                <span className="text-sm text-gray-400">Order ID:</span>
                                 <span className="font-mono text-sm bg-base-200 px-3 py-1 rounded-md">{id}</span>
-                                <span className="text-sm text-gray-300">• Manager View</span>
+                                <span className="text-sm text-gray-400">• Manager View</span>
                             </div>
                         </div>
                         
@@ -192,13 +192,13 @@ const TrackOrderManager = () => {
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="text-center p-3 bg-base-200 rounded-lg">
                                     <div className="text-2xl font-bold">{order?.trackingHistory?.length || 0}</div>
-                                    <div className="text-sm text-gray-300 mt-1">Total Updates</div>
+                                    <div className="text-sm mt-1">Total Updates</div>
                                 </div>
                                 <div className="text-center p-3 bg-base-200 rounded-lg">
                                     <div className="text-2xl font-bold ">
                                         {order?.trackingHistory?.[0] ? formatDate(order.trackingHistory[0].entryDate).split(' ')[0] : 'N/A'}
                                     </div>
-                                    <div className="text-sm text-gray-300 mt-1">First Update</div>
+                                    <div className="text-sm mt-1">First Update</div>
                                 </div>
                             </div>
                         </div>
@@ -223,7 +223,6 @@ const TrackOrderManager = () => {
                                 <div className="space-y-6">
                                     {order?.trackingHistory?.map((entry, index) => (
                                         <div key={index} className="relative">
-                                            {/* Timeline Dot */}
                                             <div className={`absolute left-0 md:left-4 transform -translate-x-1/2 -translate-y-1/2 w-4 h-4 rounded-full border-4 border-white ${
                                                 entry?.orderStatus === 'Delivered' ? 'bg-green-500' :
                                                 entry?.orderStatus === 'Shipped' ? 'bg-blue-500' :
@@ -290,7 +289,6 @@ const TrackOrderManager = () => {
                                 </div>
                             </div>
 
-                            {/* Timeline Legend */}
                             <div className="mt-8 pt-6 border-t border-gray-200">
                                 <h4 className="text-sm font-medium text-gray-700 mb-3">Status Legend</h4>
                                 <div className="flex flex-wrap gap-3">

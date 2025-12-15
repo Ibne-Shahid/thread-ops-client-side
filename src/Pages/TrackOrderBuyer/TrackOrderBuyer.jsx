@@ -1,17 +1,94 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router'
 import { useQuery } from '@tanstack/react-query'
 import {
     FaTruck, FaCheckCircle, FaClock, FaBoxOpen, FaMapMarkerAlt, FaExclamationTriangle, FaCalendarAlt, FaShoppingBag, FaDollarSign, FaPhone,
-    FaInfoCircle, FaHome, FaCreditCard, FaShieldAlt
+    FaInfoCircle, FaHome, FaCreditCard, FaShieldAlt, FaMap
 }
     from 'react-icons/fa'
 import useAxiosSecure from '../../Hooks/useAxiosSecure'
 import Spinner from '../../components/Loaders/Spinner'
 
+import { MapContainer, TileLayer, Marker, Popup, Polyline } from 'react-leaflet'
+import 'leaflet/dist/leaflet.css'
+import L from 'leaflet'
+
+import icon from 'leaflet/dist/images/marker-icon.png';
+import iconRetina from 'leaflet/dist/images/marker-icon-2x.png';
+import iconShadow from 'leaflet/dist/images/marker-shadow.png';
+
+// Fix Leaflet default icon
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+    iconRetinaUrl: iconRetina,
+    iconUrl: icon,
+    shadowUrl: iconShadow,
+});
+
+const statusIcons = {
+    'Order Placed': new L.Icon({
+        iconUrl: 'https://cdn-icons-png.flaticon.com/512/648/648097.png',
+        iconSize: [32, 32],
+        iconAnchor: [16, 32],
+        popupAnchor: [0, -32]
+    }),
+    'Approved': new L.Icon({
+        iconUrl: 'https://cdn-icons-png.flaticon.com/512/190/190411.png',
+        iconSize: [32, 32],
+        iconAnchor: [16, 32],
+        popupAnchor: [0, -32]
+    }),
+    'In Production': new L.Icon({
+        iconUrl: 'https://cdn-icons-png.flaticon.com/512/1046/1046745.png',
+        iconSize: [32, 32],
+        iconAnchor: [16, 32],
+        popupAnchor: [0, -32]
+    }),
+    'Quality Check Started': new L.Icon({
+        iconUrl: 'https://cdn-icons-png.flaticon.com/512/1534/1534938.png',
+        iconSize: [32, 32],
+        iconAnchor: [16, 32],
+        popupAnchor: [0, -32]
+    }),
+    'Quality Check Passed': new L.Icon({
+        iconUrl: 'https://cdn-icons-png.flaticon.com/512/190/190411.png',
+        iconSize: [32, 32],
+        iconAnchor: [16, 32],
+        popupAnchor: [0, -32]
+    }),
+    'Packed': new L.Icon({
+        iconUrl: 'https://cdn-icons-png.flaticon.com/512/1034/1034153.png',
+        iconSize: [32, 32],
+        iconAnchor: [16, 32],
+        popupAnchor: [0, -32]
+    }),
+    'Shipped': new L.Icon({
+        iconUrl: 'https://cdn-icons-png.flaticon.com/512/3097/3097140.png',
+        iconSize: [32, 32],
+        iconAnchor: [16, 32],
+        popupAnchor: [0, -32]
+    }),
+    'Delivered': new L.Icon({
+        iconUrl: 'https://cdn-icons-png.flaticon.com/512/190/190411.png',
+        iconSize: [32, 32],
+        iconAnchor: [16, 32],
+        popupAnchor: [0, -32]
+    })
+};
+
 const TrackOrderBuyer = () => {
     const { id } = useParams()
     const axiosSecure = useAxiosSecure()
+    const [locationsData, setLocationsData] = useState([])
+    const [trackingLocations, setTrackingLocations] = useState([])
+    const [mapCenter, setMapCenter] = useState([23.8103, 90.4125])
+
+    useEffect(() => {
+        fetch('/location.json')
+            .then(res => res.json())
+            .then(data => setLocationsData(data))
+            .catch(err => console.error('Error loading locations:', err))
+    }, [])
 
     const { data: order, isLoading } = useQuery({
         queryKey: ['orders', id],
@@ -20,6 +97,38 @@ const TrackOrderBuyer = () => {
             return res.data
         }
     })
+
+    useEffect(() => {
+        if (order && locationsData.length > 0 && order.trackingHistory) {
+            const processedLocations = order.trackingHistory
+                .filter(entry => entry.location) 
+                .map(entry => {
+                    const locationInfo = locationsData.find(loc => 
+                        loc.name === entry.location || loc.id === entry.location
+                    )
+                    
+                    if (locationInfo) {
+                        return {
+                            ...entry,
+                            lat: locationInfo.lat,
+                            lng: locationInfo.lng,
+                            country: locationInfo.country,
+                            type: locationInfo.type,
+                            locationId: locationInfo.id
+                        }
+                    }
+                    return null
+                })
+                .filter(loc => loc !== null) // Remove null entries
+            
+            setTrackingLocations(processedLocations)
+            
+            // Set map center to first location or default
+            if (processedLocations.length > 0) {
+                setMapCenter([processedLocations[0].lat, processedLocations[0].lng])
+            }
+        }
+    }, [order, locationsData])
 
     const formatDate = (dateString) => {
         if (!dateString) return 'N/A'
@@ -56,6 +165,14 @@ const TrackOrderBuyer = () => {
             month: 'short',
             day: 'numeric'
         })
+    }
+
+    const getIconForStatus = (status) => {
+        return statusIcons[status] || statusIcons['Order Placed']
+    }
+
+    const getPolylineCoordinates = () => {
+        return trackingLocations.map(loc => [loc.lat, loc.lng])
     }
 
     if (isLoading) {
@@ -152,6 +269,93 @@ const TrackOrderBuyer = () => {
                                     </div>
                                 </div>
                             </div>
+                        </div>
+
+                        <div className="rounded-xl border border-gray-200 p-5 shadow-sm">
+                            <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                                <FaMap className="text-red-500" />
+                                Order Journey Map
+                            </h2>
+                            {trackingLocations.length > 0 ? (
+                                <div className="h-64 rounded-lg overflow-hidden border border-gray-300">
+                                    <MapContainer 
+                                        center={mapCenter} 
+                                        zoom={3} 
+                                        className="h-full w-full"
+                                        scrollWheelZoom={false}
+                                    >
+                                        <TileLayer
+                                            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                                            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                                        />
+                                        
+                                        {trackingLocations.length > 1 && (
+                                            <Polyline
+                                                pathOptions={{ color: '#3B82F6', weight: 3, opacity: 0.7 }}
+                                                positions={getPolylineCoordinates()}
+                                            />
+                                        )}
+                                        
+                                        {trackingLocations.map((loc, index) => (
+                                            <Marker 
+                                                key={index} 
+                                                position={[loc.lat, loc.lng]}
+                                                icon={getIconForStatus(loc.orderStatus)}
+                                            >
+                                                <Popup>
+                                                    <div className="p-2">
+                                                        <h3 className="font-semibold text-lg">{loc.orderStatus}</h3>
+                                                        <p className="text-sm text-gray-600">{loc.location}</p>
+                                                        <p className="text-xs text-gray-500 mt-1">
+                                                            <FaCalendarAlt className="inline mr-1" />
+                                                            {formatDate(loc.entryDate)}
+                                                        </p>
+                                                        {loc.country && (
+                                                            <p className="text-xs text-gray-500 mt-1">
+                                                                <FaMapMarkerAlt className="inline mr-1" />
+                                                                {loc.country} • {loc.type}
+                                                            </p>
+                                                        )}
+                                                        {loc.note && (
+                                                            <p className="text-xs text-gray-700 mt-2 border-t pt-2">
+                                                                <strong>Note:</strong> {loc.note}
+                                                            </p>
+                                                        )}
+                                                    </div>
+                                                </Popup>
+                                            </Marker>
+                                        ))}
+                                    </MapContainer>
+                                </div>
+                            ) : (
+                                <div className="h-64 flex flex-col items-center justify-center bg-gray-50 rounded-lg border border-dashed border-gray-300">
+                                    <FaMap className="text-4xl text-gray-400 mb-3" />
+                                    <p className="text-gray-500">Tracking locations will appear here</p>
+                                    <p className="text-sm text-gray-400 mt-1">Once your order starts moving</p>
+                                </div>
+                            )}
+                            
+                            {trackingLocations.length > 0 && (
+                                <div className="mt-4 space-y-2">
+                                    <div className="flex justify-between items-center">
+                                        <span className="text-sm font-medium">Tracked Locations:</span>
+                                        <span className="text-sm text-gray-500">{trackingLocations.length} stops</span>
+                                    </div>
+                                    <div className="flex flex-wrap gap-2">
+                                        {trackingLocations.map((loc, index) => (
+                                            <div key={index} className="flex items-center gap-1">
+                                                <div className={`w-3 h-3 rounded-full ${
+                                                    loc.orderStatus === 'Delivered' ? 'bg-green-500' :
+                                                    loc.orderStatus === 'Shipped' ? 'bg-blue-500' :
+                                                    loc.orderStatus === 'In Production' ? 'bg-yellow-500' :
+                                                    'bg-purple-500'
+                                                }`}></div>
+                                                <span className="text-xs text-gray-600">{loc.location}</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
                         </div>
 
                         <div className="rounded-xl border border-gray-200 p-5 shadow-sm">
@@ -275,76 +479,84 @@ const TrackOrderBuyer = () => {
                                         </div>
                                     )}
 
-                                    {order?.trackingHistory?.map((entry, index) => (
-                                        <div key={index} className="relative">
-                                            <div className={`absolute left-0 md:left-4 transform -translate-x-1/2 -translate-y-1/2 w-4 h-4 rounded-full border-4 border-white ${entry?.orderStatus === 'Delivered' ? 'bg-green-500 animate-bounce' :
-                                                entry?.orderStatus === 'Shipped' ? 'bg-blue-500' :
-                                                    (entry?.orderStatus === 'Approved' || entry?.orderStatus === "Order Placed") ? 'bg-yellow-500' : entry?.orderStatus === "Delivered" ? 'bg-green-500' :
-                                                        'bg-purple-500'
-                                                }`}></div>
+                                    {order?.trackingHistory?.map((entry, index) => {
+                                        const locationDetails = trackingLocations.find(loc => 
+                                            loc.entryDate === entry.entryDate
+                                        )
+                                        
+                                        return (
+                                            <div key={index} className="relative">
+                                                <div className={`absolute left-0 md:left-4 transform -translate-x-1/2 -translate-y-1/2 w-4 h-4 rounded-full border-4 border-white ${entry?.orderStatus === 'Delivered' ? 'bg-green-500 animate-bounce' :
+                                                    entry?.orderStatus === 'Shipped' ? 'bg-blue-500' :
+                                                        (entry?.orderStatus === 'Approved' || entry?.orderStatus === "Order Placed") ? 'bg-yellow-500' : entry?.orderStatus === "Delivered" ? 'bg-green-500' :
+                                                            'bg-purple-500'
+                                                    }`}></div>
 
-                                            <div className="ml-6 md:ml-12">
-                                                <div className={`rounded-lg p-5 border ${index === order.trackingHistory.length - 1
-                                                    ? 'bg-gradient-to-r from-gray-50 to-white border-gray-200 shadow-sm'
-                                                    : 'bg-gray-50 border-gray-100'
-                                                    }`}>
-                                                    <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
-                                                        <div className="flex-1">
-                                                            <div className="flex items-center gap-3 mb-3">
-                                                                {entry?.orderStatus === 'Delivered' && <FaCheckCircle className="text-2xl text-green-500" />}
-                                                                {entry?.orderStatus === 'Shipped' && <FaTruck className="text-2xl text-blue-500" />}
-                                                                {entry?.orderStatus === 'Processing' && <FaBoxOpen className="text-2xl text-purple-500" />}
-                                                                {entry?.orderStatus === 'Pending' && <FaClock className="text-2xl text-yellow-500" />}
-                                                                <div>
-                                                                    <h3 className="font-semibold text-gray-800 text-lg">
-                                                                        {entry?.orderStatus || 'Order Update'}
-                                                                    </h3>
-                                                                    {index === order.trackingHistory.length - 1 && (
-                                                                        <p className="text-sm text-gray-600 mt-1">Latest update</p>
-                                                                    )}
+                                                <div className="ml-6 md:ml-12">
+                                                    <div className={`rounded-lg p-5 border ${index === order.trackingHistory.length - 1
+                                                        ? 'bg-gradient-to-r from-gray-50 to-white border-gray-200 shadow-sm'
+                                                        : 'bg-gray-50 border-gray-100'
+                                                        }`}>
+                                                        <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
+                                                            <div className="flex-1">
+                                                                <div className="flex items-center gap-3 mb-3">
+                                                                    {entry?.orderStatus === 'Delivered' && <FaCheckCircle className="text-2xl text-green-500" />}
+                                                                    {entry?.orderStatus === 'Shipped' && <FaTruck className="text-2xl text-blue-500" />}
+                                                                    {entry?.orderStatus === 'Processing' && <FaBoxOpen className="text-2xl text-purple-500" />}
+                                                                    {entry?.orderStatus === 'Pending' && <FaClock className="text-2xl text-yellow-500" />}
+                                                                    <div>
+                                                                        <h3 className="font-semibold text-gray-800 text-lg">
+                                                                            {entry?.orderStatus || 'Order Update'}
+                                                                        </h3>
+                                                                        {index === order.trackingHistory.length - 1 && (
+                                                                            <p className="text-sm text-gray-600 mt-1">Latest update</p>
+                                                                        )}
+                                                                    </div>
                                                                 </div>
-                                                            </div>
 
-                                                            <div className="flex flex-col sm:flex-row sm:items-center gap-3 text-sm mb-3">
-                                                                {entry?.location && (
-                                                                    <div className="flex items-center gap-2 text-gray-600 bg-gray-100 px-3 py-1 rounded-full">
-                                                                        <FaMapMarkerAlt className="text-gray-400" />
-                                                                        <span>{entry.location}</span>
+                                                                <div className="flex flex-col sm:flex-row sm:items-center gap-3 text-sm mb-3">
+                                                                    {entry?.location && (
+                                                                        <div className="flex items-center gap-2 text-gray-600 bg-gray-100 px-3 py-1 rounded-full">
+                                                                            <FaMapMarkerAlt className="text-gray-400" />
+                                                                            <span>{entry.location}</span>
+                                                                            {locationDetails?.country && (
+                                                                                <span className="text-xs text-gray-500">({locationDetails.country})</span>
+                                                                            )}
+                                                                        </div>
+                                                                    )}
+                                                                    <div className="text-gray-500 flex items-center gap-2">
+                                                                        <FaCalendarAlt className="text-gray-400" />
+                                                                        {formatDate(entry?.entryDate)}
+                                                                    </div>
+                                                                </div>
+
+                                                                {entry?.note && (
+                                                                    <div className="mt-4 p-3 bg-white rounded-lg border border-gray-100">
+                                                                        <p className="text-gray-700 text-sm leading-relaxed">
+                                                                            <span className="font-medium">Note: </span>
+                                                                            {entry.note}
+                                                                        </p>
                                                                     </div>
                                                                 )}
-                                                                <div className="text-gray-500 flex items-center gap-2">
-                                                                    <FaCalendarAlt className="text-gray-400" />
-                                                                    {formatDate(entry?.entryDate)}
-                                                                </div>
                                                             </div>
 
-                                                            {entry?.note && (
-                                                                <div className="mt-4 p-3 bg-white rounded-lg border border-gray-100">
-                                                                    <p className="text-gray-700 text-sm leading-relaxed">
-                                                                        <span className="font-medium">Note: </span>
-                                                                        {entry.note}
-                                                                    </p>
-                                                                </div>
-                                                            )}
-                                                        </div>
-
-                                                        <div className={`self-start px-3 py-1 rounded-full text-xs font-medium ${entry?.orderStatus === 'Delivered' ? 'bg-green-100 text-green-800' :
-                                                            entry?.orderStatus === 'Shipped' ? 'bg-blue-100 text-blue-800' :
-                                                                entry?.orderStatus === 'Processing' ? 'bg-purple-100 text-purple-800' :
-                                                                    entry?.orderStatus === 'Pending' ? 'bg-yellow-100 text-yellow-800' :
-                                                                        'bg-gray-100 text-gray-800'
-                                                            }`}>
-                                                            Step {index + 1}
+                                                            <div className={`self-start px-3 py-1 rounded-full text-xs font-medium ${entry?.orderStatus === 'Delivered' ? 'bg-green-100 text-green-800' :
+                                                                entry?.orderStatus === 'Shipped' ? 'bg-blue-100 text-blue-800' :
+                                                                    entry?.orderStatus === 'Processing' ? 'bg-purple-100 text-purple-800' :
+                                                                        entry?.orderStatus === 'Pending' ? 'bg-yellow-100 text-yellow-800' :
+                                                                            'bg-gray-100 text-gray-800'
+                                                                }`}>
+                                                                Step {index + 1}
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    ))}
+                                        )
+                                    })}
                                 </div>
                             </div>
 
-                            {/* Help Section */}
                             <div className="mt-8 pt-6 border-t border-gray-200">
                                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                                     <div>
@@ -365,7 +577,6 @@ const TrackOrderBuyer = () => {
                     </div>
                 </div>
 
-                {/* Bottom Info Section */}
                 <div className="mt-6 rounded-xl border border-gray-200 p-5 shadow-sm">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div className="text-center">
@@ -384,10 +595,10 @@ const TrackOrderBuyer = () => {
                         </div>
                         <div className="text-center">
                             <div className="inline-flex items-center justify-center w-12 h-12 bg-purple-100 rounded-full mb-3">
-                                <FaClock className="text-purple-500 text-xl" />
+                                <FaMap className="text-purple-500 text-xl" />
                             </div>
-                            <h4 className="font-medium ">24/7 Tracking</h4>
-                            <p className="text-sm text-gray-600 mt-1">Track your order anytime, anywhere</p>
+                            <h4 className="font-medium ">Live Tracking</h4>
+                            <p className="text-sm text-gray-600 mt-1">Real-time location tracking available</p>
                         </div>
                     </div>
                 </div>

@@ -1,0 +1,194 @@
+[
+  {
+    "id": "factory_bd_dhaka",
+    "name": "Dhaka Garment Factory",
+    "type": "factory",
+    "country": "Bangladesh",
+    "lat": 23.8103,
+    "lng": 90.4125
+  },
+  {
+    "id": "warehouse_bd_gazipur",
+    "name": "Gazipur Central Warehouse",
+    "type": "warehouse",
+    "country": "Bangladesh",
+    "lat": 23.9999,
+    "lng": 90.4203
+  },
+  {
+    "id": "factory_bd_narayanganj",
+    "name": "Narayanganj Textile Factory",
+    "type": "factory",
+    "country": "Bangladesh",
+    "lat": 23.6238,
+    "lng": 90.5010
+  },
+  {
+    "id": "port_bd_chattogram",
+    "name": "Chattogram Sea Port",
+    "type": "port",
+    "country": "Bangladesh",
+    "lat": 22.3569,
+    "lng": 91.7832
+  },
+  {
+    "id": "factory_india_tirupur",
+    "name": "Tirupur Knitwear Factory",
+    "type": "factory",
+    "country": "India",
+    "lat": 11.1085,
+    "lng": 77.3411
+  },
+  {
+    "id": "warehouse_india_chennai",
+    "name": "Chennai Export Warehouse",
+    "type": "warehouse",
+    "country": "India",
+    "lat": 13.0827,
+    "lng": 80.2707
+  },
+  {
+    "id": "factory_china_guangzhou",
+    "name": "Guangzhou Apparel Factory",
+    "type": "factory",
+    "country": "China",
+    "lat": 23.1291,
+    "lng": 113.2644
+  },
+  {
+    "id": "warehouse_china_shenzhen",
+    "name": "Shenzhen Logistics Warehouse",
+    "type": "warehouse",
+    "country": "China",
+    "lat": 22.5431,
+    "lng": 114.0579
+  },
+  {
+    "id": "port_china_shanghai",
+    "name": "Shanghai International Port",
+    "type": "port",
+    "country": "China",
+    "lat": 31.2304,
+    "lng": 121.4737
+  },
+  {
+    "id": "factory_vietnam_ho_chi_minh",
+    "name": "Ho Chi Minh Garment Factory",
+    "type": "factory",
+    "country": "Vietnam",
+    "lat": 10.8231,
+    "lng": 106.6297
+  },
+  {
+    "id": "warehouse_vietnam_hanoi",
+    "name": "Hanoi Distribution Warehouse",
+    "type": "warehouse",
+    "country": "Vietnam",
+    "lat": 21.0278,
+    "lng": 105.8342
+  },
+  {
+    "id": "factory_turkey_istanbul",
+    "name": "Istanbul Apparel Factory",
+    "type": "factory",
+    "country": "Turkey",
+    "lat": 41.0082,
+    "lng": 28.9784
+  },
+  {
+    "id": "warehouse_turkey_izmir",
+    "name": "Izmir Export Warehouse",
+    "type": "warehouse",
+    "country": "Turkey",
+    "lat": 38.4237,
+    "lng": 27.1428
+  },
+  {
+    "id": "factory_england_manchester",
+    "name": "Manchester Textile Factory",
+    "type": "factory",
+    "country": "United Kingdom",
+    "lat": 53.4808,
+    "lng": -2.2426
+  },
+  {
+    "id": "warehouse_england_london",
+    "name": "London Distribution Warehouse",
+    "type": "warehouse",
+    "country": "United Kingdom",
+    "lat": 51.5074,
+    "lng": -0.1278
+  },
+  {
+    "id": "port_england_felixstowe",
+    "name": "Port of Felixstowe",
+    "type": "port",
+    "country": "United Kingdom",
+    "lat": 51.9550,
+    "lng": 1.3134
+  },
+  {
+    "id": "factory_germany_berlin",
+    "name": "Berlin Garment Factory",
+    "type": "factory",
+    "country": "Germany",
+    "lat": 52.5200,
+    "lng": 13.4050
+  },
+  {
+    "id": "warehouse_germany_hamburg",
+    "name": "Hamburg Logistics Warehouse",
+    "type": "warehouse",
+    "country": "Germany",
+    "lat": 53.5511,
+    "lng": 9.9937
+  },
+  {
+    "id": "port_germany_hamburg",
+    "name": "Hamburg Sea Port",
+    "type": "port",
+    "country": "Germany",
+    "lat": 53.5461,
+    "lng": 9.9661
+  },
+  {
+    "id": "factory_italy_milan",
+    "name": "Milan Fashion Factory",
+    "type": "factory",
+    "country": "Italy",
+    "lat": 45.4642,
+    "lng": 9.1900
+  },
+  {
+    "id": "warehouse_italy_genoa",
+    "name": "Genoa Export Warehouse",
+    "type": "warehouse",
+    "country": "Italy",
+    "lat": 44.4056,
+    "lng": 8.9463
+  },
+  {
+    "id": "port_italy_genoa",
+    "name": "Port of Genoa",
+    "type": "port",
+    "country": "Italy",
+    "lat": 44.4071,
+    "lng": 8.9339
+  },
+  {
+    "id": "warehouse_usa_new_jersey",
+    "name": "New Jersey Import Warehouse",
+    "type": "warehouse",
+    "country": "United States",
+    "lat": 40.0583,
+    "lng": -74.4057
+  },
+  {
+    "id": "port_usa_los_angeles",
+    "name": "Port of Los Angeles",
+    "type": "port",
+    "country": "United States",
+    "lat": 33.7405,
+    "lng": -118.2719
+  }
+]

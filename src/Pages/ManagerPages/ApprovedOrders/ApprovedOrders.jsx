@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form'
 import useAxiosSecure from '../../../Hooks/useAxiosSecure'
 import { toast } from 'react-toastify'
 import { Link } from 'react-router'
+import ManagerApprovalPending from '../../../components/ManagerApprovalPending/ManagerApprovalPending'
 
 const ApprovedOrders = () => {
     const axiosSecure = useAxiosSecure()
@@ -14,14 +15,57 @@ const ApprovedOrders = () => {
     const { firebaseUser } = useAuth()
     const modalRef = useRef()
     const [selectedOrder, setSelectedOrder] = useState(null)
+    const [locationsData, setLocationsData] = useState([])
+    const [filteredLocations, setFilteredLocations] = useState([])
 
-    const { register, handleSubmit, reset, formState: { errors } } = useForm({
+    const { register, handleSubmit, reset, watch, formState: { errors } } = useForm({
         defaultValues: {
+            country: "",
             location: "",
             orderStatus: "",
             note: ""
         }
     })
+
+    const selectedCountry = watch("country")
+    const selectedOrderStatus = watch("orderStatus")
+
+    useEffect(() => {
+        fetch('/location.json')
+            .then(res => res.json())
+            .then(data => {
+                setLocationsData(data)
+                setFilteredLocations(data)
+            })
+            .catch(err => console.error('Error loading locations:', err))
+    }, [])
+
+    useEffect(() => {
+        if (!locationsData.length) return
+
+        let filtered = [...locationsData]
+
+        if (selectedCountry) {
+            filtered = filtered.filter(loc => loc.country === selectedCountry)
+        }
+
+        if (selectedOrderStatus && selectedOrderStatus !== "Delivered") {
+            if (selectedOrderStatus === "In Production") {
+                filtered = filtered.filter(loc => loc.type === "factory")
+            } else if (selectedOrderStatus === "Shipped") {
+                filtered = filtered.filter(loc => loc.type === "port")
+            } else {
+                filtered = filtered.filter(loc => loc.type === "warehouse")
+            }
+        }
+
+        setFilteredLocations(filtered)
+        
+        const formLocation = watch("location")
+        if (formLocation && !filtered.some(loc => loc.id === formLocation)) {
+            reset({ ...watch(), location: "" })
+        }
+    }, [selectedCountry, selectedOrderStatus, locationsData])
 
     const { data: myApprovedorders = [], isLoading, refetch } = useQuery({
         queryKey: ['orders', firebaseUser?.email],
@@ -38,7 +82,8 @@ const ApprovedOrders = () => {
             return {
                 orderStatus: order.status || "",
                 location: "",
-                note: ""
+                note: "",
+                country: ""
             }
         }
 
@@ -47,7 +92,8 @@ const ApprovedOrders = () => {
         return {
             orderStatus: latestEntry.orderStatus || order.status || "",
             location: latestEntry.location || "",
-            note: latestEntry.note || ""
+            note: latestEntry.note || "",
+            country: latestEntry.country || ""
         }
     }
 
@@ -57,6 +103,7 @@ const ApprovedOrders = () => {
         const latestTracking = getLatestTrackingEntry(order);
 
         reset({
+            country: latestTracking.country,
             location: latestTracking.location,
             orderStatus: latestTracking.orderStatus,
             note: latestTracking.note
@@ -66,10 +113,22 @@ const ApprovedOrders = () => {
     };
 
     const onSubmit = async (data) => {
+        if (data.orderStatus !== "Delivered" && !data.location) {
+            toast.error("Location is required for this status");
+            return;
+        }
+        
+        let locationName = "";
+        if (data.orderStatus !== "Delivered" && data.location) {
+            const selectedLocationObj = locationsData.find(loc => loc.id === data.location);
+            locationName = selectedLocationObj ? selectedLocationObj.name : "";
+        }
 
         const requestData = {
             status: data.orderStatus,
-            location: data.location,
+            location: locationName,
+            locationId: data.orderStatus !== "Delivered" ? data.location : "",
+            country: data.country,
             note: data.note,
         }
 
@@ -88,7 +147,6 @@ const ApprovedOrders = () => {
         } catch (err) {
             toast.error('Sorry, something went wrong!')
         }
-
     }
 
     useEffect(() => {
@@ -98,7 +156,9 @@ const ApprovedOrders = () => {
     }, []);
 
     if (isLoading) return <Spinner />
-    if (user?.role === "manager" & user?.status === "pending") return <ManagerApprovalPending></ManagerApprovalPending>
+    if (user?.role === "manager" && user?.status === "pending") return <ManagerApprovalPending></ManagerApprovalPending>
+
+    const countries = [...new Set(locationsData.map(loc => loc.country))].sort()
 
     return (
         <div className="p-4 md:p-8 min-h-screen">
@@ -228,7 +288,7 @@ const ApprovedOrders = () => {
             </div>
 
             <dialog ref={modalRef} className="modal">
-                <div className="modal-box relative">
+                <div className="modal-box relative max-w-2xl">
 
                     <button
                         onClick={() => {
@@ -277,37 +337,78 @@ const ApprovedOrders = () => {
                             </div>
 
                             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-6">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label className="block text-sm font-medium">Country</label>
+                                        <select
+                                            {...register("country", { required: "Country is required" })}
+                                            className="select select-bordered w-full"
+                                        >
+                                            <option value="">Select Country</option>
+                                            {countries.map(country => (
+                                                <option key={country} value={country}>{country}</option>
+                                            ))}
+                                        </select>
+                                        {errors.country && (
+                                            <p className="text-red-500 text-sm">{errors.country.message}</p>
+                                        )}
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-sm font-medium">Order Status</label>
+                                        <select
+                                            {...register("orderStatus", { required: "Order Status is required" })}
+                                            className="select select-bordered w-full"
+                                        >
+                                            <option value="">Select Status</option>
+                                            <option value="In Production">In Production</option>
+                                            <option value="Quality Check Started">Quality Check Started</option>
+                                            <option value="Quality Check Passed">Quality Check Passed</option>
+                                            <option value="Packed">Packed</option>
+                                            <option value="Shipped">Shipped</option>
+                                            <option value="Delivered">Delivered</option>
+                                        </select>
+                                        {errors.orderStatus && (
+                                            <p className="text-red-500 text-sm">{errors.orderStatus.message}</p>
+                                        )}
+                                    </div>
+                                </div>
 
                                 <div>
                                     <label className="block text-sm font-medium">Location</label>
-                                    <input
-                                        {...register("location", { required: "Location is required" })}
-                                        className="input input-bordered w-full"
-                                        placeholder="Enter current location"
-                                    />
-                                    {errors.location && (
+                                    <select
+                                        {...register("location")}
+                                        className="select select-bordered w-full"
+                                        disabled={!selectedCountry || !selectedOrderStatus || selectedOrderStatus === "Delivered"}
+                                    >
+                                        <option value="">Select Location</option>
+                                        {selectedOrderStatus === "Delivered" ? (
+                                            <option value="">N/A - Product Delivered</option>
+                                        ) : (
+                                            filteredLocations.map(location => (
+                                                <option key={location.id} value={location.id}>
+                                                    {location.name} ({location.type})
+                                                </option>
+                                            ))
+                                        )}
+                                        {filteredLocations.length === 0 && selectedOrderStatus !== "Delivered" && (
+                                            <option value="" disabled>
+                                                No locations available for this selection
+                                            </option>
+                                        )}
+                                    </select>
+                                    
+                                    {selectedOrderStatus !== "Delivered" && errors.location && (
                                         <p className="text-red-500 text-sm">{errors.location.message}</p>
                                     )}
+                                    
+                                    <p className="text-xs text-gray-500 mt-1">
+                                        {!selectedCountry && "Select a country first"}
+                                        {selectedCountry && !selectedOrderStatus && "Select an order status first"}
+                                        {selectedCountry && selectedOrderStatus === "Delivered" && "No location needed for delivered orders"}
+                                        {selectedCountry && selectedOrderStatus && selectedOrderStatus !== "Delivered" && `${filteredLocations.length} location(s) available`}
+                                    </p>
                                 </div>
-
-                                <div>
-                                    <label className="block text-sm font-medium">Order Status</label>
-                                    <select
-                                        {...register("orderStatus", { required: "Order Status is required" })}
-                                        className="select select-bordered w-full"
-                                    >
-                                        <option value="In Production">In Production</option>
-                                        <option value="Quality Check Started">Quality Check Started</option>
-                                        <option value="Quality Check Passed">Quality Check Passed</option>
-                                        <option value="Packed">Packed</option>
-                                        <option value="Shipped">Shipped</option>
-                                        <option value="Delivered">Delivered</option>
-                                    </select>
-                                    {errors.orderStatus && (
-                                        <p className="text-red-500 text-sm">{errors.orderStatus.message}</p>
-                                    )}
-                                </div>
-
 
                                 <div>
                                     <label className="block text-sm font-medium">Note</label>
@@ -320,7 +421,21 @@ const ApprovedOrders = () => {
                                 </div>
 
                                 <div className="flex justify-end pt-4 space-x-2">
-                                    <button type="submit" className="btn btn-primary">
+                                    <button 
+                                        type="button" 
+                                        onClick={() => {
+                                            modalRef.current.close();
+                                            reset();
+                                        }} 
+                                        className="btn btn-ghost"
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button 
+                                        type="submit" 
+                                        className="btn btn-primary"
+                                        disabled={!selectedCountry || !selectedOrderStatus || (selectedOrderStatus !== "Delivered" && !watch("location"))}
+                                    >
                                         Update Tracking Details
                                     </button>
                                 </div>
