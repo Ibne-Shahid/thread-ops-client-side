@@ -32,6 +32,7 @@ import TrackOrder from "../Pages/TrackOrder/TrackOrder";
 import TrackOrderBuyer from "../Pages/TrackOrderBuyer/TrackOrderBuyer";
 import BuyerRoutes from "../Provider/BuyerRoutes";
 import ErrorPage from "../components/Errors/ErrorPage";
+import Jobs from "../Pages/Jobs/Jobs";
 
 
 const router = createBrowserRouter([
@@ -58,15 +59,19 @@ const router = createBrowserRouter([
             },
             {
                 path: 'product-details/:id',
-                element: <PrivateRoutes><ProductDetails></ProductDetails></PrivateRoutes>
+                element: <ProductDetails></ProductDetails>
+            },
+            {
+                path: 'jobs',
+                element: <Jobs></Jobs>
             },
             {
                 path: 'product-details/:id/order-form',
-                element: <OrderForm></OrderForm>
+                element: <PrivateRoutes><OrderForm></OrderForm></PrivateRoutes>
             },
             {
                 path: 'product-details/:id/order-form/payment',
-                element: <Payment></Payment>
+                element: <PrivateRoutes><Payment></Payment></PrivateRoutes>
             }
         ]
     },
