@@ -19,25 +19,25 @@ const PressKit = () => {
       name: 'Alex Morgan',
       role: 'CEO & Founder',
       bio: 'Former garment factory operations director with 15+ years experience in textile industry.',
-      img: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face'
+      img: 'https://cdn.sanity.io/images/oyf3dba6/production/9fca0bc620a2cfebe91bcb30faab277e4776f1dd-580x580.jpg'
     },
     {
       name: 'Sarah Chen',
       role: 'CTO',
       bio: 'Tech entrepreneur specializing in B2B SaaS solutions for manufacturing industries.',
-      img: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=200&h=200&fit=crop&crop=face'
+      img: 'https://warburgpincus.com/wp-content/uploads/2019/10/Sarah-Chen-web-1024x991.jpg'
     },
     {
       name: 'Raj Patel',
       role: 'Head of Operations',
       bio: 'Supply chain expert with extensive experience in Bangladesh garment industry.',
-      img: 'https://images.unsplash.com/photo-1507591064344-4c6ce005-128?w=200&h=200&fit=crop&crop=face'
+      img: 'https://texasconnect.utexas.edu/wp-content/uploads/2022/11/raj-patel-portrait-square.jpg'
     },
     {
       name: 'Maria Garcia',
       role: 'Head of Marketing',
       bio: 'Digital marketing specialist focused on B2B manufacturing technology.',
-      img: 'https://images.unsplash.com/photo-1551836026-d5c2c5af78e4?w=200&h=200&fit=crop&crop=face'
+      img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR20NXhETa_YmHAha5GPwVSSy_UCdnCSivERg&s'
     },
   ];
 
