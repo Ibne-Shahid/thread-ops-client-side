@@ -33,6 +33,7 @@ import TrackOrderBuyer from "../Pages/TrackOrderBuyer/TrackOrderBuyer";
 import BuyerRoutes from "../Provider/BuyerRoutes";
 import ErrorPage from "../components/Errors/ErrorPage";
 import Jobs from "../Pages/Jobs/Jobs";
+import PressKit from "../Pages/PressKit/PressKit";
 
 
 const router = createBrowserRouter([
@@ -64,6 +65,10 @@ const router = createBrowserRouter([
             {
                 path: 'jobs',
                 element: <Jobs></Jobs>
+            },
+            {
+                path: 'press-kit',
+                element: <PressKit></PressKit>
             },
             {
                 path: 'product-details/:id/order-form',

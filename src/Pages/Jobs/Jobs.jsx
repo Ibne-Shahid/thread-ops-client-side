@@ -310,12 +310,11 @@ const Jobs = () => {
                   <div className="flex justify-between items-center">
                     <span className="text-sm text-gray-500">{job.postedDate}</span>
                     <div className="flex gap-3">
-                      <Link 
-                        to={`/job-details/${job.id}`}
+                      <button
                         className="btn btn-outline btn-primary btn-sm"
                       >
                         View Details
-                      </Link>
+                      </button>
                       <button 
                         onClick={() => handleApplyJob(job.id)}
                         className="btn btn-primary btn-sm flex items-center gap-2"
